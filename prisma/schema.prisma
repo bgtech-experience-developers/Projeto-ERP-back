@@ -8,13 +8,24 @@ datasource db {
 }
 
 model Clientes {
+  id        Int      @id @default(autoincrement())
+  nome      String
+  cpf       String   @unique
+  email     String
+  senha     String
+  telefone  Int
+  situacao  Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+}
+
+model Fucionarios {
   id Int @id @default(autoincrement())
   nome String
+  email String 
   cpf String @unique
-  email String
-  senha String
   telefone Int
-  situacao Boolean @default(false)
+  celular Int
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now())
 }
