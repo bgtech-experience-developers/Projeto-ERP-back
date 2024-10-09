@@ -1,6 +1,6 @@
 import { ClientesRepository } from "../repository/ClientesRepository.js";
 
-const {criar, mostrar, deletar} = ClientesRepository
+const {criar, mostrar, deletar} = new ClientesRepository
 
 export class ClienteController {
 
