@@ -3,7 +3,7 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
+  provider = "mysql"
   url      = env("DATABASE_URL")
 }
 
@@ -13,8 +13,34 @@ model Clientes {
   cpf String @unique
   email String
   senha String
-  telefone Int
   situacao Boolean @default(false)
+  enderecos Enderecos[]
+  telefone Telefone[]
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now())
+}
+model Enderecos{
+  id Int @id @default(autoincrement())
+  cep String
+  logradouro String
+  numero Int
+  complemento String
+  bairro String
+  cidade String
+  UserId Int
+  user Clientes @relation(fields: [UserId],references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+  @@map("enderecos")
+}
+
+model Telefone {
+   id Int @id @default(autoincrement())
+   telefoneComercial String
+   telefoneCelular String
+   UserId Int
+   user Clientes @relation(fields: [UserId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+  @@map("telefone")
 }

@@ -37,11 +37,9 @@ export class ClienteController {
       const clienteDeletado = await deletar(cpf);
       res.json(clienteDeletado.message);
     } catch (error) {
-      res
-        .status(500)
-        .json({
-          message: "Não foi possivel deletar o cliente" + error.message,
-        });
+      res.status(500).json({
+        message: "Não foi possivel deletar o cliente" + error.message,
+      });
     }
   }
 }
