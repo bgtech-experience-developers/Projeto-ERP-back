@@ -1,4 +1,3 @@
-import { response } from "express";
 import FuncionariosRepository from "../repository/funcionariosRepository.js";
 
 const {criar, deletar, buscarTodos, atualizarFuncionario} = new FuncionariosRepository
