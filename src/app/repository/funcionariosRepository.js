@@ -1,11 +1,11 @@
 import { instanciaPrisma } from "../database/conexao.js";
 
 class FuncionariosRepository {
-    async criar (nome, email, cpf, telefone, celular,) {
+    async criar (nome, email, cpf, telefone, celular) {
         try {
             const funcionario = await instanciaPrisma.fucionarios.findUnique({where: {cpf}});
             if (!funcionario) {
-                const cadastrarFuncionario = await instanciaPrisma.fucionarios.create({data: {nome, cpf, celular, telefone, email}})
+                const cadastrarFuncionario = await instanciaPrisma.fucionarios.create({data: {nome, email, cpf, celular, telefone}})
                 const message = {message: "Funcionário cadastrado com sucesso!"}
                 return {
                     cadastrarFuncionario,
@@ -27,8 +27,22 @@ class FuncionariosRepository {
         }
     }
 
-    async atualizar() {
-        return 'ORM return'
+    async atualizarFuncionario(nome, email, cpf, celular, telefone) {
+        const funcionario = await instanciaPrisma.fucionarios.findUnique({where: {cpf}});
+        
+        try {
+            if (funcionario) {
+                const funcionarioNovo = await instanciaPrisma.fucionarios.update({where: {cpf}, data: {nome, email, cpf, celular, telefone}})
+                return {
+                    funcionarioAntigo: funcionario,
+                    funcionarioNovo
+                }
+            } else {
+                throw new Error('Usuário inexistente')
+            }
+        } catch (error) {
+            throw new Error(error)
+        }
     }
 
     async deletar(cpf) {
