@@ -1,0 +1,142 @@
+{
+  "openapi": "3.0.0",
+
+  "servers": [
+    { "url": "http://localhost:8000", "description": "servidor do projeto erp" }
+  ],
+  "info": {
+    "version": "1.0.0",
+    "title": "PROJETO ERP",
+    "contact": {
+      "email": "lucassilvadpaula@gmail.com",
+      "name": "suporte",
+      "url": "lucas"
+    },
+    "description": "Api focada na gestão empresarial"
+  },
+  "paths": {
+    "/clientes/cadastrados": {
+      "get": {
+        "tags": ["clientes"],
+        "summary": "buscar todos os clientes",
+        "description": "faz uma consulta no banco de dados com o intuito de trazer todos os clientes registrados",
+        "responses": {
+          "201": {
+            "description": "todos os clientes vem dentro de um array , cada cliente é representado por um objeto",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "type": "object",
+                    "description": "um array contendo todos os registros dos usuários na qual cada usuário é representante de um objeto",
+                    "example": {
+                      "cpf": "222.555.222-23",
+                      "nome": "fulano",
+                      "telefone": "9832-3456",
+                      "email": "fulano@gmail.com"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "erro interno do servidor"
+          }
+        }
+      }
+    },
+    "/clientes/pegar-client/{cpf}": {
+      "get": {
+        "summary": "pegar um cliente especifico",
+        "description": "o objetivo dessa rota é trazer um cliente especifico cadastrado através do seu cpf",
+        "tags": ["clientes"],
+        "parameters": [
+          {
+            "style": "label",
+            "description": "a ideia é capturar um usuário que esteje registrado e busque-o a partir do seu identificador único, que estipulamos  ser seu cpf, sendo assim possível retornar suas informações",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "number" },
+            "name": "cpf"
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "usuário encontrado com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CorpoCLient"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "usário não encotrado"
+          },
+          "500": { "description": "erro interno do servidor" }
+        }
+      }
+    },
+    "/clientes/cadastro": {
+      "post": {
+        "summary": "adicionar um cliente",
+        "tags": ["clientes"],
+        "description": "rota dedicada a criação de um usuário qualquer dentro do banco de dados ",
+        "requestBody": {
+          "required": true,
+          "description": "essa rota precisa de algumas informações adicionais para ser concluída com sucesso, assim sendo crucial para a criação do usuário, na parte do cpf ele pode ser utilizado com ou sem a formatação padrão de ponto e hífen, fica a critério em qual maneira desejas abordar, entretanto, 11 digitos é fundamental",
+          "content": {
+            "application/json": {
+              "schema": {
+                "description": "cpf único, todos os dados devem ser passado em formato de texto menos o campo de situação que deve ser um valor booleano",
+                "example": {
+                  "nome": "fulano",
+                  "cpf": "610.619.539-20",
+                  "telefone": "98796-3845",
+                  "email": "fulano@gmail.com",
+                  "senha": "sua senha super secreta",
+                  "situacao": "situação do cliente, true se ele tiver ativo ou false se tiver inativo"
+                },
+
+                "type": "object"
+              }
+            }
+          }
+        },
+
+        "responses": {
+          "201": {
+            "description": "cadastro realizado com sucesso bem-vindo,(fulano)"
+          },
+          "400": {
+            "description": "usuário ja cadastrado no sistema"
+          },
+          "500": {
+            "description": "erro interno do servidor"
+          }
+        }
+      }
+    },
+    "/clientes/deletar/{cpf}": {
+      "delete": {
+        "tags": ["clientes"],
+        "responses": {}
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "CorpoCLient": {
+        "type": "object",
+        "properties": {
+          "name": { "type": "string", "description": "fulano" },
+          "cpf": { "type": "string", "description": "123.456.789-10" },
+          "email": { "type": "string", "description": "fulano@gmail.com" },
+          "telefone": { "type": "string", "description": "98796-3581" }
+        }
+      }
+    }
+  }
+}

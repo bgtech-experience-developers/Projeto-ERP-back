@@ -1,33 +1,37 @@
 import { ClientesRepository } from "../repository/ClientesRepository.js";
 
-const { criar, mostrar, deletar } = new ClientesRepository();
+const { criar, mostrar, deletar, buscarUnico } = new ClientesRepository();
 
 export class ClienteController {
-  async mostrar(req, res) {
+  async mostrar(req, res, next) {
     try {
       const clientes = await mostrar();
       res.json(clientes);
     } catch (error) {
-      res.send(error);
+      next(error);
     }
   }
 
-  async criar(req, res) {
+  async criar(req, res, next) {
     try {
       const { nome, cpf, email, senha, telefone, situacao } = req.body;
       const { cadastrarCliente, message } = await criar(
-        cpf,
         nome,
+        cpf,
         email,
         senha,
         telefone,
         situacao
       );
+
       res
-        .status(200)
-        .json("sua senha foi criptografada" + cadastrarCliente.senha);
+        .status(201)
+        .json(
+          "cadastro realizado com sucesso bem-vindo, " + cadastrarCliente.nome
+        );
     } catch (error) {
-      res.status(500).json({ message: "Erro interno do servidor" });
+      console.log(error);
+      next(error);
     }
   }
 
@@ -40,6 +44,16 @@ export class ClienteController {
       res.status(500).json({
         message: "Não foi possivel deletar o cliente" + error.message,
       });
+    }
+  }
+  async buscarUnico(req, response, next) {
+    try {
+      const cpf = req.params.cpf;
+
+      const cliente = await buscarUnico(cpf);
+      response.status(201).json(cliente);
+    } catch (error) {
+      next(error);
     }
   }
 }
