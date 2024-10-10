@@ -33,5 +33,12 @@ model Enderecos{
   updatedAt DateTime @default(now())
   @@map("enderecos")
 }
-
-
+model Fornecedores {
+  id Int @id @default(autoincrement())
+  nome String
+  email String
+  telefone String
+  celular String
+  situacao Boolean @default(false)
+  tipo Boolean @default(false)
+}
