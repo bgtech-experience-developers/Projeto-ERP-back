@@ -41,7 +41,8 @@ export class ClientesRepository {
       if (!cliente) {
         throw new Error("Cliente não encontrado ou não existe");
       }
-
+      console.log("Chegou aqui");
+      
       await instanciaPrisma.clientes.delete({ where: { cpf } });
 
       const message = { message: "Cliente deletado com sucesso" };

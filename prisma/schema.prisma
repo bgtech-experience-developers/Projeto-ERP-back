@@ -14,18 +14,18 @@ model Clientes {
   email     String
   senha     String
   telefone  Int
-  situacao  Boolean  @default(false)
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now())
+  situacao  Boolean  @default(false)
 }
 
 model Fucionarios {
-  id Int @id @default(autoincrement())
-  nome String
-  email String 
-  cpf String @unique
-  telefone Int
-  celular Int
+  id        Int      @id @default(autoincrement())
+  nome      String
+  email     String
+  cpf       String   @unique
+  telefone  Int
+  celular   Int
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now())
 }

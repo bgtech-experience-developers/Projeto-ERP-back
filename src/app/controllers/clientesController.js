@@ -16,8 +16,8 @@ export class ClienteController {
     try {
       const { nome, cpf, email, senha, telefone, situacao } = req.body;
       const { cadastrarCliente, message } = await criar(
-        cpf,
         nome,
+        cpf,
         email,
         senha,
         telefone,
@@ -27,7 +27,7 @@ export class ClienteController {
         .status(200)
         .json("sua senha foi criptografada" + cadastrarCliente.senha);
     } catch (error) {
-      res.status(500).json({ message: "Erro interno do servidor" });
+      res.status(500).json({ message: "Dado já utilizado!" });
     }
   }
 
