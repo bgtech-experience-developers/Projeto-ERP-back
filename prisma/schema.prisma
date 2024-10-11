@@ -7,7 +7,15 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Clientes {
+
+model Fucionarios {
+  id        Int      @id @default(autoincrement())
+  nome      String
+  email     String
+  cpf       String   @unique
+  telefone  String
+  celular   String
+
   id Int @id @default(autoincrement())
   nome String
   cpf String @unique

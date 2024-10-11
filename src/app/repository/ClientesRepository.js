@@ -58,7 +58,9 @@ export class ClientesRepository {
       if (!cliente) {
         throw new NotFound("Cliente não encontrado ou não existe");
       }
+
       // await instanciaPrisma.enderecos.deleteMany({where:{UserId:cliente.id}}) futuramente integrar essa linha quando tiver feito os relacionamentos
+
       await instanciaPrisma.clientes.delete({ where: { cpf } });
       return { message: "cliente deletado com sucesso" };
     } catch (error) {

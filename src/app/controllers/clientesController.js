@@ -30,8 +30,10 @@ export class ClienteController {
           "cadastro realizado com sucesso bem-vindo, " + cadastrarCliente.nome
         );
     } catch (error) {
-      console.log(error);
-      next(error);
+
+   
+
+      next(error)
     }
   }
 
