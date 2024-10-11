@@ -50,20 +50,19 @@ export class ClientesRepository {
   }
 
   async deletar(cpf) {
+    // essa rota precisa de uma autenticação de um admin
     try {
       const cliente = await instanciaPrisma.clientes.findUnique({
         where: { cpf },
       });
       if (!cliente) {
-        throw new Error("Cliente não encontrado ou não existe");
+        throw new NotFound("Cliente não encontrado ou não existe");
       }
-
+      // await instanciaPrisma.enderecos.deleteMany({where:{UserId:cliente.id}}) futuramente integrar essa linha quando tiver feito os relacionamentos
       await instanciaPrisma.clientes.delete({ where: { cpf } });
-
-      const message = { message: "Cliente deletado com sucesso" };
-      return message;
+      return { message: "cliente deletado com sucesso" };
     } catch (error) {
-      throw new Error(error);
+      throw error;
     }
   }
   async buscarUnico(cpf) {

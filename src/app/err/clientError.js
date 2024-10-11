@@ -6,9 +6,11 @@ export class Exist extends Error {
   }
 }
 export class NotFound extends Error {
-  constructor(message) {
+  constructor(message, status = 400) {
+    console.log("infelizmente o status é ", status);
     super(message);
+
     this.name = "usuário não encontrado";
-    this.status = 400;
+    this.status = status;
   }
 }

@@ -6,14 +6,13 @@ import rotaCliente from "./app/routes/clientesRotas.js";
 import swaggerjson from "../swagger.json" assert { type: "json" };
 import swaggerui from "swagger-ui-express";
 
-
 const app = express();
 
 app.use(cors());
 app.use(express.json());
 app.use("/api-docs", swaggerui.serve, swaggerui.setup(swaggerjson));
 
-app.use("/clientes", rotaCliente);
+app.use("/clientes", rotaCliente, (re, res) => {});
 
 const PORTA = process.env.PORTA;
 

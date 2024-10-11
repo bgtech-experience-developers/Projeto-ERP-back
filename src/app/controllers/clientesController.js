@@ -35,15 +35,13 @@ export class ClienteController {
     }
   }
 
-  async deletar(req, res) {
+  async deletar(req, res, next) {
     try {
-      const { cpf } = req.body;
+      const { cpf } = req.params;
       const clienteDeletado = await deletar(cpf);
       res.json(clienteDeletado.message);
     } catch (error) {
-      res.status(500).json({
-        message: "Não foi possivel deletar o cliente" + error.message,
-      });
+      next(error);
     }
   }
   async buscarUnico(req, response, next) {
