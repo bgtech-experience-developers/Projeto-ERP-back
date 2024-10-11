@@ -1,6 +1,6 @@
 import { ClientesRepository } from "../repository/ClientesRepository.js";
 
-const { criar, mostrar, deletar, buscarUnico } = new ClientesRepository();
+const { criar, mostrar, deletar, buscarUnico,update } = new ClientesRepository();
 
 export class ClienteController {
 
@@ -59,8 +59,16 @@ export class ClienteController {
     }
   }
 
-  async update(req,response,next) {
-     console.log('Requisição chegou');
+  async update(req, response, next) { 
+    try {
+      const {id,nome,cpf,email,senha,situacao,enderecos,telefone} = req.body;
+
+      const atualizar = await update(id,nome,cpf,email,senha,situacao,enderecos,telefone);
+      response.status(201).json(atualizar);
+     } catch (error) {
+      next(error);
+
+     }
      
   }
 }

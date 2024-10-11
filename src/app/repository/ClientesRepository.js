@@ -78,7 +78,8 @@ export class ClientesRepository {
           email: true,
           telefone: true,
           cpf: true,
-          
+          situacao: true,
+          enderecos: true 
         },
       });
       if (client) {
@@ -91,7 +92,7 @@ export class ClientesRepository {
     }
   }
 
-  async update(id) {
+  async update(id,nome,cpf,email,senha,situacao,enderecos,telefone) {
     try{
         const client = await instanciaPrisma.clientes.findUnique({
           where: {id},
@@ -100,7 +101,9 @@ export class ClientesRepository {
             nome: true,
             email: true,
             telefone: true,
-            cpf: true
+            cpf: true,
+            situacao: true,
+            enderecos: true 
           }
        });
 

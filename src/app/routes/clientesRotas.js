@@ -11,6 +11,6 @@ rotaCliente.post("/cadastro", criar, erroCLient);
 rotaCliente.get("/cadastrados", mostrar, erroCLient);
 rotaCliente.delete("/deletar-cliente/:cpf", Admin, deletar, erroCLient);
 rotaCliente.get("/atualizarCliente/:cpf", buscarUnico, erroCLient);
-rotaCliente.put("/atualizarCliente/:cpf", update)
+rotaCliente.put("/atualizarCliente/:cpf", update, erroCLient)
 
 export default rotaCliente;
