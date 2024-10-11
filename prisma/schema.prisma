@@ -16,6 +16,9 @@ model Fucionarios {
   telefone  String
   celular   String
 
+}
+ model Clientes{
+
   id Int @id @default(autoincrement())
   nome String
   cpf String @unique
