@@ -3,6 +3,7 @@ import { ClientesRepository } from "../repository/ClientesRepository.js";
 const { criar, mostrar, deletar, buscarUnico } = new ClientesRepository();
 
 export class ClienteController {
+
   async mostrar(req, res, next) {
     try {
       const clientes = await mostrar();
@@ -46,6 +47,7 @@ export class ClienteController {
       next(error);
     }
   }
+
   async buscarUnico(req, response, next) {
     try {
       const cpf = req.params.cpf;
@@ -55,5 +57,10 @@ export class ClienteController {
     } catch (error) {
       next(error);
     }
+  }
+
+  async update(req,response,next) {
+     console.log('Requisição chegou');
+     
   }
 }

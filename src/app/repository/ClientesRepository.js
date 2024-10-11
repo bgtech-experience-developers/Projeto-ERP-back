@@ -67,15 +67,18 @@ export class ClientesRepository {
       throw error;
     }
   }
+
   async buscarUnico(cpf) {
     try {
       const client = await instanciaPrisma.clientes.findUnique({
         where: { cpf },
         select: {
+          id: true,
           nome: true,
           email: true,
           telefone: true,
           cpf: true,
+          
         },
       });
       if (client) {
@@ -85,6 +88,29 @@ export class ClientesRepository {
       }
     } catch (error) {
       throw error;
+    }
+  }
+
+  async update(id) {
+    try{
+        const client = await instanciaPrisma.clientes.findUnique({
+          where: {id},
+          select: {
+            id: true,
+            nome: true,
+            email: true,
+            telefone: true,
+            cpf: true
+          }
+       });
+
+       if(client) {
+        return client
+       } else {
+        throw new NotFound("Id não existente na base de dados(Mensagem temporária)")
+       }
+    } catch (error) {
+      throw error
     }
   }
 }

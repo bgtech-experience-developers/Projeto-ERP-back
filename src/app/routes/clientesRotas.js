@@ -5,11 +5,12 @@ import { Admin } from "../middleware/authAdmin.js";
 
 const rotaCliente = express.Router();
 
-const { criar, mostrar, deletar, buscarUnico } = new ClienteController();
+const { criar, mostrar, deletar, buscarUnico, update } = new ClienteController();
 
 rotaCliente.post("/cadastro", criar, erroCLient);
 rotaCliente.get("/cadastrados", mostrar, erroCLient);
 rotaCliente.delete("/deletar-cliente/:cpf", Admin, deletar, erroCLient);
-rotaCliente.get("/pegar-client/:cpf", buscarUnico, erroCLient);
+rotaCliente.get("/atualizarCliente/:cpf", buscarUnico, erroCLient);
+rotaCliente.put("/atualizarCliente/:cpf", update)
 
 export default rotaCliente;
