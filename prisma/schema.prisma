@@ -3,29 +3,43 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
+  provider = "postgres"
   url      = env("DATABASE_URL")
 }
 
-model Clientes {
-  id        Int      @id @default(autoincrement())
-  nome      String
-  cpf       String   @unique
-  email     String
-  senha     String
-  telefone  Int
-  createdAt DateTime @default(now())
-  updatedAt DateTime @default(now())
-  situacao  Boolean  @default(false)
-}
 
 model Fucionarios {
   id        Int      @id @default(autoincrement())
   nome      String
   email     String
   cpf       String   @unique
-  telefone  Int
-  celular   Int
+  telefone  String
+  celular   String
+
+  id Int @id @default(autoincrement())
+  nome String
+  cpf String @unique
+  email String
+  senha String
+  situacao Boolean @default(false)
+  enderecos Enderecos[]
+  telefone String
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now())
 }
+model Enderecos{
+  id Int @id @default(autoincrement())
+  cep String
+  logradouro String
+  numero Int
+  complemento String
+  bairro String
+  cidade String
+  UserId Int
+  user Clientes @relation(fields: [UserId],references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+  @@map("enderecos")
+}
+
+
