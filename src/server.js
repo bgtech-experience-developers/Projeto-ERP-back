@@ -1,9 +1,9 @@
-import rotaFuncionarios from './app/routes/funcionarioRotas.js'
+import rotaFuncionarios from './app/route/funcionarioRotas.js'
 dotenv.config();
 import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
-import rotaCliente from "./app/routes/clientesRotas.js";
+import rotaCliente from "./app/route/clientesRotas.js";
 import swaggerjson from "../swagger.json" assert { type: "json" };
 import swaggerui from "swagger-ui-express";
 
