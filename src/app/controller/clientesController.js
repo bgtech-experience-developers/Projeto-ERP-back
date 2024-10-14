@@ -64,7 +64,7 @@ export class ClienteController {
       }
 
       res.status(500).json({message: 'Erro interno de servidor!'})
-      // next(error);
+      
     }
   }
 
@@ -80,9 +80,7 @@ export class ClienteController {
       }
 
       res.status(500).json({message: 'Erro interno no servidor!'})
-      // console.log(error);
-      
-      // next(error);
+
     }
   }
 
@@ -93,14 +91,13 @@ export class ClienteController {
       let id1 =Number(id) 
       console.log(typeof(id1));
       
-      // console.log(id);
+     
       
       const {nome,cpf,email,senha,situacao,telefone} = req.body;
-      // console.log('oi');
       
 
       const atualizar = await update(id1,nome,cpf,email,senha,situacao,telefone);
-      // console.log(res);
+      
       res.status(200).json(atualizar.message)
      } catch (error) {
       if(error.code === 'P2025')
