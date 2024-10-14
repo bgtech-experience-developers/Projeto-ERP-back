@@ -1,5 +1,5 @@
 import express from "express";
-import FuncionariosController from "../controllers/funcionariosController.js";
+import FuncionariosController from "../controller/funcionariosController.js";
 
 const rotaFuncionarios = express.Router()
 
