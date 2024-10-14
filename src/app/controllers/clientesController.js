@@ -14,7 +14,8 @@ export class ClienteController {
 
   async criar(req, res, next) {
     try {
-      const { nome, cpf, email, senha, telefone, situacao } = req.body;
+      const { nome, cpf, email, telefone, situacao } = req.body;
+
       const { cadastrarCliente, message } = await criar(
         nome,
         cpf,
@@ -30,10 +31,7 @@ export class ClienteController {
           "cadastro realizado com sucesso bem-vindo, " + cadastrarCliente.nome
         );
     } catch (error) {
-
-   
-
-      next(error)
+      next(error);
     }
   }
 

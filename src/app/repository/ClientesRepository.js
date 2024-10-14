@@ -10,9 +10,9 @@ import byccript from "bcrypt";
 // }
 
 export class ClientesRepository {
-  async criar(nome, cpf, email, senha, telefone, situacao) {
+  async criar(nome, cpf, email, senha, telefone, situacao, rua, cep) {
     try {
-      const cliente = await instanciaPrisma.clientes.findUnique({
+      const cliente = await instanciaPrisma.client.findUnique({
         where: { cpf },
       });
       if (!cliente) {
@@ -21,6 +21,7 @@ export class ClientesRepository {
         const cadastrarCliente = await instanciaPrisma.clientes.create({
           data: { nome, cpf, telefone, email, senha: senhaHas, situacao },
         });
+
         const message = { message: "Cadastro realizado com sucesso!" };
         return {
           cadastrarCliente,

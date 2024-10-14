@@ -129,7 +129,7 @@
     "/clientes/deletar-cliente/{cpf}": {
       "delete": {
         "summary": "deletar um cliente",
-        "description": "o objetivo dessa rota é deletar um registro de um cliente cadastrado dentro do banco de dados porém essa ação so poderá ser feita após uma autenticação, pois não é todo mundo que tem esse direito de deletar um cliente sem uma autorização prévia",
+        "description": "o objetivo dessa rota é deletar um registro de um cliente cadastrado dentro do banco de dados porém essa ação so poderá ser feita após uma autenticação, pois não é todo mundo que tem esse direito de deletar um cliente sem uma autorização prévia, caso você esteje visualizando na interface do swagger uma parte chamada (autorize), é nesse lugar aonde a sua chave de api deve ser implementada, chave de api é a sua chave de autorização para essa rota",
         "parameters": [
           {
             "in": "path",
