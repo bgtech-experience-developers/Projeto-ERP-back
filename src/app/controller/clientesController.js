@@ -8,7 +8,7 @@ export class ClienteController {
   async mostrar(req, res, next) {
     try {
       const clientes = await mostrar();
-      res.json(clientes);
+      return res.json(clientes);
     } catch (error) {
       console.log(error);
       
@@ -20,23 +20,32 @@ export class ClienteController {
   async criar(req, res, next) {
     try {
 
-      const { nome, cpf, email, senha, telefone, situacao } = req.body;
-      const { cadastrarCliente, message } = await criar(
-        nome,
+      const { name, rg, date_birth, type, cpf, email,situation,telefone, celular,cep,logradouro,numero,complemento,bairro,cidade} = req.body;
+      const { cadastrar_cliente, message } = await criar(
+        name,
+        rg,
+        date_birth,
+        type,
         cpf,
         email,
-        senha,
+        situation,
         telefone,
-        situacao
+        celular,
+        cep,
+        logradouro,
+        numero,
+        complemento,
+        bairro,
+        cidade
       );
 
-      res
+      return res
         .status(201)
         .json(
-          "cadastro realizado com sucesso bem-vindo, " + cadastrarCliente.nome
+          message 
         );
     } catch (error) {
-      console.log(error.code);
+      console.log(error);
       
       if(error.code === 'P2002'){
         return res.status(409).json({message: 'Usuário já cadastrado no sistema!'})
@@ -55,7 +64,7 @@ export class ClienteController {
       console.log(cpf);
       
       const clienteDeletado = await deletar(cpf);
-      res.status(200).json(clienteDeletado.message);
+      return res.status(200).json(clienteDeletado.message);
 
     } catch (error) {
 
@@ -64,7 +73,7 @@ export class ClienteController {
       }
 
       res.status(500).json({message: 'Erro interno de servidor!'})
-      // next(error);
+      
     }
   }
 
@@ -73,16 +82,14 @@ export class ClienteController {
       const cpf = req.params.cpf;
     
       const cliente = await buscarUnico(cpf);
-      res.status(201).json(cliente);
+      return res.status(201).json(cliente);
     } catch (error) {
       if(error.message  === 'Cliente não encontrado!') {
         return res.status(404).json({message: error.message})
       }
 
       res.status(500).json({message: 'Erro interno no servidor!'})
-      // console.log(error);
-      
-      // next(error);
+
     }
   }
 
@@ -92,16 +99,17 @@ export class ClienteController {
       // o erro era de typo, e o erro de undefined é que estava caindo no catch do repository mais n estav lançando ele pro controller
       let id1 =Number(id) 
       console.log(typeof(id1));
+    
       
-      // console.log(id);
       
-      const {nome,cpf,email,senha,situacao,telefone} = req.body;
-      // console.log('oi');
+     
+      
+      const {name, rg, date_birth, type, cpf, email,situation,telefone, celular,cep,logradouro,numero,complemento,bairro,cidade} = req.body;
       
 
-      const atualizar = await update(id1,nome,cpf,email,senha,situacao,telefone);
-      // console.log(res);
-      res.status(200).json(atualizar.message)
+      const atualizar = await update(id1,name, rg, date_birth, type, cpf, email,situation,telefone, celular,cep,logradouro,numero,complemento,bairro,cidade);
+      
+      return res.status(200).json(atualizar.message)
      } catch (error) {
       if(error.code === 'P2025')
           return res.status(404).json({message: 'Usuário não encontrado!'})
