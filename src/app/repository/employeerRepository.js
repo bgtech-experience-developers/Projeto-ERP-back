@@ -4,7 +4,11 @@ import { instanciaPrisma } from "../database/conexao.js";
 export class employeerRepository{
     async showAllEmployeer(){
         try{
-            return await instanciaPrisma.employee.findMany()
+            return await instanciaPrisma.employee.findMany({
+                orderBy:{
+                    id: 'desc'
+                }
+            })
         }catch(error){
             throw new Error(error)
         }

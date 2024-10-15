@@ -34,20 +34,17 @@ export class ClientesRepository {
   //   }
   // }
 
-  // async mostrar() {
-  //   try {
-  //     return await instanciaPrisma.clientes.findMany({
-  //       select: {
-  //         nome: true,
-  //         cpf: true,
-  //         email: true,
-  //         telefone: true,
-  //       },
-  //     });
-  //   } catch (error) {
-  //     throw error
-  //   }
-  // }
+  async mostrar() {
+    try {
+      return await instanciaPrisma.client.findMany({
+        orderBy:{
+          id: 'desc'
+        }
+      });
+    } catch (error) {
+      throw error
+    }
+  }
 
   async criar(name, rg, date_birth, type, cpf, email,situation,telefone, celular,cep,logradouro,numero,complemento,bairro,cidade) {
     try {
