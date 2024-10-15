@@ -1,8 +1,6 @@
-const date = new Date();
+let data = '2005-02-19'
+const date = new Date(`${data}T00:00:00Z`);
 console.log(date);
 
-// Zera as horas, minutos, segundos e milissegundos
-let result =date.setHours(0, 0, 0, 0);
-console.log(result);
 
 
