@@ -3,42 +3,106 @@ generator client {
 }
 
 datasource db {
-  provider = "postgres"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
-model Clientes {
-  id Int @id @default(autoincrement())
-  nome String
-  cpf String @unique
-  email String
-  senha String
-  situacao Boolean @default(false)
-  enderecos Enderecos[]
-  telefone String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @default(now())
+model Employee {
+  id        Int       @id @default(autoincrement())
+  name      String
+  email     String 
+  cpf       String    @unique
+  employee_address    Employee_address[]
+  phone  String?
+  cell_phone   String?
+  @@map("employee")
 }
-model Enderecos{
-  id Int @id @default(autoincrement())
-  cep String
-  logradouro String
-  numero Int
-  complemento String
-  bairro String
-  cidade String
-  UserId Int
-  user Clientes @relation(fields: [UserId],references: [id])
-  createdAt DateTime @default(now())
-  updatedAt DateTime @default(now())
-  @@map("enderecos")
+
+ model Client{
+  id          Int @id @default(autoincrement())
+  name        String
+  rg          String
+  date_birth  DateTime
+  type        String
+  cpf         String @unique
+  email       String
+  situation   Boolean @default(false)
+  client_address Client_address[]
+  phone    String?
+  cell_phone     String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @default(now())
+  @@map("client")
 }
-model Fornecedores {
-  id Int @id @default(autoincrement())
-  nome String
-  email String
-  telefone String
-  celular String
-  situacao Boolean @default(false)
-  tipo Boolean @default(false)
+
+ model Supplier {
+  id                Int @id @default(autoincrement())
+  name              String
+  rg                String
+  date_of_birthday  DateTime
+  type              String
+  cpf               String @unique
+  email             String
+  situation         Boolean @default(false)
+  phone             String?
+  supplier_address Supllier_address[]
+  cell_phone        String?
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @default(now())
+  @@map("supplier")
 }
+
+model Supllier_address{
+  id        Int @id @default(autoincrement())
+  supllier  Int
+  address   Int
+  suppler_relation Supplier @relation(fields: [supllier],references: [id])
+  address_relation Address @relation(fields: [address],references: [id])
+  @@map("supplier_address")
+}
+
+model Client_address {
+  id          Int @id @default(autoincrement())
+  client_id   Int
+  address_id  Int
+  address Address @relation(fields: [address_id],references: [id])
+  client Client @relation(fields: [client_id],references: [id])
+  @@map("client_address")
+}
+
+model Employee_address{
+  id            Int @id @default(autoincrement())
+  employee_id   Int
+  address_id    Int
+  employee_relation Employee @relation(fields: [employee_id],references: [id])
+  adress_relation Address @relation(fields: [address_id],references: [id])
+  @@map("employee_address")  
+}
+
+model Address{
+  id            Int @id @default(autoincrement())
+  cep           String 
+  street        String
+  number        Int
+  complement    String
+  neighborhood  String
+  city          String
+  UserId        Int
+  client_address Client_address[]
+  employee_address Employee_address[]
+  supllier_address Supllier_address []
+  // user Clientes @relation(fields: [UserId],references: [id])
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @default(now())
+  @@map("address")
+}
+
+// model Fornecedores {
+//   id          Int @id @default(autoincrement())
+//   nome        String
+//   email       String
+//   telefone    String
+//   celular     String
+//   situacao    Boolean @default(false)
+//   tipo        Boolean @default(false)
+// }
