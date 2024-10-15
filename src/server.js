@@ -20,7 +20,7 @@ app.use("/api-docs", swaggerui.serve, swaggerui.setup(swaggerjson));
 
 app.use("/clientes", rotaCliente)
 app.use('/funcionarios', rotaFuncionarios)
-app.use('/fornecedores', employeerRoute)
+app.use('/empregador', employeerRoute)
 const PORTA = process.env.PORTA;
 
 
