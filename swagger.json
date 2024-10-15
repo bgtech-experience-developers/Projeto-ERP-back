@@ -1,76 +1,245 @@
 {
   "openapi": "3.0.0",
-
+  "info": {
+    "title": "PROJETO ERP",
+    "version": "1.0.0",
+    "description": "API FOCADA NO GERECIAMENTO EMPRESARIAL",
+    "contact": {
+      "email": "lucassilvadpaula@gmail.com",
+      "name": "bgtech",
+      "url": "https://bgtech.com.br"
+    }
+  },
   "servers": [
     { "url": "http://localhost:8000", "description": "servidor do projeto erp" }
   ],
-  "info": {
-    "version": "1.0.0",
-    "title": "PROJETO ERP",
-    "contact": {
-      "email": "lucassilvadpaula@gmail.com",
-      "name": "suporte",
-      "url": "lucas"
-    },
-    "description": "Api focada na gestão empresarial"
-  },
-  "paths": {
-    "/clientes/cadastrados": {
-      "get": {
-        "tags": ["clientes"],
-        "summary": "buscar todos os clientes",
-        "description": "faz uma consulta no banco de dados com o intuito de trazer todos os clientes registrados",
-        "responses": {
-          "201": {
-            "description": "todos os clientes vem dentro de um array , cada cliente é representado por um objeto",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "items": {
-                    "type": "object",
-                    "description": "um array contendo todos os registros dos usuários na qual cada usuário é representante de um objeto",
-                    "example": {
-                      "cpf": "222.555.222-23",
-                      "nome": "fulano",
-                      "telefone": "9832-3456",
-                      "email": "fulano@gmail.com"
-                    }
-                  }
-                }
+
+  "components": {
+    "schemas": {
+      "CorpoCLient": {
+        "type": "array",
+        "items": {
+          "properties": {
+            "name": {
+              "type": "string",
+              "default": "beltrano"
+            },
+            "id": {
+              "type": "number",
+              "default": 1
+            },
+            "rg": { "type": "string", "default": "120340250" },
+            "date_birth": {
+              "type": "string",
+              "default": "2005-01-01T02:00:00.000Z"
+            },
+            "type": {
+              "type": "string",
+              "default": null
+            },
+            "cpf": { "type": "string", "default": "619.612.22-22" },
+            "situation": {
+              "type": "boolean",
+              "default": true
+            },
+            "email": {
+              "type": "string",
+              "default": "lucassssilvadpaula@gmail.com"
+            },
+            "telefone": {
+              "type": "string",
+              "default": "85 98796-2019"
+            },
+            "celular": {
+              "type": "string",
+              "default": "85 98796-2019"
+            },
+            "createdAt": {
+              "type": "string",
+              "default": "2024-10-15T22:22:27.528Z"
+            },
+            "updatedAt": {
+              "type": "string",
+              "default": "2024-10-15T22:22:27.528Z"
+            }
+          }
+        }
+      },
+      "ClientUnic": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "integer", "description": "1", "default": 1 },
+          "cpf": {
+            "type": "string",
+            "description": "521.552.123-33",
+            "default": "521.552.123-33"
+          },
+          "rg": {
+            "type": "string",
+            "description": "1234023000",
+            "default": "1234023000"
+          },
+          "nome": {
+            "type": "string",
+            "description": "beltrano",
+            "default": "beltrano"
+          },
+          "email": {
+            "type": "string",
+            "description": "beltrano@gmail.com",
+            "default": "beltrano@gmail.com"
+          },
+          "date_birth": {
+            "type": "string",
+            "description": "10/10/2005",
+            "default": "10/10/2005"
+          },
+          "telefone": {
+            "type": "string",
+            "description": "85 9881-1234",
+            "default": "85 9881-1234"
+          },
+          "celular": {
+            "type": "string",
+            "description": "85 9881-1234",
+            "default": "85 9881-1234"
+          },
+          "address": {
+            "type": "object",
+            "properties": {
+              "id": { "type": "number", "description": "1", "default": 1 },
+              "cidade": {
+                "type": "string",
+                "description": "fortaleza",
+                "default": "fortaleza"
+              },
+              "numero": {
+                "type": "number",
+                "description": "148",
+                "default": 148
+              },
+              "complemento": {
+                "type": "string",
+                "description": "casa",
+                "default": "casa"
+              },
+              "cep": {
+                "type": "string",
+                "description": "50298-345",
+                "default": "50298-345"
+              },
+              "bairro": {
+                "type": "string",
+                "description": "montese",
+                "default": "montese"
+              },
+              "logadouro": {
+                "type": "string",
+                "description": "rua dos patos",
+                "default": "rua dos patos"
               }
             }
-          },
-          "500": {
-            "description": "erro interno do servidor"
           }
         }
       }
-    },
-    "/clientes/pegar-client/{cpf}": {
-      "get": {
-        "summary": "pegar um cliente especifico",
-        "description": "o objetivo dessa rota é trazer um cliente especifico cadastrado através do seu cpf",
+    }
+  },
+  "paths": {
+    "/clientes/cadastro": {
+      "post": {
+        "description": "objetivo dessa rota é criar um cliente no banco de dados de acordo suas informações pessoais",
+
+        "summary": "criar um cliente",
         "tags": ["clientes"],
 
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "examples": {
+                "chaves unicas": {
+                  "description": "cpf é uma chave única, ou seja, não terá dois registros da mesma chave registrada no banco de dados, campo situação é recomendável que seja valores booleanos, somente true ou somente false"
+                }
+              },
+              "schema": {
+                "title": "adição de um cliente",
+
+                "properties": {
+                  "situacao": {
+                    "type": "boolean",
+                    "description": "aceita somente true or false"
+                  },
+                  "numero": {
+                    "type": "number",
+                    "description": "aceita um numero que seja válido até 2bilhões"
+                  },
+                  "resto dos campos": {
+                    "type": "string",
+                    "description": "o resto dos campo é tudo string"
+                  }
+                },
+                "type": "object",
+
+                "description": "esses dados são fundamentais para que a inserção de um cliente seja realizada",
+                "example": {
+                  "cpf": "619.612.223-22",
+                  "situacao": false,
+                  "name": "fulano",
+                  "rg": "120340250",
+                  "date_birth": "01/01/2005",
+                  "email": "lucassssilvadpaula@gmail.com",
+                  "telefone": "85 98796-2019",
+                  "celular": "85 98796-2019",
+                  "cep": "60831-485",
+                  "logradouro": "rua dos patos",
+                  "numero": 185,
+                  "complemento": "casa",
+                  "bairro": "montese",
+                  "cidade": "ceará"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": { "description": "Cadastro realizado com sucesso!" },
+          "409": { "description": "Usuário já cadastrado no sistema!" },
+          "500": { "description": "erro interno do servidor" }
+        }
+      }
+    },
+    "/clientes/deletar-cliente/{cpf}": {
+      "delete": {
+        "tags": ["clientes"],
+        "summary": "deletar um cliente",
         "parameters": [
           {
-            "description": "a ideia é capturar um usuário que esteje registrado e busque-o a partir do seu identificador único, que estipulamos  ser seu cpf, sendo assim possível retornar suas informações",
             "in": "path",
-            "required": true,
+            "name": "cpf",
 
-            "schema": {
-              "type": "string",
-              "maxLength": 11,
-              "minLength": 11,
-              "description": "o campo deve ter 11 caracters",
-              "example": "619.661.222-22"
-            },
-            "name": "cpf"
+            "description": "use o cpf do cliente para deleta-lo",
+
+            "required": true,
+            "schema": { "example": "123.033.234-33" }
           }
         ],
+        "description": "rota dedicada para a remoção de um cliente no banco de dados",
         "responses": {
-          "201": {
-            "description": "usuário encontrado com sucesso",
+          "201": { "description": "cliente deletado com sucesso" },
+          "404": { "description": "cliente não encontrado" },
+          "500": { "description": "erro interno do servidor" }
+        }
+      }
+    },
+    "/clientes/cadastrados": {
+      "get": {
+        "tags": ["clientes"],
+        "summary": "buscar todos os clientes registrados",
+        "description": "objetivo de mostrar todos os clientes registrados",
+
+        "responses": {
+          "200": {
+            "description": "busca realizada com sucesso",
             "content": {
               "application/json": {
                 "schema": {
@@ -79,100 +248,104 @@
               }
             }
           },
-          "404": {
-            "description": "usário não encotrado"
-          },
           "500": { "description": "erro interno do servidor" }
         }
       }
     },
-    "/clientes/cadastro": {
-      "post": {
-        "summary": "adicionar um cliente",
+    "/clientes/buscar-cliente/{cpf}": {
+      "get": {
+        "parameters": [
+          {
+            "required": true,
+            "in": "query",
+            "name": "include",
+            "description": "caso queira trazer alguns dados relacionados a este cliente, coloque true",
+            "schema": { "enum": ["true", "false"] }
+          },
+          {
+            "in": "path",
+            "name": "cpf",
+            "example": "12345678910",
+            "required": true,
+            "description": "coloque o cpf do cliente que você deseja buscar",
+
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "summary": "pegar um cliente especifico",
+        "description": "rota dedicada para buscar um cliente e caso queira fazer uma consulta que traga o cruzamento de dados realacionado a esse cliente em especifico também é possível",
         "tags": ["clientes"],
-        "description": "rota dedicada a criação de um usuário qualquer dentro do banco de dados ",
+        "responses": {
+          "201": {
+            "description": "busca realizada com successo do cliente com seus dados relacionados",
+
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ClientUnic"
+                }
+              }
+            }
+          },
+          "404": { "description": "cliente não encontrado!" },
+          "500": { "description": "erro interno de servidor" }
+        }
+      }
+    },
+    "/clientes/atualizarCliente/{id}": {
+      "put": {
+        "tags": ["clientes"],
+        "summary": "atualizar um cliente",
+        "parameters": [
+          {
+            "required": true,
+            "in": "path",
+            "description": "o id do usuário é fundamental para que ele seja atualizado",
+            "name": "id",
+            "schema": { "type": "number", "example": 1 }
+          }
+        ],
+        "description": "rota dedicada para atualizar um cliente em especifico",
         "requestBody": {
           "required": true,
-          "description": "essa rota precisa de algumas informações adicionais para ser concluída com sucesso, assim sendo crucial para a criação do usuário, na parte do cpf ele deve ser utilizado sem a adição de pontos e traços para que seja possível ser válido o cpf e essencialmente tenha 11 digitos",
           "content": {
             "application/json": {
               "schema": {
-                "description": "cpf único, todos os dados devem ser passado em formato de texto menos o campo de situação que deve ser um valor booleano",
-                "example": {
-                  "nome": "fulano",
-                  "cpf": "610.619.539-20",
-                  "telefone": "98796-3845",
-                  "email": "fulano@gmail.com",
-                  "senha": "sua senha super secreta",
-                  "situacao": "situação do cliente, true se ele tiver ativo ou false se tiver inativo"
-                },
-
-                "type": "object"
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "default": "fulano"
+                  },
+                  "rg": { "type": "string", "default": "103020302" },
+                  "date_birth": { "type": "string", "default": "10/10/2005" },
+                  "email": {
+                    "type": "string",
+                    "default": "lucasssilvadpaula@gmail.com"
+                  },
+                  "situation": { "type": "boolean", "default": true },
+                  "telefone": { "type": "string", "default": "2200-2020" },
+                  "celular": { "type": "string", "default": "2200-2020" },
+                  "cep": { "type": "string", "default": "50212-22" },
+                  "logradouro": {
+                    "type": "string",
+                    "default": "rua dos patos"
+                  },
+                  "numero": { "type": "number", "default": 124 },
+                  "complemento": { "type": "string", "default": "casa" },
+                  "bairro": { "type": "string", "default": "montese" },
+                  "cidade": { "type": "string", "default": "fortaleza" }
+                }
               }
             }
           }
         },
-
         "responses": {
-          "201": {
-            "description": "cadastro realizado com sucesso bem-vindo,(fulano)"
-          },
-          "400": {
-            "description": "usuário ja cadastrado no sistema"
-          },
-          "500": {
-            "description": "erro interno do servidor"
-          }
-        }
-      }
-    },
-    "/clientes/deletar-cliente/{cpf}": {
-      "delete": {
-        "summary": "deletar um cliente",
-        "description": "o objetivo dessa rota é deletar um registro de um cliente cadastrado dentro do banco de dados porém essa ação so poderá ser feita após uma autenticação, pois não é todo mundo que tem esse direito de deletar um cliente sem uma autorização prévia, caso você esteje visualizando na interface do swagger uma parte chamada (autorize), é nesse lugar aonde a sua chave de api deve ser implementada, chave de api é a sua chave de autorização para essa rota",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "cpf",
-            "required": true,
-            "description": "passe o cpf do cliente que você quer que seja apagado dos registros, passe o cpf sem implementação de caracters especiais, e que contenha 11 digitos",
-            "schema": {
-              "type": "string",
-              "maxLength": 11,
-              "minLength": 11,
-              "description": "o campo deve ter 11 caracters",
-              "example": "61965432123"
-            }
-          }
-        ],
-        "security": [{ "ApiKeyadmin": [] }],
-        "tags": ["clientes"],
-        "responses": {
-          "201": { "description": "usuário deletado com sucesso" },
-          "400": { "description": "usuário não encontrado" },
-          "403": { "description": "acesso negado, não tem autorização" }
-        }
-      }
-    }
-  },
-  "components": {
-    "securitySchemes": {
-      "ApiKeyadmin": {
-        "in": "header",
-        "name": "admin",
-
-        "description": "rota protegida, passe a chave para poder acessa-lá",
-        "type": "apiKey"
-      }
-    },
-    "schemas": {
-      "CorpoCLient": {
-        "type": "object",
-        "properties": {
-          "name": { "type": "string", "description": "fulano" },
-          "cpf": { "type": "string", "description": "123.456.789-10" },
-          "email": { "type": "string", "description": "fulano@gmail.com" },
-          "telefone": { "type": "string", "description": "98796-3581" }
+          "201": { "description": "cliente atualizado com sucesso" },
+          "404": { "description": "cliente não encontrado" },
+          "500": { "description": "erro interno de servidor" }
         }
       }
     }
