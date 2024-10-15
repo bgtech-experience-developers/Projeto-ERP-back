@@ -3,6 +3,7 @@ generator client {
 }
 
 datasource db {
+
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
@@ -18,15 +19,18 @@ model Employee {
   @@map("employee")
 }
 
+
 model Client{
-  id          Int @id @default(autoincrement())
-  name        String
-  rg          String
-  date_birth  DateTime
-  type        String
-  cpf         String @unique
-  email       String
-  situation   Boolean @default(false) 
+ 
+
+  id Int @id @default(autoincrement())
+  name String
+  rg String
+  date_birth DateTime
+  type String?
+  cpf String @unique
+  email String
+  situation Boolean @default(false) 
   // enderecos Enderecos[]
   cliente_address Client_address[] 
   telefone String?
@@ -88,6 +92,7 @@ model Address{
   complemento String
   bairro String
   cidade String
+
   // UserId Int
   cliente_enderecos Client_address[]
   employee_address Employee_address[]
