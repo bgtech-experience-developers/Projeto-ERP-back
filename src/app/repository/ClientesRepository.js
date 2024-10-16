@@ -50,12 +50,12 @@ export class ClientesRepository {
   async mostrar() {
     try {
       return await instanciaPrisma.client.findMany({
-        orderBy:{
-          id: 'desc'
-        }
+        orderBy: {
+          id: "desc",
+        },
       });
     } catch (error) {
-      throw error
+      throw error;
     }
   }
 
@@ -109,7 +109,6 @@ export class ClientesRepository {
 
       console.log(client_address);
 
-
       // const Address =
 
       const message = { message: "Cadastro realizado com sucesso!" };
@@ -118,13 +117,10 @@ export class ClientesRepository {
       // console.log(error.meta.target);
       // console.log(error.code) 'P2002' <-- nesse caso é cpf já existente e os campos inválidos?
       console.log(error);
-);
-
 
       throw error;
       // ???Em qual parte ficará a questão da validação dos campos, ou seja se os campos foram realmentes esperados!
       throw new Error("CPF já cadastrado");
-
     }
   }
 
@@ -227,7 +223,6 @@ export class ClientesRepository {
     }
   }
 
-
   async update(
     id,
     name,
@@ -245,7 +240,6 @@ export class ClientesRepository {
     bairro,
     cidade
   ) {
-
     try {
       const data_aniversario = new Date(`${date_birth}T00:00:00Z`);
 
@@ -270,11 +264,9 @@ export class ClientesRepository {
           client_id: client.id,
         },
 
-
         select: {
           address_id: true,
         },
-
       });
 
       const address = await instanciaPrisma.address.update({
