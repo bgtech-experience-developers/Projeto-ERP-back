@@ -1,11 +1,11 @@
 -- CreateTable
 CREATE TABLE `employee` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
-    `nome` VARCHAR(191) NOT NULL,
+    `name` VARCHAR(191) NOT NULL,
     `email` VARCHAR(191) NOT NULL,
     `cpf` VARCHAR(191) NOT NULL,
-    `telefone` VARCHAR(191) NULL,
-    `celular` VARCHAR(191) NULL,
+    `phone` VARCHAR(191) NULL,
+    `cell_phone` VARCHAR(191) NULL,
 
     UNIQUE INDEX `employee_cpf_key`(`cpf`),
     PRIMARY KEY (`id`)
@@ -17,7 +17,7 @@ CREATE TABLE `client` (
     `name` VARCHAR(191) NOT NULL,
     `rg` VARCHAR(191) NOT NULL,
     `date_birth` DATETIME(3) NOT NULL,
-    `type` VARCHAR(191) NOT NULL,
+    `type` VARCHAR(191) NULL,
     `cpf` VARCHAR(191) NOT NULL,
     `email` VARCHAR(191) NOT NULL,
     `situation` BOOLEAN NOT NULL DEFAULT false,
@@ -33,15 +33,15 @@ CREATE TABLE `client` (
 -- CreateTable
 CREATE TABLE `supplier` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
-    `nome` VARCHAR(191) NOT NULL,
+    `name` VARCHAR(191) NOT NULL,
     `rg` VARCHAR(191) NOT NULL,
-    `data_nascimento` DATETIME(3) NOT NULL,
-    `tipo` VARCHAR(191) NOT NULL,
+    `date_of_birthday` DATETIME(3) NOT NULL,
+    `type` VARCHAR(191) NOT NULL,
     `cpf` VARCHAR(191) NOT NULL,
     `email` VARCHAR(191) NOT NULL,
-    `situacao` BOOLEAN NOT NULL DEFAULT false,
-    `telefone` VARCHAR(191) NULL,
-    `celular` VARCHAR(191) NULL,
+    `situation` BOOLEAN NOT NULL DEFAULT false,
+    `phone` VARCHAR(191) NULL,
+    `cell_phone` VARCHAR(191) NULL,
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updatedAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
 
@@ -104,7 +104,7 @@ ALTER TABLE `client_address` ADD CONSTRAINT `client_address_address_id_fkey` FOR
 ALTER TABLE `client_address` ADD CONSTRAINT `client_address_client_id_fkey` FOREIGN KEY (`client_id`) REFERENCES `client`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `employee_address` ADD CONSTRAINT `employee_address_employee_id_fkey` FOREIGN KEY (`employee_id`) REFERENCES `employee`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE `employee_address` ADD CONSTRAINT `employee_address_employee_id_fkey` FOREIGN KEY (`employee_id`) REFERENCES `employee`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `employee_address` ADD CONSTRAINT `employee_address_address_id_fkey` FOREIGN KEY (`address_id`) REFERENCES `address`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE `employee_address` ADD CONSTRAINT `employee_address_address_id_fkey` FOREIGN KEY (`address_id`) REFERENCES `address`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
