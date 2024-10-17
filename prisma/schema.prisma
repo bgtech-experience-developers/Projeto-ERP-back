@@ -61,10 +61,10 @@ model Employee {
 }
 model Supllier_address{
   id Int @id @default(autoincrement())
-  supllier Int
-  address Int
-  suppler_relation Supplier @relation(fields: [supllier],references: [id])
-  address_relation Address @relation(fields: [address],references: [id])
+  supllier_id Int
+  address_id Int
+  suppler_relation Supplier @relation(fields: [supllier_id],references: [id], onDelete: Cascade)
+  address_relation Address @relation(fields: [address_id],references: [id], onDelete: Cascade)
   @@map("supplier_address")
 }
 model Client_address {
