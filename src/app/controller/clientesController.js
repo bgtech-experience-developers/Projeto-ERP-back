@@ -13,9 +13,7 @@ export class ClienteController {
     } catch (error) {
       console.log(error);
 
-
       res.status(500).json({ message: "Erro interno no servidor!" });
-
     }
   }
 
@@ -38,11 +36,11 @@ export class ClienteController {
         bairro,
         cidade,
       } = req.body;
-      const aniversario = date_birth
-        .replace(regex, "-")
-        .split("-")
-        .reverse()
-        .join("-");
+      // const aniversario = date_birth
+      //   .replace(regex, "-")
+      //   .split("-")
+      //   .reverse()
+      //   .join("-");
 
       const { cadastrar_cliente, message } = await criar(
         name,
@@ -66,7 +64,6 @@ export class ClienteController {
     } catch (error) {
       console.log(error);
 
-
       if (error.code === "P2002") {
         return res
           .status(409)
@@ -74,7 +71,6 @@ export class ClienteController {
       }
 
       res.status(500).json({ message: "Erro interno de servidor!" });
-
     }
   }
 
@@ -112,8 +108,6 @@ export class ClienteController {
 
   async update(req, res, next) {
     try {
-
-   
       const id = Number(req.params.id);
 
       console.log(id);
@@ -162,6 +156,5 @@ export class ClienteController {
         return res.status(404).json({ message: "Usuário não encontrado!" });
     }
     res.status(500).json({ message: "Erro interno de servidor!" });
-
   }
 }
