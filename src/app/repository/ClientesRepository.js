@@ -50,9 +50,18 @@ export class ClientesRepository {
   async mostrar() {
     try {
       return await instanciaPrisma.client.findMany({
-        orderBy: {
-          id: "desc",
+        orderBy:{
+          id: 'desc'
         },
+        include:{
+          cliente_address:{
+              include:{
+                  client_id: false,
+                  address_id: false,
+                  adress_relation: true
+              }
+          }
+      }
       });
     } catch (error) {
       throw error;

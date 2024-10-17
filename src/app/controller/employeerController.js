@@ -23,9 +23,7 @@ export class employeeController {
   async createEmployeer(req, res) {
     try {
       const employeerData = req.body;
-      const { message, adresses, employeer } = await createEmployeer(
-        employeerData
-      );
+      const { message, adresses, employeer } = await createEmployeer( employeerData );
 
       res.status(200).json({ employeer, message });
     } catch (error) {
