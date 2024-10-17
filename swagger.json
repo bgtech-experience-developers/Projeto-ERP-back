@@ -289,7 +289,7 @@
                   "situacao": false,
                   "name": "fulano",
                   "rg": "120340250",
-                  "date_birth": "01/01/2005",
+                  "date_birth": "2006-10-10",
                   "email": "lucassssilvadpaula@gmail.com",
                   "telefone": "85 98796-2019",
                   "celular": "85 98796-2019",
@@ -423,7 +423,7 @@
                     "default": "fulano"
                   },
                   "rg": { "type": "string", "default": "103020302" },
-                  "date_birth": { "type": "string", "default": "10/10/2005" },
+                  "date_birth": { "type": "string", "default": "2006-10-10" },
                   "email": {
                     "type": "string",
                     "default": "lucasssilvadpaula@gmail.com"

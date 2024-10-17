@@ -36,11 +36,6 @@ export class ClienteController {
         bairro,
         cidade,
       } = req.body;
-      // const aniversario = date_birth
-      //   .replace(regex, "-")
-      //   .split("-")
-      //   .reverse()
-      //   .join("-");
 
       const { cadastrar_cliente, message } = await criar(
         name,
@@ -127,17 +122,12 @@ export class ClienteController {
         bairro,
         cidade,
       } = req.body;
-      const aniversario = date_birth
-        .replace(regex, "-")
-        .split("-")
-        .reverse()
-        .join("-");
 
       const atualizar = await update(
         id,
         name,
         rg,
-        aniversario,
+        date_birth,
         email,
         situation,
         telefone,
