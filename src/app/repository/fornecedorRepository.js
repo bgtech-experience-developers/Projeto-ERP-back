@@ -2,22 +2,24 @@ import { instanciaPrisma } from "../database/conexao.js";
 
 class FornecedorRepository {
 
-    async criar(nome, rg, data_nascimento, tipo, cpf, email, situacao, telefone, celular, cep, logradouro, numero, complemento, bairro, cidade) {
+    async criar(nome, rg,  data_nascimento, tipo, cpf, email, situacao, telefone, celular, cep, logradouro, numero, complemento, bairro, cidade) {
      try {
-        const data_aniversario = new Date(`${data_nascimento} T00:00:00Z`)
+        const date_birth = new Date(`${data_nascimento}T00:00:00Z`)
+        console.log(date_birth);
+        
 
-        const cadastrar_fornecedor = await instanciaPrisma.supplier.create({data: {nome, rg, data_nascimento, type, cpf, email, situacao, telefone, celular}})
-        const fornecedor_id = cadastrar_fornecedor.id
-
-        const address = await instanciaPrisma.create({data: {cep, logradouro, numero, complemento, bairro, cidade}})
+        const cadastrar_fornecedor = await instanciaPrisma.supplier.create({data: {nome, rg, data_nascimento: date_birth, tipo, cpf, email, situacao, telefone, celular}})
+        const supplier_id = cadastrar_fornecedor.id
+        
+        const address = await instanciaPrisma.address.create({data: {cep, logradouro, numero, complemento, bairro, cidade}})
         const address_id = address.id
 
-        console.log(fornecedor_id);
+        console.log(supplier_id);
         console.log(address_id);
         
-        const fornecedor_adress = await instanciaPrisma.supllier_address.create({data: {fornecedor_id, address_id}});
+        const supplier_adress = await instanciaPrisma.supllier_address.create({data: {supplier_id, address_id}});
 
-        console.log(fornecedor_adress);
+        console.log(supplier_adress);
         
         const message = {message: "Fornecedor cadastrado com sucesso!"};
         return {cadastrar_fornecedor, message}
