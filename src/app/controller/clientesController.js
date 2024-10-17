@@ -45,7 +45,7 @@ export class ClienteController {
       const { cadastrar_cliente, message } = await criar(
         name,
         rg,
-        aniversario,
+        date_birth,
 
         cpf,
         email,
