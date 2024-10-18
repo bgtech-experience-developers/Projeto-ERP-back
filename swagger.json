@@ -16,7 +16,7 @@
 
   "components": {
     "schemas": {
-      "CorpoCLient": {
+      "CorpoClient": {
         "type": "array",
         "items": {
           "properties": {
@@ -62,112 +62,6 @@
               "type": "string",
               "default": "2024-10-15T22:22:27.528Z"
             }
-          }
-        }
-      },
-      "DeletFunc": {
-        "type": "object",
-
-        "properties": {
-          "clearData": {
-            "properties": {
-              "id": { "type": "integer", "description": "1", "default": 1 },
-              "cpf": {
-                "type": "string",
-                "description": "521.552.123-33",
-                "default": "521.552.123-33"
-              },
-              "name": {
-                "type": "string",
-                "description": "beltrano",
-                "default": "beltrano"
-              },
-              "cell_phone": {
-                "type": "string",
-                "description": "85 9881-1234",
-                "default": "85 9881-1234"
-              },
-              "phone": {
-                "type": "string",
-                "description": "85 9881-1234",
-                "default": "85 9881-1234"
-              }
-            }
-          },
-          "messagem": {
-            "type": "string",
-            "description": "usuário deletado com sucesso",
-            "default": "contratante excluido"
-          }
-        }
-      },
-      "FuncCorp": {
-        "type": "object",
-        "properties": {
-          "id": { "type": "integer", "description": "1", "default": 1 },
-          "cpf": {
-            "type": "string",
-            "description": "521.552.123-33",
-            "default": "521.552.123-33"
-          },
-          "nome": {
-            "type": "string",
-            "description": "beltrano",
-            "default": "beltrano"
-          },
-          "email": {
-            "type": "string",
-            "description": "beltrano@gmail.com",
-            "default": "beltrano@gmail.com"
-          },
-          "telefone": {
-            "type": "string",
-            "description": "85 9881-1234",
-            "default": "85 9881-1234"
-          },
-          "cell_phone": {
-            "type": "string",
-            "description": "85 9881-1234",
-            "default": "85 9881-1234"
-          },
-          "phone": {
-            "type": "string",
-            "description": "85 9881-1234",
-            "default": "85 9881-1234"
-          }
-        }
-      },
-      "AttFunc": {
-        "type": "object",
-        "properties": {
-          "cep": {
-            "type": "string",
-            "default": "5192-12"
-          },
-          "complemento": { "type": "string", "default": "casa" },
-          "logradouro": { "type": "string", "default": "rua dos patos" },
-          "bairro": { "type": "string", "default": "montese" },
-          "cidade": { "type": "string", "default": "fortaleza" },
-          "numero": { "type": "number", "default": 143 },
-          "name": {
-            "type": "string",
-            "description": "beltrano",
-            "default": "beltrano"
-          },
-          "email": {
-            "type": "string",
-            "description": "beltrano@gmail.com",
-            "default": "beltrano@gmail.com"
-          },
-          "cell_phone": {
-            "type": "string",
-            "description": "85 9881-1234",
-            "default": "85 9881-1234"
-          },
-          "phone": {
-            "type": "string",
-            "description": "85 9881-1234",
-            "default": "85 9881-1234"
           }
         }
       },
@@ -248,7 +142,114 @@
             }
           }
         }
+      },
+      "DeletFunc": {
+        "type": "object",
+
+        "properties": {
+          "clearData": {
+            "properties": {
+              "id": { "type": "integer", "description": "1", "default": 1 },
+              "cpf": {
+                "type": "string",
+                "description": "521.552.123-33",
+                "default": "521.552.123-33"
+              },
+              "name": {
+                "type": "string",
+                "description": "beltrano",
+                "default": "beltrano"
+              },
+              "cell_phone": {
+                "type": "string",
+                "description": "85 9881-1234",
+                "default": "85 9881-1234"
+              },
+              "phone": {
+                "type": "string",
+                "description": "85 9881-1234",
+                "default": "85 9881-1234"
+              }
+            }
+          },
+          "messagem": {
+            "type": "string",
+            "description": "usuário deletado com sucesso",
+            "default": "contratante excluido"
+          }
+        }
+      },
+      "CorpFunc": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "integer", "description": "1", "default": 1 },
+          "cpf": {
+            "type": "string",
+            "description": "521.552.123-33",
+            "default": "521.552.123-33"
+          },
+          "nome": {
+            "type": "string",
+            "description": "beltrano",
+            "default": "beltrano"
+          },
+          "email": {
+            "type": "string",
+            "description": "beltrano@gmail.com",
+            "default": "beltrano@gmail.com"
+          },
+          "telefone": {
+            "type": "string",
+            "description": "85 9881-1234",
+            "default": "85 9881-1234"
+          },
+          "cell_phone": {
+            "type": "string",
+            "description": "85 9881-1234",
+            "default": "85 9881-1234"
+          },
+          "phone": {
+            "type": "string",
+            "description": "85 9881-1234",
+            "default": "85 9881-1234"
+          }
+        }
+      },
+      "AttFunc": {
+        "type": "object",
+        "properties": {
+          "cep": {
+            "type": "string",
+            "default": "5192-12"
+          },
+          "complemento": { "type": "string", "default": "casa" },
+          "logradouro": { "type": "string", "default": "rua dos patos" },
+          "bairro": { "type": "string", "default": "montese" },
+          "cidade": { "type": "string", "default": "fortaleza" },
+          "numero": { "type": "number", "default": 143 },
+          "name": {
+            "type": "string",
+            "description": "beltrano",
+            "default": "beltrano"
+          },
+          "email": {
+            "type": "string",
+            "description": "beltrano@gmail.com",
+            "default": "beltrano@gmail.com"
+          },
+          "cell_phone": {
+            "type": "string",
+            "description": "85 9881-1234",
+            "default": "85 9881-1234"
+          },
+          "phone": {
+            "type": "string",
+            "description": "85 9881-1234",
+            "default": "85 9881-1234"
+          }
+        }
       }
+      
     }
   },
   "paths": {
@@ -307,29 +308,6 @@
         "responses": {
           "201": { "description": "Cadastro realizado com sucesso!" },
           "409": { "description": "Usuário já cadastrado no sistema!" },
-          "500": { "description": "erro interno do servidor" }
-        }
-      }
-    },
-    "/clientes/deletar-cliente/{cpf}": {
-      "delete": {
-        "tags": ["clientes"],
-        "summary": "deletar um cliente",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "cpf",
-
-            "description": "use o cpf do cliente para deleta-lo",
-
-            "required": true,
-            "schema": { "example": "123.033.234-33" }
-          }
-        ],
-        "description": "rota dedicada para a remoção de um cliente no banco de dados",
-        "responses": {
-          "201": { "description": "cliente deletado com sucesso" },
-          "404": { "description": "cliente não encontrado" },
           "500": { "description": "erro interno do servidor" }
         }
       }
@@ -452,6 +430,29 @@
         }
       }
     },
+    "/clientes/deletar-cliente/{cpf}": {
+      "delete": {
+        "tags": ["clientes"],
+        "summary": "deletar um cliente",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "cpf",
+
+            "description": "use o cpf do cliente para deleta-lo",
+
+            "required": true,
+            "schema": { "example": "123.033.234-33" }
+          }
+        ],
+        "description": "rota dedicada para a remoção de um cliente no banco de dados",
+        "responses": {
+          "201": { "description": "cliente deletado com sucesso" },
+          "404": { "description": "cliente não encontrado" },
+          "500": { "description": "erro interno do servidor" }
+        }
+      }
+    },
     "/empregador/cadastrar-empregrador": {
       "post": {
         "description": "objetivo dessa rota é criar um funcionario no banco de dados de acordo suas informações pessoais",
@@ -546,38 +547,6 @@
         }
       }
     },
-    "/empregador/excluir-empregador/{cpf}": {
-      "delete": {
-        "tags": ["funcionário"],
-        "summary": "deletar um funcionario especifico",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "cpf",
-
-            "description": "use o cpf do funcionário para deleta-lo",
-
-            "required": true,
-            "schema": { "example": "123.033.234-33" }
-          }
-        ],
-        "description": "rota dedicada para a remoção de um funcionário no banco de dados",
-        "responses": {
-          "201": {
-            "description": "cliente deletado com sucesso",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/DeletFunc"
-                }
-              }
-            }
-          },
-          "404": { "description": "cliente não encontrado" },
-          "500": { "description": "erro interno do servidor" }
-        }
-      }
-    },
     "/empregador/{cpf}": {
       "get": {
         "parameters": [
@@ -656,6 +625,259 @@
           },
 
           "404": { "description": "funcionário não encontrado" },
+          "500": { "description": "erro interno do servidor" }
+        }
+      }
+    },
+    "/empregador/excluir-empregador/{cpf}": {
+      "delete": {
+        "tags": ["funcionário"],
+        "summary": "deletar um funcionario especifico",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "cpf",
+
+            "description": "use o cpf do funcionário para deleta-lo",
+
+            "required": true,
+            "schema": { "example": "123.033.234-33" }
+          }
+        ],
+        "description": "rota dedicada para a remoção de um funcionário no banco de dados",
+        "responses": {
+          "201": {
+            "description": "cliente deletado com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DeletFunc"
+                }
+              }
+            }
+          },
+          "404": { "description": "cliente não encontrado" },
+          "500": { "description": "erro interno do servidor" }
+        }
+      }
+    },
+    "/fornecedores/cadastro": {
+      "post": {
+        "description": "objetivo dessa rota é criar um fornecedor no banco de dados de acordo suas informações pessoais",
+
+        "summary": "Cadastra um fornecedor",
+        "tags": ["fornecedores"],
+
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "examples": {
+                "chaves unicas": {
+                  "description": "cpf é uma chave única, ou seja, não terá dois registros da mesma chave registrada no banco de dados, campo situação é recomendável que seja valores booleanos, somente true ou somente false"
+                }
+              },
+              "schema": {
+                "title": "adição de um fornecedor",
+
+                "properties": {
+                  "numero": {
+                    "type": "number",
+                    "description": "aceita um numero que seja válido até 2bilhões"
+                  },
+                  "resto dos campos": {
+                    "type": "string",
+                    "description": "o resto dos campo é tudo string"
+                  }
+                },
+                "type": "object",
+
+                "description": "esses dados são fundamentais para que a inserção de um fornecedor seja realizada",
+                "example": {
+                  "name": "fulano",
+                  "rg": "120340250",
+                  "date_birth": "01/01/2005",
+                  "tipo": "pf",
+                  "cpf": "619.612.223-22",
+                  "situacao": false,
+                  "email": "fulano@gmail.com",
+                  "telefone": "85 99876-5432",
+                  "celular": "85 99875-5432",
+                  "cep": "60831-485",
+                  "logradouro": "Av. 13 de maio",
+                  "numero": 185,
+                  "complemento": "box of good good",
+                  "bairro": "montese",
+                  "cidade": "ceará"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": { "description": "Cadastro realizado com sucesso!" },
+          "409": { "description": "Funcionário já cadastrado no sistema!" },
+          "500": { "description": "erro interno do servidor" }
+        }
+      }
+    },
+    "/fornecedores/cadastrados": {
+      "get": {
+        "tags": ["fornecedores"],
+        "summary": "buscar todos os fornecedores registrados",
+        "description": "objetivo de mostrar todos os fornecedores registrados",
+
+        "responses": {
+          "200": {
+            "description": "busca realizada com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/"
+                }
+              }
+            }
+          },
+          "500": { "description": "erro interno do servidor" }
+        }
+      }
+    },
+    "/fornecedores/buscarUnico/{cpf}": {
+      "get": {
+        "parameters": [
+          {
+            "required": true,
+            "in": "query",
+            "name": "include",
+            "description": "caso queira trazer alguns dados relacionados a este fornecedor, coloque true",
+            "schema": { "enum": ["true", "false"] }
+          },
+          {
+            "in": "path",
+            "name": "cpf",
+            "example": "12345678910",
+            "required": true,
+            "description": "coloque o cpf do fornecedor que você deseja buscar",
+
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "summary": "pegar um fornecedor especifico",
+        "description": "rota dedicada para buscar um fornecedor e caso queira fazer uma consulta que traga o cruzamento de dados realacionado a esse fornecedor em especifico também é possível",
+        "tags": ["fornecedores"],
+        "responses": {
+          "201": {
+            "description": "busca realizada com successo do fornecedor com seus dados relacionados",
+
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/"
+                }
+              }
+            }
+          },
+          "404": { "description": "fornecedor não encontrado!" },
+          "500": { "description": "erro interno de servidor" }
+        }
+      }
+    },
+    "/fornecedores/atualizar/{id}": {
+      "put": {
+        "tags": ["fornecedores"],
+        "summary": "atualizar um fornecedor especifico",
+        "parameters": [
+          {
+            "required": true,
+            "in": "path",
+            "description": "o id do fornecedor é fundamental para que ele seja atualizado",
+            "name": "id",
+            "schema": { "type": "number", "example": 1 }
+          }
+        ],
+        "description": "rota dedicada para atualizar um fornecedores em especifico",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "default": "fulano"
+                  },
+                  "rg": { 
+                    "type": "string", "default": "103020302" 
+                  },
+                  "date_birth": { 
+                    "type": "string", "default": "10/10/2005" 
+                  },
+                  "email": {
+                    "type": "string",
+                    "default": "fulano@gmail.com"
+                  },
+                  "situation": { 
+                    "type": "boolean", "default": true 
+                  },
+                  "telefone": { 
+                    "type": "string", "default": "2200-2020" 
+                  },
+                  "celular": { 
+                    "type": "string", "default": "2200-2020" 
+                  },
+                  "cep": { 
+                    "type": "string", "default": "50212-22" 
+                  },
+                  "logradouro": {
+                    "type": "string",
+                    "default": "rua dos patos"
+                  },
+                  "numero": { 
+                    "type": "number", "default": 124 
+                  },
+                  "complemento": { 
+                    "type": "string", "default": "casa" 
+                  },
+                  "bairro": { 
+                    "type": "string", "default": "montese" 
+                  },
+                  "cidade": { 
+                    "type": "string", "default": "fortaleza" 
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": { "description": "Fornecedor atualizado com sucesso" },
+          "404": { "description": "Fornecedor não encontrado" },
+          "500": { "description": "erro interno de servidor" }
+        }
+      }
+    },
+    "/fornecedores/deletar/:cpf": {
+      "delete": {
+        "tags": ["fornecedores"],
+        "summary": "deletar um fornecedor",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "cpf",
+
+            "description": "use o cpf do fornecedor para deleta-lo",
+
+            "required": true,
+            "schema": { "example": "123.033.234-33" }
+          }
+        ],
+        "description": "rota dedicada para a remoção de um fornecedor no banco de dados",
+        "responses": {
+          "201": { "description": "fornecedor deletado com sucesso" },
+          "404": { "description": "fornecedor não encontrado" },
           "500": { "description": "erro interno do servidor" }
         }
       }
