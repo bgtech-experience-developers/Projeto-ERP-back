@@ -8,65 +8,61 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-
 model Employee {
-  id        Int      @id @default(autoincrement())
-  nome      String
-  email     String 
-  cpf       String   @unique
-  employee_address  Employee_address[]
-  telefone  String?
-  celular   String?
+  id                Int       @id @default(autoincrement())
+  name              String
+  email             String 
+  cpf               String    @unique
+  employee_address    Employee_address[]
+  phone             String?
+  cell_phone        String?
   @@map("employee")
-
-
-
 }
- model Client{
 
+
+model Client{
   id Int @id @default(autoincrement())
   name String
   rg String
   date_birth DateTime
-  type String
+  type String?
   cpf String @unique
   email String
-  situation Boolean @default(false) 
-  // enderecos Enderecos[]
+  situation Boolean @default(false)
   cliente_address Client_address[] 
- 
   telefone String?
   celular String?
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now())
   @@map("client")
 }
- model Supplier {
 
-  id Int @id @default(autoincrement())
-  nome String
-  rg String
-  data_nascimento DateTime
-  tipo String
-  cpf String @unique
-  email String
-  situacao Boolean @default(false) 
- 
-  telefone String?
-  supllier_address Supllier_address[]
-  celular String?
-  createdAt DateTime @default(now())
-  updatedAt DateTime @default(now())
+ model Supplier {
+  id                Int @id @default(autoincrement())
+  name              String
+  rg                String
+  date_of_birthday  DateTime
+  type              String
+  cpf               String @unique
+  email             String
+  situation         Boolean @default(false)
+  phone             String?
+  supplier_address Supllier_address[]
+  cell_phone        String?
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @default(now())
   @@map("supplier")
 }
+
 model Supllier_address{
   id Int @id @default(autoincrement())
-  supllier Int
-  address Int
-  suppler_relation Supplier @relation(fields: [supllier],references: [id])
-  address_relation Address @relation(fields: [address],references: [id])
+  supllier_id Int
+  address_id Int
+  suppler_relation Supplier @relation(fields: [supllier_id],references: [id], onDelete: Cascade)
+  address_relation Address @relation(fields: [address_id],references: [id], onDelete: Cascade)
   @@map("supplier_address")
 }
+
 model Client_address {
   id Int @id @default(autoincrement())
   client_id Int
@@ -74,36 +70,29 @@ model Client_address {
   address Address @relation(fields: [address_id],references: [id], onDelete: Cascade)
   client Client @relation(fields: [client_id],references: [id],onDelete: Cascade)
   @@map("client_address")
-
- 
-
 }
+
 model Employee_address{
-  id Int @id @default(autoincrement())
-  employee_id Int
-  address_id Int
-  employee_relation Employee @relation(fields: [employee_id],references: [id])
-  adress_relation Address @relation(fields: [address_id],references: [id])
-  @@map("employee_address")
-  
+  id            Int @id @default(autoincrement())
+  employee_id   Int  
+  address_id    Int  
+  employee_relation Employee @relation(fields: [employee_id],references: [id], onDelete: Cascade)
+  adress_relation Address @relation(fields: [address_id],references: [id], onDelete: Cascade)
+  @@map("employee_address")  
 }
+
 model Address{
   id Int @id @default(autoincrement())
   cep String 
   logradouro String
-  numero Int
+  numero String
   complemento String
   bairro String
   cidade String
-  // UserId Int
   cliente_enderecos Client_address[]
   employee_address Employee_address[]
   supllier_address Supllier_address []
-  // user Clientes @relation(fields: [UserId],references: [id])
-  createdAt DateTime @default(now())
-  updatedAt DateTime @default(now())
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @default(now())
   @@map("address")
 }
-
-
-

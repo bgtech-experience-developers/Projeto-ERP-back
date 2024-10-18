@@ -4,16 +4,19 @@ import { ClientesRepository } from "../repository/ClientesRepository.js";
 const { criar, mostrar, deletar, buscarUnico, update } =
   new ClientesRepository();
 
+const regex = /[./-/]/gi;
 export class ClienteController {
-
   async mostrar(req, res, next) {
     try {
       const clientes = await mostrar();
-      return res.json(clientes);
+      res.json(clientes);
     } catch (error) {
       console.log(error);
 
+
       res.status(500).json({ message: "Erro interno no servidor!" });
+
+
     }
   }
 
@@ -23,7 +26,10 @@ export class ClienteController {
         name,
         rg,
         date_birth,
+
         type,
+
+
         cpf,
         email,
         situation,
@@ -36,11 +42,11 @@ export class ClienteController {
         bairro,
         cidade,
       } = req.body;
-      const { message } = await criar(
+
+      const { message } = await criar( 
         name,
         rg,
         date_birth,
-        type,
         cpf,
         email,
         situation,
@@ -55,6 +61,7 @@ export class ClienteController {
       );
 
       return res.status(201).json(message);
+
     } catch (error) {
       // console.log(error);
 
@@ -65,6 +72,7 @@ export class ClienteController {
       }
 
       res.status(500).json({ message: "Erro interno de servidor!" });
+
     }
   }
 
@@ -86,9 +94,11 @@ export class ClienteController {
 
   async buscarUnico(req, res, next) {
     try {
-      const cpf = req.params.cpf;
+      const { include } = req.query;
+      const { cpf } = req.params;
+      const cliente = await buscarUnico(cpf, include);
+      console.log(cliente);
 
-      const cliente = await buscarUnico(cpf);
       return res.status(201).json(cliente);
     } catch (error) {
       if (error.message === "Cliente não encontrado!") {
@@ -101,14 +111,20 @@ export class ClienteController {
 
   async update(req, res, next) {
     try {
+
       const id = Number(req.params.id);
+
+
+   
 
       const {
         name,
         rg,
         date_birth,
+
         type,
         cpf,
+
         email,
         situation,
         telefone,
@@ -121,13 +137,19 @@ export class ClienteController {
         cidade,
       } = req.body;
 
+
+ 
+
       const atualizar = await update(
         id,
         name,
         rg,
+
         date_birth,
         type,
         cpf,
+
+
         email,
         situation,
         telefone,
@@ -142,6 +164,7 @@ export class ClienteController {
 
       return res.status(200).json(atualizar.message);
     } catch (error) {
+
       if (error.code === "P2025") {
         return res.status(404).json({ message: "Usuário não encontrado!" });
       } else if (error.code === "P2002") {
@@ -151,5 +174,6 @@ export class ClienteController {
 
       res.status(500).json({ message: "Erro interno de servidor!" });
     }
+
   }
 }

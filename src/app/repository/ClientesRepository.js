@@ -5,10 +5,63 @@ import { PrismaClient } from "@prisma/client/extension";
 
 
 export class ClientesRepository {
+
  
 
-  async criar(name, rg, date_birth, type, cpf, email,situation,telefone, celular,cep,logradouro,numero,complemento,bairro,cidade) {
+//   async mostrar() {
+//     try {
+//       const clientes = await instanciaPrisma.client.findMany({
+//         orderBy: { createdAt: "desc" },
+//       });
+//       return {
+//         mensagem: "retornando os clientes de acordo com a sua inserção",
+//         clientes,
+//       };
+//     } catch (error) {
+//       throw error;
+//     }
+//   }
+
+
+  async mostrar() {
     try {
+      return await instanciaPrisma.client.findMany({
+        orderBy:{
+          id: 'desc'
+        },
+        include:{
+          cliente_address:{
+            include:{
+              address: true
+            }
+          }
+        }
+      });
+    } catch (error) {
+      throw error;
+    }
+  }
+
+
+  async criar(
+    name,
+    rg,
+    date_birth,
+
+    cpf,
+    email,
+    situation,
+    telefone,
+    celular,
+    cep,
+    logradouro,
+    numero,
+    complemento,
+    bairro,
+    cidade
+  ) {
+    try {
+
 
       const data_aniversario = new Date(`${date_birth}T00:00:00Z`);
 
@@ -28,55 +81,16 @@ export class ClientesRepository {
       return {message: "Olá, fí duma eguá"}
 
 
+
+
       
+ 
 
-      // const id_result =posts.id
-      // await instanciaPrisma.$transaction(async (prisma) => {
 
-      //   const cadastrar_cliente = await prisma.client.create({
-      //     data: { name, rg, date_birth: data_aniversario, type, cpf, email,situation,telefone, celular},
-      //   });  
-
-      //   const client_id = cadastrar_cliente.id
-
-      //   const address = await prisma.address.create({
-      //     data: {cep,logradouro,numero,complemento,bairro,cidade}
-      //   })
-  
-      //   const address_id = address.id
-
-      //   const client_address = await prisma.client_address.create({
-      //     data: {client_i,address_id}
-      //   }z)
-
-      // console.log(client_address);
-
-      // })
-      // const cadastrar_cliente = await instanciaPrisma.client.create({
-      //   data: { name, rg, date_birth: data_aniversario, type, cpf, email,situation,telefone, celular},
-      // });
-
-      // const client_id = cadastrar_cliente.id
-
-      // const address = await instanciaPrisma.address.create({
-      //   data: {cep,logradouro,numero,complemento,bairro,cidade}
-      // })
-
-      // const address_id = address.id
-
-      // console.log(client_id);
-      // console.log(address_id);
-
-      // const client_address = await instanciaPrisma.client_address.create({
-      //   data: {client_id,address_id}
-      // })
-      
-      // const Address = 
     } catch (error) {
-      // console.log(error.meta.target);
-      // console.log(error.code) 'P2002' <-- nesse caso é cpf já existente e os campos inválidos?
+   
       console.log(error);
-      
+
       throw error;
       // ???Em qual parte ficará a questão da validação dos campos, ou seja se os campos foram realmentes esperados!
       throw new Error("CPF já cadastrado");
@@ -85,50 +99,104 @@ export class ClientesRepository {
 
   async deletar(cpf) {
     try {
-      
-      const client_id = await instanciaPrisma.client.findUnique({
+      console.log();
+      const { id } = await instanciaPrisma.client.findUnique({
         where: {
-          cpf: cpf
+          cpf,
         },
-        select: {
-          id: true
-        }
-      })
-            
-      const result = await instanciaPrisma.client.deleteMany(
-        { 
-          where: { id: client_id.id }
-        });
-      console.log(result);
-      
+        select: { id: true },
+      });
+
+      if (!id) {
+        throw new Error("cliente não encontrado");
+      }
+
+      const result = await instanciaPrisma.client_address.deleteMany({
+        where: { client_id: id },
+      });
+      const userDelet = await instanciaPrisma.client.delete({ where: { id } });
+
       return { message: "cliente deletado com sucesso" };
     } catch (error) {
       console.log(error);
-      
+
       throw error;
     }
   }
 
-  async buscarUnico(cpf) {
+  async buscarUnico(cpfcliente, include) {
     try {
+      const boolean = include === "true" ? true : false;
+
       const cliente = await instanciaPrisma.client.findUnique({
-        where: { cpf },
+        where: { cpf: cpfcliente },
+
+        include: {
+          cliente_address: {
+            include: { address: boolean },
+          },
+        },
       });
       if (!cliente) {
+
 
         throw new Error("Cliente não encontrado!");
 
       }
-      return cliente;
-    } catch (error) {
-      console.log(error.statusCode);
+      if (include) {
+        let {
+          name,
+          rg,
+          date_birth,
+          cpf,
+          telefone,
+          celular,
+          email,
+          cliente_address,
+          id,
+        } = cliente;
+        date_birth = date_birth.toLocaleDateString();
+        const [{ address }] = cliente_address;
 
+        return {
+          id,
+          name,
+          rg,
+          date_birth,
+          cpf,
+          email,
+          telefone,
+          celular,
+          address,
+        };
+      }
+      return [
+        ({ email, rg, telefone, celular, id, name, cpf, date_birth } = cliente),
+      ];
+    } catch (error) {
       throw error;
     }
   }
 
-  async update(id,name, rg, date_birth, type, cpf, email,situation,telefone, celular,cep,logradouro,numero,complemento,bairro,cidade) {
+  async update(
+    id,
+    name,
+    rg,
+    date_birth,
+
+    email,
+    situation,
+    telefone,
+    celular,
+    cep,
+    logradouro,
+    numero,
+    complemento,
+    bairro,
+    cidade
+  ) {
     try {
+
 
     const birth_date = new Date(`${date_birth}T00:00:00Z`)
 
@@ -151,6 +219,7 @@ export class ClientesRepository {
 
       instanciaPrisma.client_address.findMany({
         where: {
+
           client_id: id
         },
 
@@ -163,54 +232,6 @@ export class ClientesRepository {
     console.log(client,client_address);
     
 
-    // await instanciaPrisma.address.update({
-    //   where: {client_address.id}
-    // })
-
-
-      // const client = await instanciaPrisma.client.update({
-      //   where: { id },
-      //   data: {
-      //     name: name,
-      //     rg: rg,
-      //     date_birth: data_aniversario,
-      //     type: type,
-      //     cpf: cpf,
-      //     email: email,
-      //     situation: situation,
-      //     telefone: telefone,
-      //     celular: celular
-      //   },
-      // });
-
-      // console.log(client.id);
-
-      // const address_id = await instanciaPrisma.client_address.findMany({
-      //   where: {
-      //     client_id: client.id
-      //   },
-      //   select: {
-      //     address_id: true
-      //   }
-
-      // });
-
-      // console.log();
-
-      // const address = await instanciaPrisma.address.update({
-      //   where: {
-      //     id: address_id[0].address_id
-      //   },
-      //   data: {
-      //     cep: cep,
-      //     logradouro: logradouro,
-      //     numero: numero,
-      //     complemento: complemento,
-      //     bairro: bairro,
-      //     cidade: cidade
-      //   }
-      // })
-    
 
       return { message: "Cliente atualizado com sucesso!" };
       // return cliente
