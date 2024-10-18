@@ -5,7 +5,7 @@ class FornecedorRepository {
     async criar(
         name, 
         rg, 
-        date_of_birthday, 
+        date_birth,
         type, 
         cpf, 
         email, 
@@ -19,10 +19,12 @@ class FornecedorRepository {
         bairro, 
         cidade) {
      try {
-        const date_birth = new Date(`${date_of_birthday}T00:00:00Z`)
+        const date_of_birthday = new Date(`${date_birth}T00:00:00Z`)
+        // console.log(date_birth);
+        
         
 
-        const cadastrar_fornecedor = await instanciaPrisma.supplier.create({data: {name, rg, date_of_birthday: date_birth, type, cpf, email, situation, phone, cell_phone}})
+        const cadastrar_fornecedor = await instanciaPrisma.supplier.create({data: {name, rg, date_of_birthday: date_of_birthday, type, cpf, email, situation, phone, cell_phone}})
         const supllier_id = cadastrar_fornecedor.id
         
         const address = await instanciaPrisma.address.create({data: {cep, logradouro, numero, complemento, bairro, cidade}})

@@ -93,7 +93,7 @@ export class ClientesRepository {
 
   async deletar(cpf) {
     try {
-      console.log();
+    
       const { id } = await instanciaPrisma.client.findUnique({
         where: {
           cpf,

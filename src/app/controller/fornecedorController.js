@@ -19,7 +19,7 @@ class FornecedorController {
         try {
             const cpf = req.params.cpf;
             const fornecedor = await buscarUnico(cpf);
-            return res.status(201).json(fornecedor);
+            return res.status(200).json(fornecedor);
 
         } catch (error) {
             if (error.message === 'Fornecedor não encontrado ou inexistente!') {
@@ -32,11 +32,13 @@ class FornecedorController {
 
     async criar(req, res){
         try {
-            const {name, rg, date_of_birthday, type, cpf, email, situation, phone, cell_phone, cep, logradouro, numero, complemento, bairro, cidade} = req.body
+            const {name, rg, date_birth, type, cpf, email, situation, phone, cell_phone, cep, logradouro, numero, complemento, bairro, cidade} = req.body
+            console.log(date_birth);
+            
             const {cadastrar_fornecedor, message} = await criar(
                 name,
                 rg,
-                date_of_birthday,
+                date_birth,
                 type,
                 cpf,
                 email,
@@ -73,7 +75,7 @@ class FornecedorController {
             
         } catch (error) {
             if (error.code === 'P2025') {
-                return res.status(409).json({message: 'Fornecedor deletado com sucesso!'})
+                return res.status(404).json({message: 'Fornecedor não encontrado!'});
             }
 
             res.status(500).json({message: 'Erro interno no servidor!'})
@@ -85,11 +87,13 @@ class FornecedorController {
             const pegarId = Number(req.params.id)
             const dataFornecedor = req.body
             const AtualizarFornecedor = await editarFornecedor(pegarId, dataFornecedor)
-            res.status(200).json({AtualizarFornecedor, message: 'Fornecedor atualizado'})
+            res.status(201).json({AtualizarFornecedor, message: 'Fornecedor atualizado'})
             
         } catch (error) {
-            if (error.code == 'p2002'){
+            if (error.code == 'P2025'){
                 return res.status(404).json({ message: "Usuário não encontrado!" });
+            } else if(error.code === 'P2002') {
+                return res.status(409).json({message: "CPF já cadastrado"})
             }
             console.log(error)
             res.status(500).json({ message: "Erro interno de servidor!" });

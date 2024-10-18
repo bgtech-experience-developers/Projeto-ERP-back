@@ -18,7 +18,7 @@ app.use("/api-docs", swaggerui.serve, swaggerui.setup(swaggerjson));
 
 app.use("/clientes", rotaCliente);
 app.use("/fornecedor", rotaFornecedor);
-app.use("/empregador", employeerRoute);
+app.use("/funcionario", employeerRoute);
 const PORTA = process.env.PORTA;
 
 app.listen(PORTA, () => {

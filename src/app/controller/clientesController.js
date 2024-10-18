@@ -78,7 +78,7 @@ export class ClienteController {
       return res.status(200).json(clienteDeletado.message);
     } catch (error) {
       if (error.code === "P2025") {
-        return res.status(409).json({ message: "Cliente não encontrado!" });
+        return res.status(404).json({ message: "Cliente não encontrado!" });
       }
 
       res.status(500).json({ message: "Erro interno de servidor!" });
@@ -92,7 +92,7 @@ export class ClienteController {
       const cliente = await buscarUnico(cpf, include);
       console.log(cliente);
 
-      return res.status(201).json(cliente);
+      return res.status(200).json(cliente);
     } catch (error) {
       if (error.message === "Cliente não encontrado!") {
         return res.status(404).json({ message: error.message });
@@ -147,7 +147,7 @@ export class ClienteController {
         cidade
       );
 
-      return res.status(200).json(atualizar.message);
+      return res.status(201).json(atualizar.message);
     } catch (error) {
       if (error.code === "P2025") {
         return res.status(404).json({ message: "Usuário não encontrado!" });
