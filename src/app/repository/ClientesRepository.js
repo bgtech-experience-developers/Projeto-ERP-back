@@ -55,13 +55,11 @@ export class ClientesRepository {
         },
         include:{
           cliente_address:{
-              include:{
-                  client_id: false,
-                  address_id: false,
-                  adress_relation: true
-              }
+            include:{
+              address: true
+            }
           }
-      }
+        }
       });
     } catch (error) {
       throw error;

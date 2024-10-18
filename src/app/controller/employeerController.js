@@ -2,32 +2,29 @@ import { json } from "express";
 import { instanciaPrisma } from "../database/conexao.js";
 import { employeerRepository } from "../repository/employeerRepository.js";
 
-const {
-  showAllEmployeer,
-  createEmployeer,
-  EditEmployeer,
-  deleteEmployeer,
-  getUniqueEmployer,
-} = new employeerRepository();
-export class employeeController {
-  async showAllEmployeer(req, res) {
-    try {
-      const { include } = req.query;
-      const employeer = await showAllEmployeer(include);
-      res.json(employeer);
-    } catch (error) {
-      throw new Error(error);
+const {showAllEmployeer, getUniqueEmployer, createEmployeer, EditEmployeer, deleteEmployeer} = new employeerRepository 
+export class employeeController{
+
+    async showAllEmployeer(req, res){
+        try{
+            const employeer = await showAllEmployeer()
+            res.json(employeer)
+        }catch(error){
+            res.status(500).json({message: 'Erro interno do servidor'})
+        }
     }
-  }
+  
 
   async createEmployeer(req, res) {
     try {
       const employeerData = req.body;
-      const { message, adresses, employeer } = await createEmployeer( employeerData );
+      const { message, adresses, employeer } = await createEmployeer(
+        employeerData
+      );
 
       res.status(200).json({ employeer, message });
     } catch (error) {
-      throw new Error(error);
+      res.status(500).json({message: "Erro interno do servidor"})
     }
   }
   async getUniqueEmployee(req, res) {
@@ -40,7 +37,7 @@ export class employeeController {
         res.status(404).json(error.message);
         return;
       }
-      res.status(500).json("erro interno do servidor");
+      res.status(500).json({message: "erro interno do servidor"});
     }
   }
 
@@ -51,7 +48,7 @@ export class employeeController {
       const showData = await EditEmployeer(cpf, takeAddress);
       res.status(200).send(showData);
     } catch (error) {
-      throw new Error(error);
+      res.status(200).json({message: "Erro interno do servidor"});
     }
   }
 
@@ -65,7 +62,7 @@ export class employeeController {
         res.status(404).json("funcionário  não encontrado");
         return;
       }
-      res.status(500).json("erro interno do servidor");
+      res.status(500).json({message: "Erro interno do servidor"});
     }
   }
 }

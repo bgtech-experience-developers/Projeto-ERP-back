@@ -1,51 +1,28 @@
 import { instanciaPrisma } from "../database/conexao.js";
 
-<<<<<<< Updated upstream
 export class employeerRepository {
   async showAllEmployeer(include) {
     try {
-      if (include === "true") {
+      
         return await instanciaPrisma.employee.findMany({
-          include: {
-            employee_address: { include: { adress_relation: !!include } },
-          },
-        });
-      }
-      return await instanciaPrisma.employee.findMany({
-        orderBy: {
-          id: "desc",
-        },
-      });
-    } catch (error) {
-      throw new Error(error);
-=======
-
-export class employeerRepository{
-    async showAllEmployeer(){
-        try{
-            return await instanciaPrisma.employee.findMany({
-                orderBy:{
-                    id: 'desc'
-                },
-                include:{
-                    employee_address:{
-                        include:{
-                            employee_id: false,
-                            address_id: false,
-                            adress_relation: true
-                        }
+            orderBy: {
+            id: "desc",
+            },
+            include: {
+                employee_address:{
+                    include:{
+                        adress_relation: true,
+                        employee_id: false,
+                        address_id: false
                     }
-                }
-            })
-          
-        }catch(error){
-            throw new Error(error)
-        }
->>>>>>> Stashed changes
+                },
+            },
+        });
+    } catch (error) {
+      throw error;
     }
   }
 
-<<<<<<< Updated upstream
   async createEmployeer(employeerData) {
     const {
       name,
@@ -61,36 +38,6 @@ export class employeerRepository{
       cidade,
       rua,
     } = employeerData;
-=======
-    async showOneEmployeer(id){
-        try {
-            const employeerId = await instanciaPrisma.employee.findUnique({
-                where:{id}
-            })
-            return(employeerId)
-
-        } catch (error) {
-            throw new Error(error);
-        }
-    }
-
-    async createEmployeer(employeerData){
-        const {name, email, cpf, phone, cell_phone, cep, logradouro, numero, complemento, bairro, cidade, rua} = await employeerData
-        try {
-            const employeer = await instanciaPrisma.employee.create({
-                data: {name, email, cpf, phone, cell_phone}
-            })
-            
-            const addressEmployeer = await instanciaPrisma.address.create({
-                data: {cep, logradouro, numero, complemento, bairro, cidade, rua}
-            })
-            console.log(addressEmployeer)
-            const employee_id = employeer.id
-            const address_id = addressEmployeer.id
-            const employeer_address = await instanciaPrisma.employee_address.create({
-                data: {employee_id, address_id}
-            })
->>>>>>> Stashed changes
 
     try {
       const employeer = await instanciaPrisma.employee.create({
@@ -114,7 +61,7 @@ export class employeerRepository{
         message,
       };
     } catch (error) {
-      throw new Error(error);
+      throw error;
     }
   }
   async getUniqueEmployer(cpf) {
@@ -198,7 +145,7 @@ export class employeerRepository{
         address: updateAddressEmployer,
       };
     } catch (error) {
-      throw new Error(error);
+      throw error;
     }
   }
 
@@ -210,7 +157,7 @@ export class employeerRepository{
         },
       });
       return deleteCpf;
-    } catch (error) {
+      } catch (error) {
       throw error;
     }
   }
