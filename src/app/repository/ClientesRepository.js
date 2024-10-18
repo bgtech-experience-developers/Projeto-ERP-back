@@ -47,7 +47,7 @@ export class ClientesRepository {
     name,
     rg,
     date_birth,
-
+type,
     cpf,
     email,
     situation,
