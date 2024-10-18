@@ -102,7 +102,7 @@ export class ClienteController {
   async update(req, res, next) {
     try {
       const id = Number(req.params.id);
-      
+
       const {
         name,
         rg,
