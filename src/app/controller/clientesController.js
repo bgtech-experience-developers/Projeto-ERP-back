@@ -23,9 +23,7 @@ export class ClienteController {
         name,
         rg,
         date_birth,
-
         type,
-
         cpf,
         email,
         situation,

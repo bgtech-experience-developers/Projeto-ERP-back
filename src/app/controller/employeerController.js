@@ -5,7 +5,7 @@ import { employeerRepository } from "../repository/employeerRepository.js";
 const {showAllEmployeer, getUniqueEmployer, createEmployeer, EditEmployeer, deleteEmployeer} = new employeerRepository 
 export class employeeController{
 
-    async showAllEmployeer(req, res){
+  async showAllEmployeer(req, res){
         try{
             const employeer = await showAllEmployeer()
             res.json(employeer)
@@ -13,7 +13,6 @@ export class employeeController{
             res.status(500).json({message: 'Erro interno do servidor'})
         }
     }
-  
 
   async createEmployeer(req, res) {
     try {
@@ -24,9 +23,14 @@ export class employeeController{
 
       res.status(200).json({ employeer, message });
     } catch (error) {
+      // Precisa filtrar um possivel erro, usuário já cadastrado!
+      if(error.code === 'P2002') {
+        return res.status(409).json({message: 'Employeer já cadastrado no sistema!'})
+      }
       res.status(500).json({message: "Erro interno do servidor"})
     }
   }
+
   async getUniqueEmployee(req, res) {
     try {
       const { cpf } = req.params;
@@ -61,6 +65,8 @@ export class employeeController{
       if (error.code === "P2025") {
         res.status(404).json("funcionário  não encontrado");
         return;
+      } else if(error.code === "P2002") {
+        res.status(409).json({message: "CPF já cadastrado!"})
       }
       res.status(500).json({message: "Erro interno do servidor"});
     }

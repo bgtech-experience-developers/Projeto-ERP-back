@@ -47,7 +47,7 @@ export class ClientesRepository {
     name,
     rg,
     date_birth,
-type,
+    type,
     cpf,
     email,
     situation,
@@ -79,12 +79,6 @@ type,
       }})
 
       return {message: "Olá, fí duma eguá"}
-
-
-
-
-      
- 
 
 
     } catch (error) {

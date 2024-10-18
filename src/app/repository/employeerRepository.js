@@ -1,7 +1,7 @@
 import { instanciaPrisma } from "../database/conexao.js";
 
 export class employeerRepository {
-  async showAllEmployeer(include) {
+  async showAllEmployeer() {
     try {
       
         return await instanciaPrisma.employee.findMany({
@@ -64,6 +64,7 @@ export class employeerRepository {
       throw error;
     }
   }
+  
   async getUniqueEmployer(cpf) {
     try {
       const employyer = await instanciaPrisma.employee.findUnique({
@@ -123,6 +124,7 @@ export class employeerRepository {
           address_id: true,
         },
       });
+      
       console.log(addressEmployeer, "lerolero");
       const [numeroEnd] = addressEmployeer;
 
