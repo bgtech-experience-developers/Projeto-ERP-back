@@ -3,20 +3,23 @@ import { instanciaPrisma } from "../database/conexao.js";
 export class employeerRepository {
   async showAllEmployeer(include) {
     try {
-      if (include === "true") {
+      
         return await instanciaPrisma.employee.findMany({
-          include: {
-            employee_address: { include: { adress_relation: !!include } },
-          },
+            orderBy: {
+            id: "desc",
+            },
+            include: {
+                employee_address:{
+                    include:{
+                        adress_relation: true,
+                        employee_id: false,
+                        address_id: false
+                    }
+                },
+            },
         });
-      }
-      return await instanciaPrisma.employee.findMany({
-        orderBy: {
-          id: "desc",
-        },
-      });
     } catch (error) {
-      throw new Error(error);
+      throw error;
     }
   }
 
@@ -58,7 +61,7 @@ export class employeerRepository {
         message,
       };
     } catch (error) {
-      throw new Error(error);
+      throw error;
     }
   }
   async getUniqueEmployer(cpf) {
@@ -142,7 +145,7 @@ export class employeerRepository {
         address: updateAddressEmployer,
       };
     } catch (error) {
-      throw new Error(error);
+      throw error;
     }
   }
 
@@ -154,7 +157,7 @@ export class employeerRepository {
         },
       });
       return deleteCpf;
-    } catch (error) {
+      } catch (error) {
       throw error;
     }
   }
