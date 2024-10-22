@@ -1,5 +1,6 @@
 import { Prisma } from "@prisma/client";
 import { ClientesRepository } from "../repository/ClientesRepository.js";
+import { ServiceClient } from "../service/global.js";
 
 const { criar, mostrar, deletar, buscarUnico, update } =
   new ClientesRepository();
@@ -19,47 +20,11 @@ export class ClienteController {
 
   async criar(req, res, next) {
     try {
-      const {
-        name,
-        rg,
-        date_birth,
+      const user = await ServiceClient.create(req.body);
 
-        type,
-
-        cpf,
-        email,
-        situation,
-        telefone,
-        celular,
-        cep,
-        logradouro,
-        numero,
-        complemento,
-        bairro,
-        cidade,
-      } = req.body;
-
-      const { message } = await criar(
-        name,
-        rg,
-        date_birth,
-        cpf,
-        email,
-        situation,
-        telefone,
-        celular,
-        cep,
-        logradouro,
-        numero,
-        complemento,
-        bairro,
-        cidade,
-        type
-      );
-
-      return res.status(201).json(message);
+      return res.status(201).json(user.text);
     } catch (error) {
-      // console.log(error);
+      next(error)
 
       if (error.code === "P2002") {
         return res
