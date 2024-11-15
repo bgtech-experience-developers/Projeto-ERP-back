@@ -14,15 +14,15 @@
 
 // console.log(insert);
 
-// import sanitize from "sanitize-html";
-// const removeHtmlTags = (input )  => {
-//     return sanitize(input, {
-//       allowedTags: [],  // Não permite nenhuma tag
-//       allowedAttributes: {},  // Não permite nenhum atributo
-//     });
-//   };
+import sanitize from "sanitize-html";
+const removeHtmlTags = (input )  => {
+    return sanitize(input, {
+      allowedTags: [],  // Não permite nenhuma tag
+      allowedAttributes: {},  // Não permite nenhum atributo
+    });
+  };
 
 
-//   const rsult = removeHtmlTags("<p>alert('XSS Attack!');</p>John Doe");
-//   console.log(rsult);
+  const rsult = removeHtmlTags("<p>alert('XSS Attack!');</p>John Doe");
+  console.log(rsult);
   

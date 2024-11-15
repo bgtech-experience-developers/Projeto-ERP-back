@@ -23,3 +23,6 @@ Corpo para teste:
 // Complexidade.
 // Preciso cadastrar um adm, mas, os papeis(roles) já estão definidos no banco de dados, como faço para que ao inserir não passe o dado para ser inserido, mas, sim esse dado ser relacionado ao a tabela que é a junção de adm com roles
 //  a tabela que é a junção de adm com roles
+
+Criado o Schema de validação de campos --> Onde vai ser chamado! -->
+Repository--> controller -->middleware
