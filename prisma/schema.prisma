@@ -1,0 +1,43 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+
+model Adm {
+  id Int @id @default(autoincrement())
+  cnpj String @db.Char(14)
+  senha String @db.VarChar()
+  role_adm RoleAdm[]
+  
+} 
+
+model Role {
+  id Int @id @default(autoincrement())
+  role String @db.VarChar()
+  role_adm RoleAdm[]
+
+}
+
+model RoleAdm{
+  adm_id Int
+  role_id Int
+  adm Adm @relation(fields: [adm_id], references: [id])
+  role Role @relation(fields: [role_id], references: [id])
+
+  @@id([adm_id, role_id])
+
+}
+// Pensar como vai ser o momento de inserção na tabela roleadm, sendo que no banco já deve estar definido os papeis(role) e ele só ser passado para o roleadm
+// Complexidade.
+// Preciso cadastrar um adm, mas, os papeis(roles) já estão definidos no banco de dados, como faço para que ao inserir não passe o dado para ser inserido, mas, sim esse dado ser relacionado ao a tabela que é a junção de adm com roles
