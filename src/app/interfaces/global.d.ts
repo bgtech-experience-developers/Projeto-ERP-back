@@ -9,5 +9,6 @@ interface Client {
 
 interface Adm {
   cnpj: string,
-  password: string
+  password: string,
+  id?: number
 }

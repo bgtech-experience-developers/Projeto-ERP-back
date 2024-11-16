@@ -2,7 +2,7 @@
 CREATE TABLE "Adm" (
     "id" SERIAL NOT NULL,
     "cnpj" CHAR(14) NOT NULL,
-    "senha" VARCHAR NOT NULL,
+    "password" VARCHAR NOT NULL,
 
     CONSTRAINT "Adm_pkey" PRIMARY KEY ("id")
 );

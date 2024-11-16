@@ -26,3 +26,15 @@ Corpo para teste:
 
 Criado o Schema de validação de campos --> Onde vai ser chamado! -->
 Repository--> controller -->middleware
+
+import { PrismaClient } from "@prisma/client";
+
+export class Prisma{
+    private static prisma: PrismaClient;
+
+    static async Connection(): Promise<PrismaClient> {
+        return this.prisma
+        ? this.prisma
+        : (this.prisma = new PrismaClient());
+    }
+}
