@@ -1,8 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
 
 generator client {
   provider = "prisma-client-js"
@@ -24,6 +19,9 @@ model Client {
   company_address company_address[]
   delivery_address delivery_address[]
   financinal_contact financial_contact[]
+  owner_partner owner_partner[]
+   commercial_contact commercial_contact[]
+   accounting_contact accounting_contact[]
   created_at DateTime @default(now())
   update_at DateTime @default(now())
 
@@ -34,10 +32,15 @@ model sector {
    name String @db.VarChar(100)
    email String @db.VarChar(100) @unique
    phone String @db.VarChar(100)
-   cell_phone String @db.VarChar(100)
+   cell_phone String? @db.VarChar(100)
    rg String @db.VarChar(9)
-   photo String
+   photo String?
    financial_contact financial_contact[]
+   owner_partner owner_partner[]
+   commercial_contact commercial_contact[]
+   accounting_contact accounting_contact[]
+    created_at DateTime @default(now())
+  update_at DateTime @default(now())
    
    
 }
@@ -86,4 +89,34 @@ model financial_contact {
     update_at DateTime @default(now())
    
 
+}
+model owner_partner{
+   id Int @id @default(autoincrement())
+   sectorId Int
+  clientId Int
+  client Client @relation(fields: [clientId],references: [id])
+  sector sector @relation(fields: [sectorId],references: [id])
+      created_at DateTime @default(now())
+    update_at DateTime @default(now())
+}
+model commercial_contact{
+     id Int @id @default(autoincrement())
+
+     sectorId Int
+  clientId Int
+  client Client @relation(fields: [clientId],references: [id])
+  sector sector @relation(fields: [sectorId],references: [id])
+      created_at DateTime @default(now())
+    update_at DateTime @default(now())
+
+}
+model  accounting_contact{
+   id Int @id @default(autoincrement())
+
+     sectorId Int
+  clientId Int
+  client Client @relation(fields: [clientId],references: [id])
+  sector sector @relation(fields: [sectorId],references: [id])
+      created_at DateTime @default(now())
+    update_at DateTime @default(now())
 }
