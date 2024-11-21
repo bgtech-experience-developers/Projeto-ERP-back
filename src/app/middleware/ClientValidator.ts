@@ -12,31 +12,33 @@ export class ClientValidator {
   CreateClientValidator<$Interface>() {
     return async (request: Request, response: Response, next: NextFunction) => {
       try {
-        const files = request.files;
+        const files = request.files as Express.Multer.File[];
+
+        request.body = JSON.parse(request.body.json);
         const order: boolean[] = request.body.imagens;
+
         const allPromises = await JoiValidation.schemaCreateClient(
           request.body
         );
         const err = allPromises.filter((promise) =>
           promise.error ? promise.error : false
         );
+        err.forEach((err) => console.log(err));
+
         if (err.length != 0) {
           throw new AllError("alguns campos não são compativeis", 400);
         }
-        //hora de fazer a sanatizaçao dos campos de files7
-        if (files instanceof Array) {
-          const { mensagem, error } = Sharp.limpezaSharp(files, next);
-          if (error) {
-            throw new AllError(mensagem);
-          }
-          const allImagens = Sharp.allImagens(files, order);
-          request.body.allImagens = allImagens;
 
-          next();
-        } else {
-          throw new AllError("formato de arquivo não esperado");
+        const { mensagem, error } = Sharp.limpezaSharp(files, next);
+        if (error) {
+          throw new AllError(mensagem);
         }
+        const allImagens = Sharp.allImagens(files, order);
+        request.body.allImagens = allImagens;
+
+        next();
       } catch (error) {
+        console.log(error);
         next(error);
       }
     };

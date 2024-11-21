@@ -1,0 +1,53 @@
+{
+  "imagens": [true, true, false, false],
+  "cliente": {
+    "corporate_reason": "não sei",
+    "fantasy_name": "emprsa do elo musca",
+    "cnpj": "11245678912141",
+    "state_registration": "123456789",
+    "type_contribuition": "fisica",
+    "branch_activity": "construção"
+  },
+  "endereco_empresa": {
+    "cep": "12345678",
+    "street": "rua dos pato",
+    "number": "blocoa",
+    "complement": "blocob",
+    "city": "fortaleza",
+    "neighborhood": "lagoa quadrada"
+  },
+  "endereco_entrega": {
+    "cep": "12345678",
+    "street": "rua dos pato",
+    "number": "blocoa",
+    "complement": "blocob",
+    "city": "fortaleza",
+    "neighborhood": "lagoa quadrada"
+  },
+  "financeiro": {
+    "name": "lucio",
+    "phone": "859281812912",
+    "cell_phone": "10210210",
+    "rg": "123456789",
+    "email": "lixeira@gmail.com"
+  },
+  "comercial": {
+    "name": "lucio",
+    "phone": "859281812912",
+    "cell_phone": "10210210",
+    "rg": "123456789",
+    "email": "emanuel@gmail.com"
+  },
+  "contabil": {
+    "name": "lucio",
+    "phone": "859281812912",
+    "rg": "123456789",
+    "email": "lisboa@gmail.com"
+  },
+  "socio": {
+    "name": "lucio",
+    "phone": "859281812912",
+    "rg": "123456789",
+    "email": "fransisco@gmail.com"
+  }
+}

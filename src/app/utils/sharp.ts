@@ -83,11 +83,14 @@ export class Sharp {
     return isError;
   }
   static allImagens(files: Express.Multer.File[], order: boolean[]) {
+    const size = order.length - files.length;
+    let controller = 0;
     return order.map((boolean, index) => {
       if (boolean) {
-        return files.find((f) => {
-          return f.originalname;
-        });
+        const filename = files[controller].filename;
+        controller++;
+        console.log(filename);
+        return { filename };
       } else {
         return null;
       }

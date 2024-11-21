@@ -1,5 +1,9 @@
 import express from "express";
+import { GlobalError } from "../middleware/GlobalError.js";
+import { UploadFile } from "../utils/multer.js";
+import { ClientValidator } from "../middleware/ClientValidator.js";
+import { Client } from "../controller/client.js";
 export const clientRouter = express.Router();
-clientRouter.get("/buscarCliente", (request, response) => {
-    response.json("vai pra academia mano");
-});
+const { CreateClientValidator } = new ClientValidator();
+clientRouter.post("/criarCliente", UploadFile.Upload().array("photos", 4), CreateClientValidator(), Client.CreateClient);
+clientRouter.use(GlobalError);

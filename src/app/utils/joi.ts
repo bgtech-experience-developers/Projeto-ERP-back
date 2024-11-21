@@ -1,4 +1,4 @@
-import joi, { string } from "joi";
+import joi from "joi";
 export class JoiValidation {
   static async schemaCreateClient<$Interface extends integral>({
     contabil,
@@ -11,7 +11,7 @@ export class JoiValidation {
   }: bodyCreateClient) {
     const schemaCreateClient = joi.object<$Interface, false, $Interface>({
       branch_activity: joi.string().trim(),
-      cnpj: joi.string().trim().required(),
+      cnpj: joi.string().trim().min(14).max(14).required(),
       state_registration: joi.string().trim().min(9).max(9),
       type_contribuition: joi.string().trim().required(),
       fantasy_name: joi.string().trim(),
@@ -31,7 +31,7 @@ export class JoiValidation {
       number: joi.string().trim(),
       complement: joi.string().trim(),
       city: joi.string().trim(),
-      neighborhood: string().trim(),
+      neighborhood: joi.string().trim(),
     });
     return Promise.all([
       schemaCreateClient.validate(cliente),
