@@ -121,3 +121,27 @@ model  accounting_contact{
       created_at DateTime @default(now())
     update_at DateTime @default(now())
 }
+model Adm {
+  id Int @id @default(autoincrement())
+  cnpj String @db.Char(14)
+  password String 
+  role_adm RoleAdm[]
+  
+} 
+
+model Role {
+  id Int @id @default(autoincrement())
+  role_name String
+  role_adm RoleAdm[]
+
+}
+
+model RoleAdm{
+  adm_id Int
+  role_id Int
+  adm Adm @relation(fields: [adm_id], references: [id])
+  role Role @relation(fields: [role_id], references: [id])
+
+  @@id([adm_id, role_id])
+
+}

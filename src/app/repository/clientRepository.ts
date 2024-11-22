@@ -85,12 +85,28 @@ export class ClientRepository {
       throw new AllError("não foi possivel cadastrar o usuário", 400);
     }
   }
-  static async GetuniqueClient(cnpj: string) {
+  static async GetuniqueClient<$Interface>(cnpj: $Interface, id?: number) {
     try {
       const connectionDb = InstanciaPrisma.GetConnection();
-      return await connectionDb.client.findFirst({ where: { cnpj } });
+      if (cnpj) {
+        return await connectionDb.client.findFirst({ where: { cnpj } });
+      }
+      return await connectionDb.client.findUnique({ where: { id } });
     } catch (error) {
       throw new AllError("servidor fora do ar");
+    }
+  }
+  static async GetAllAddress(id: number) {
+    try {
+      const connectionDb = InstanciaPrisma.GetConnection();
+      return await connectionDb.client.findMany({
+        where: { id },
+        include: {
+          company_address: { select: { client: { select: { cnpj: true } } } },
+        },
+      });
+    } catch (error) {
+      throw error;
     }
   }
 }

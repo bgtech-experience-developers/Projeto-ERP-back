@@ -6,5 +6,5 @@ import { Client } from "../controller/client.js";
 export const clientRouter = express.Router();
 const { CreateClientValidator } = new ClientValidator();
 clientRouter.post("/criarCliente", UploadFile.Upload().array("photos", 4), CreateClientValidator(), Client.CreateClient);
-clientRouter.get("/enderecos/:id", Client.getAllAddress);
+clientRouter.get("/:id");
 clientRouter.use(GlobalError);

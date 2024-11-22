@@ -14,4 +14,5 @@ clientRouter.post(
   CreateClientValidator(),
   Client.CreateClient
 );
+clientRouter.get("/enderecos/:id", Client.getAllAddress);
 clientRouter.use(GlobalError);

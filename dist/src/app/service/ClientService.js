@@ -1,4 +1,4 @@
-import { AllError } from "../error/AllError.js";
+import { AllError } from "../../../error/AllError.js";
 import { ClientRepository } from "../repository/clientRepository.js";
 export class ClientService {
     static async CreateClientService(body, imagens) {
@@ -15,11 +15,6 @@ export class ClientService {
     }
     static async getAllAddress(id) {
         try {
-            const client = await ClientRepository.GetuniqueClient(null, id);
-            if (client) {
-                return await ClientRepository.GetAllAddress(client.id);
-            }
-            throw new AllError("client não existe", 400);
         }
         catch (error) {
             throw error;

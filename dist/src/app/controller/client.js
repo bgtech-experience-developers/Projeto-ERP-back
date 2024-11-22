@@ -1,5 +1,5 @@
 import { ClientService } from "../service/ClientService.js";
-import { AllError } from "../error/AllError.js";
+import { AllError } from "../../../error/AllError.js";
 export class Client {
     static async CreateClient(request, response, next) {
         try {
@@ -16,11 +16,7 @@ export class Client {
         try {
             const { id } = request.params;
             if (Number(id)) {
-                console.log(id);
-                const [allAddress] = await ClientService.getAllAddress(Number(id));
-                console.log(allAddress);
-                response.json(allAddress).status(200);
-                return;
+                const allAddress = await ClientService.getAllAddress(Number(id));
             }
             throw new AllError("soment numeros");
         }
