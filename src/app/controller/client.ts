@@ -21,10 +21,12 @@ export class Client {
   ) {
     try {
       const clientCreate: ClientCreate = request.body;
-      const imagens = request.body.allImagens as Files[];
+      const imagens = request.files as Express.Multer.File[];
+      const order: boolean[] = request.body.imagens;
       const { mensagem } = await ClientService.CreateClientService(
         clientCreate,
-        imagens
+        imagens,
+        order
       );
       response.json(mensagem).status(201);
     } catch (error) {

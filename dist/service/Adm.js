@@ -11,9 +11,9 @@ export class AdmService {
             }
             if (!(admRegister instanceof Array)) {
                 const passwordEqual = BycriptCripto.comparePassword(body.password, admRegister.password);
-                if (passwordEqual && process.env.Secret) {
+                if (passwordEqual && process.env.ADM_JWT_SECRET) {
                     const [clientWithPermisions] = (await AdmRepository.getUnique(undefined, admRegister.id, true));
-                    const token = await JwtToken.getCodeToken(clientWithPermisions, process.env.Secret, { expiresIn: "1h" });
+                    const token = await JwtToken.getCodeToken(clientWithPermisions, process.env.ADM_JWT_SECRET, { expiresIn: "1h" });
                     return token;
                 }
                 throw new AllError("as senhas não se coicidem");

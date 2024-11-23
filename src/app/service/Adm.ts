@@ -18,7 +18,7 @@ export class AdmService {
           body.password,
           admRegister.password
         );
-        if (passwordEqual && process.env.Secret) {
+        if (passwordEqual && process.env.ADM_JWT_SECRET) {
           const [clientWithPermisions] = (await AdmRepository.getUnique(
             undefined,
             admRegister.id,
@@ -27,7 +27,7 @@ export class AdmService {
 
           const token = await JwtToken.getCodeToken(
             clientWithPermisions,
-            process.env.Secret,
+            process.env.ADM_JWT_SECRET,
             { expiresIn: "1h" }
           );
           return token;

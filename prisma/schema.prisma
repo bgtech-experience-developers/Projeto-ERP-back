@@ -15,7 +15,7 @@ model Client {
   branch_activity String @db.VarChar(100)
   cnpj String @db.VarChar(14) 
   state_registration String @db.VarChar(9)
-  photo String
+  photo String?
   type_contribuition String
   company_address company_address[]
   delivery_address delivery_address[]
@@ -31,7 +31,7 @@ model Client {
 model sector {
    id Int @id @default(autoincrement())
    name String @db.VarChar(100)
-   email String @db.VarChar(100) @unique
+   email String @db.VarChar(100) 
    phone String @db.VarChar(100)
    cell_phone String? @db.VarChar(100)
    rg String @db.VarChar(9)

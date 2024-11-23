@@ -4,8 +4,9 @@ export class Client {
     static async CreateClient(request, response, next) {
         try {
             const clientCreate = request.body;
-            const imagens = request.body.allImagens;
-            const { mensagem } = await ClientService.CreateClientService(clientCreate, imagens);
+            const imagens = request.files;
+            const order = request.body.imagens;
+            const { mensagem } = await ClientService.CreateClientService(clientCreate, imagens, order);
             response.json(mensagem).status(201);
         }
         catch (error) {

@@ -52,6 +52,10 @@ interface admClient extends adm {
     }
   ];
 }
+interface upload {
+  secure_url: string;
+  original_filename: string;
+}
 interface adminPermission {
   adm?: {
     role_adm: [

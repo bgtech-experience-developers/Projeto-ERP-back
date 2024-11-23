@@ -2,6 +2,7 @@ import { InstanciaPrisma } from "../db/PrismaClient.js";
 import { ClientCreate } from "../controller/client.js";
 import { Files } from "../middleware/ClientValidator.js";
 import { AllError } from "../error/AllError.js";
+
 const connectionDb = InstanciaPrisma.GetConnection(); //gerando uma conexxão
 export class ClientRepository {
   static async createCliente(
@@ -14,17 +15,16 @@ export class ClientRepository {
       endereco_empresa,
       endereco_entrega,
     }: ClientCreate,
-    imagens: Files[]
+    imagens: ({ secure_url: string } | null)[]
   ) {
     try {
-      console.log(imagens);
       const connectionDb = InstanciaPrisma.GetConnection();
       const [client, delivery, store, finance, commercial, accounting, owner] =
         await connectionDb.$transaction([
           connectionDb.client.create({
             data: {
               ...cliente,
-              photo: imagens[0].filename,
+              photo: imagens[0] ? imagens[0].secure_url : null,
             },
             select: { id: true },
           }),
@@ -33,25 +33,25 @@ export class ClientRepository {
           connectionDb.sector.create({
             data: {
               ...financeiro,
-              photo: imagens[3] ? imagens[3].filename : null,
+              photo: imagens[3] ? imagens[3].secure_url : null,
             },
           }),
           connectionDb.sector.create({
             data: {
               ...comercial,
-              photo: imagens[2] ? imagens[2].filename : null,
+              photo: imagens[2] ? imagens[2].secure_url : null,
             },
           }),
           connectionDb.sector.create({
             data: {
               ...contabil,
-              photo: imagens[4] ? imagens[4].filename : null,
+              photo: imagens[4] ? imagens[4].secure_url : null,
             },
           }),
           connectionDb.sector.create({
             data: {
               ...socio,
-              photo: imagens[1] ? imagens[1].filename : null,
+              photo: imagens[1] ? imagens[1].secure_url : null,
             },
           }),
         ]);
@@ -81,7 +81,6 @@ export class ClientRepository {
 
       return { mensagem: "empresa cadastrada com sucesso" };
     } catch (error) {
-      console.log(error);
       throw new AllError("não foi possivel cadastrar o usuário", 400);
     }
   }
