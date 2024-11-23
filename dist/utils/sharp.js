@@ -1,5 +1,7 @@
 import fs from "fs";
 import sharp from "sharp";
+
+
 import path from "path";
 export class Sharp {
     static limpezaSharp(files, next) {
@@ -12,10 +14,13 @@ export class Sharp {
                     if (err) {
                         return {
                             mesagem: "não foi possivel renomear o arquivo",
+
                             error: true,
                         };
                     }
                     else {
+
+
                         return {
                             mesagem: "foi carregado com sucesso",
                             error: false,
@@ -72,6 +77,7 @@ export class Sharp {
                 const secure_url = url.slice(index);
                 controller++;
                 return { secure_url, link };
+
             }
             else {
                 return null;

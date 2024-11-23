@@ -3,6 +3,8 @@ export class UploadFile {
     static Upload() {
         const storage = multer.diskStorage({
             destination: (req, file, cb) => {
+
+
                 cb(null, "uploads"); //local para o armazenamnto do upload da imagem
             },
             filename: function (req, file, cb) {

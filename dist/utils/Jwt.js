@@ -1,3 +1,4 @@
+
 import jwt from "jsonwebtoken";
 export class JwtToken {
     static async getCodeToken(user, secreteKey, time) {
@@ -12,3 +13,4 @@ export class JwtToken {
         }
     }
 }
+

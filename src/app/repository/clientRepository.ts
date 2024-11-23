@@ -1,4 +1,5 @@
 import { InstanciaPrisma } from "../db/PrismaClient.js";
+
 import { ClientCreate } from "../controller/client.js";
 import { Files } from "../middleware/ClientValidator.js";
 import { AllError } from "../error/AllError.js";
@@ -108,4 +109,26 @@ export class ClientRepository {
       throw error;
     }
   }
+   async showCLients(){
+        try{
+            return await InstanciaPrisma.GetConnection().client.findMany({
+                orderBy:{
+                    id: 'desc'
+                }
+            })
+        }catch(err){
+            throw(err)
+        }
+    }
+
+    async showClientById(id : any){
+        try {
+            return await InstanciaPrisma.GetConnection().client.findUnique({
+                where: { id : id } 
+            })
+            
+        } catch (err) {
+            throw err
+        }
+
 }

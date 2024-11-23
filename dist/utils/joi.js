@@ -3,6 +3,7 @@ export class JoiValidation {
     static async schemaCreateClient({ contabil, comercial, socio, endereco_empresa, endereco_entrega, cliente, financeiro, }) {
         const schemaCreateClient = joi.object({
             branch_activity: joi.string().trim(),
+
             cnpj: joi.string().trim().min(14).max(14).required(),
             state_registration: joi.string().trim().min(9).max(9),
             type_contribuition: joi.string().trim().required(),
