@@ -1,7 +1,6 @@
 import { InstanciaPrisma } from "../db/PrismaClient.js";
 import { AllError } from "../error/AllError.js";
-
-  /gerando uma conexxão
+const connectionDb = InstanciaPrisma.GetConnection(); //gerando uma conexxão
 export class ClientRepository {
     static async createCliente({ cliente, comercial, financeiro, contabil, socio, endereco_empresa, endereco_entrega, }, imagens) {
         try {
@@ -94,17 +93,28 @@ export class ClientRepository {
         }
         catch (error) {
             throw error;
-
         }
-        async showCLients() {
+    }
+    async showCLients() {
         try {
             return await InstanciaPrisma.GetConnection().client.findMany({
                 orderBy: {
-                    id: 'desc'
-                }
+                    id: "desc",
+                },
             });
         }
         catch (err) {
-            throw (err);
+            throw err;
+        }
+    }
+    async showClientById(id) {
+        try {
+            return await InstanciaPrisma.GetConnection().client.findUnique({
+                where: { id: id },
+            });
+        }
+        catch (err) {
+            throw err;
+        }
     }
 }

@@ -1,4 +1,3 @@
-
 import { AllError } from "../error/AllError.js";
 import { ClientRepository } from "../repository/clientRepository.js";
 import { UploadCloudnary } from "../utils/cloudinary.js";
@@ -36,5 +35,4 @@ export class ClientService {
             throw error;
         }
     }
-
 }
