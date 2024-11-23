@@ -10,6 +10,7 @@ app.use("/files", express.static("uploads")); // diretório acessível para requ
 app.use(cors());
 app.use(express.json()); // parte para a deserializaç~~ao das informações
 app.use("/cliente", clientRouter);
+
 app.listen(port, () => {
   console.log("meu servidor está rodando na porta " + 3000);
 });

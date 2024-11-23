@@ -17,6 +17,9 @@ clientRouter.post(
   Client.CreateClient
 );
 
+
 clientRouter.get('/clientes', showClients)
 clientRouter.get('/:id', showClientById)
+clientRouter.get("/enderecos/:id", Client.getAllAddress);
+
 clientRouter.use(GlobalError);

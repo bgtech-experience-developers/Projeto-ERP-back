@@ -42,7 +42,11 @@
 import { NextFunction } from "express";
 import fs from "fs";
 import sharp from "sharp";
+import { UploadCloudnary } from "./cloudinary.js";
 import { Files } from "../middleware/ClientValidator.js";
+import path from "path";
+import { AllError } from "../error/AllError.js";
+import { manualSync } from "rimraf";
 
 export class Sharp {
   static limpezaSharp(
@@ -50,44 +54,80 @@ export class Sharp {
 
     next: NextFunction
   ) {
-    let isError: { mensagem: string; error: boolean } = {
-      mensagem: "sem error",
-      error: false,
-    };
-    files.forEach(async (file) => {
-      if (file.mimetype === "image/jpeg" || file.mimetype === "image/png") {
-        const path = file.path;
-        const outputpathfile = `uploads/sanitized_${file.filename}`;
-        await sharp(path).toFormat("png").toFile(outputpathfile);
-        fs.rename(outputpathfile, path, (err) => {
+    const messagmns = files.map(
+      async (file): Promise<{ mesagem: string; error: boolean }> => {
+        if (file.mimetype === "image/jpeg" || file.mimetype === "image/png") {
+          const path = file.path;
+
+          const outputpathfile = `uploads/sanitized_${file.filename}`;
+          await sharp(path).toFile(outputpathfile);
+          fs.rename(outputpathfile, path, (err) => {
+            if (err) {
+              return {
+                mesagem: "não foi possivel renomear o arquivo",
+                error: true,
+              };
+            } else {
+              return {
+                mesagem: "foi carregado com sucesso",
+                error: false,
+              };
+            }
+          });
+        } else {
+          return {
+            mesagem:
+              "arquivo não compativel, esperado somente arquivo png ou jpg",
+            error: true,
+          };
+        }
+        return { mesagem: "tudo normal", error: false };
+      }
+    );
+
+    return Promise.all(messagmns);
+  }
+  static async removeImagens(files: Express.Multer.File[]) {
+    try {
+      let mensagem: { mensagem: string; error: boolean } = {
+        mensagem: "",
+        error: false,
+      };
+      const regex = /[\\]/gi;
+      files.forEach((file) => {
+        const diretorio = "uploads";
+        const filename = file.filename;
+
+        const pathFile = path.join(diretorio, filename).replace(regex, "/");
+
+        fs.unlink(pathFile, (err) => {
           if (err) {
-            isError = {
-              mensagem: "não foi possivel renomear o arquivo",
+            mensagem = {
+              mensagem: "não foi possivl remover o arquivo",
               error: true,
             };
           } else {
-            isError = {
-              mensagem: "foi possivel renomear o arquivo",
-              error: false,
-            };
           }
         });
-      } else {
-        isError = {
-          mensagem:
-            "arquivo não compativel, esperado somente arquivo png ou jpg",
-          error: true,
-        };
-      }
-    });
-    return isError;
+      });
+      return mensagem;
+    } catch (error) {
+      throw error;
+    }
   }
-  static allImagens(files: Express.Multer.File[], order: boolean[]) {
+  static allImagens(files: upload[], order: boolean[]) {
+    const size = order.length - files.length;
+    let controller = 0;
     return order.map((boolean, index) => {
       if (boolean) {
-        return files.find((f) => {
-          return f.originalname;
-        });
+        const url = files[controller].secure_url;
+
+        const index = url.indexOf("/client");
+        const link = url.slice(0, index);
+        const secure_url = url.slice(index);
+        controller++;
+
+        return { secure_url, link };
       } else {
         return null;
       }

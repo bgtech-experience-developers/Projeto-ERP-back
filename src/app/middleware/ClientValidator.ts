@@ -2,6 +2,7 @@ import { NextFunction, Request, Response } from "express";
 import { JoiValidation } from "../utils/joi.js";
 import { AllError } from "../error/AllError.js";
 import { Sharp } from "../utils/sharp.js";
+import { UploadCloudnary } from "../utils/cloudinary.js";
 import sharp from "sharp";
 export interface Files {
   filename: string;
@@ -12,30 +13,32 @@ export class ClientValidator {
   CreateClientValidator<$Interface>() {
     return async (request: Request, response: Response, next: NextFunction) => {
       try {
-        const files = request.files;
-        const order: boolean[] = request.body.imagens;
+        const files = request.files as Express.Multer.File[];
+
+        request.body = JSON.parse(request.body.json);
+
         const allPromises = await JoiValidation.schemaCreateClient(
           request.body
         );
         const err = allPromises.filter((promise) =>
           promise.error ? promise.error : false
         );
+        err.forEach((err) => console.log(err));
+
         if (err.length != 0) {
+          Sharp.removeImagens(files);
           throw new AllError("alguns campos não são compativeis", 400);
         }
-        //hora de fazer a sanatizaçao dos campos de files7
-        if (files instanceof Array) {
-          const { mensagem, error } = Sharp.limpezaSharp(files, next);
-          if (error) {
-            throw new AllError(mensagem);
-          }
-          const allImagens = Sharp.allImagens(files, order);
-          request.body.allImagens = allImagens;
 
-          next();
-        } else {
-          throw new AllError("formato de arquivo não esperado");
+        const allImagens = await Sharp.limpezaSharp(files, next);
+        const error = allImagens.filter(({ error }) => {
+          return error ? error : false;
+        });
+        if (error.length != 0) {
+          Sharp.removeImagens(files);
+          throw new AllError(error[0].mesagem);
         }
+        next();
       } catch (error) {
         next(error);
       }

@@ -27,7 +27,46 @@ interface GenericFields {
   rg: string;
   photo?: string;
 }
+interface payload {
+  id: number;
+  permission: string[];
+  cnpj: string;
+}
+interface adm {
+  id: number;
+  password: string;
+  cnpj: string;
+}
+interface admClient extends adm {
+  client?: {
+    id?: number;
+    name: string;
+    cpf: string;
+  };
 
+  role_adm?: [
+    {
+      role: {
+        role_name: string;
+      };
+    }
+  ];
+}
+interface upload {
+  secure_url: string;
+  original_filename: string;
+}
+interface adminPermission {
+  adm?: {
+    role_adm: [
+      {
+        role: {
+          role_name: string;
+        };
+      }
+    ];
+  };
+}
 interface Address {
   cep: string;
   street: string;
