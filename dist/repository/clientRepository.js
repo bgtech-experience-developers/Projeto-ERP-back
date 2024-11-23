@@ -95,4 +95,26 @@ export class ClientRepository {
             throw error;
         }
     }
+    async showCLients() {
+        try {
+            return await InstanciaPrisma.GetConnection().client.findMany({
+                orderBy: {
+                    id: "desc",
+                },
+            });
+        }
+        catch (err) {
+            throw err;
+        }
+    }
+    async showClientById(id) {
+        try {
+            return await InstanciaPrisma.GetConnection().client.findUnique({
+                where: { id: id },
+            });
+        }
+        catch (err) {
+            throw err;
+        }
+    }
 }

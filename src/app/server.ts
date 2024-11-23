@@ -12,5 +12,5 @@ app.use(express.json()); // parte para a deserializaç~~ao das informações
 app.use("/cliente", clientRouter);
 
 app.listen(port, () => {
-  console.log("meu servidor está rodando na porta " + process.env.PORT);
+  console.log("meu servidor está rodando na porta " + port);
 });
