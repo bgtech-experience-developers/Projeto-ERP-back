@@ -41,6 +41,13 @@ export class AdmService {
         }
         catch (error) {
             console.log(error);
+
+    static async getAll(body) {
+        try {
+            return (await AdmRepository.getAll(body.page));
+        }
+        catch (error) {
+
             throw error;
         }
     }

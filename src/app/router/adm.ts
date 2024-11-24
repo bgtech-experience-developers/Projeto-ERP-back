@@ -10,4 +10,10 @@ routerAdm.post(
   AdmValidator.loginValidator(true),
   AdmController.createAdm
 );
+routerAdm.post("/all",  AdmController.getAll)
 routerAdm.use(GlobalError);
+
+
+
+
+

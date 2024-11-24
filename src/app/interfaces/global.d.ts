@@ -33,8 +33,8 @@ interface payload {
   cnpj: string;
 }
 interface adm {
-  id: number;
-  password: string;
+  id?: number;
+  password?: string;
   cnpj: string;
   created_at: Date;
   update_at: Date;

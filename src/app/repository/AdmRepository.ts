@@ -26,6 +26,7 @@ export class AdmRepository {
       throw error;
     }
   }
+
   static async create(body: login, permissions: number[]) {
     try {
       const result = await this.connectionDb.$transaction(async (tsx) => {
@@ -46,4 +47,22 @@ export class AdmRepository {
     }
   }
   static async update() {}
+
+  static async getAll(skip: number): Promise<adm[]>{
+
+    try {
+      const connectionDb = InstanciaPrisma.GetConnection();
+
+      return await connectionDb.adm.findMany({
+        take: 2,
+        skip,
+        select: {
+          cnpj: true,
+        }
+      });
+    }
+      catch(error) {
+        throw error;
+      }
+  }
 }
