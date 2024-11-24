@@ -3,11 +3,14 @@ import { AllError } from "../error/AllError.js";
 import { AdmRepository } from "../repository/AdmRepository.js";
 import { BycriptCripto } from "../utils/bcrypt.js";
 import { JwtToken } from "../utils/Jwt.js";
+
 export class AdmService {
+
   static async login(body: {
     cnpj: string;
     password: string;
   }): Promise<string> {
+
     try {
       const admRegister = await AdmRepository.getUnique(body.cnpj);
       if (!admRegister) {
@@ -40,4 +43,13 @@ export class AdmService {
     // const admRegister = await
     return "";
   }
+
+  static async getAll(body: { page: number}): Promise<adm[]> {
+    try {
+     return  (await AdmRepository.getAll(body.page)) 
+    } catch(error) {
+      throw error;
+    }
+  } 
+
 }

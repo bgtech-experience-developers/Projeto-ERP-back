@@ -1,5 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import { AdmService } from "../service/Adm.js";
+
 export class Adm {
   async login(request: Request, response: Response, next: NextFunction) {
     try {
@@ -9,4 +10,19 @@ export class Adm {
       next(error);
     }
   }
+
+  async getAll(request: Request, response: Response, next: NextFunction) {
+
+    try {
+      const adm = await AdmService.getAll(request.body);
+
+      return response.json({
+        adm,
+        message: `Na page ${request.body.page} foi gerado mais 4 registros.`
+      })
+    } catch(error) {
+      next(error)
+    }
+  }
+
 }
