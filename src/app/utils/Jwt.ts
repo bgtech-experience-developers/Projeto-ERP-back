@@ -6,19 +6,28 @@ export class JwtToken {
     secreteKey: string,
     time: jwt.SignOptions
   ): Promise<string> {
-    if (user.client) {
-      return jwt.sign(user, secreteKey, time);
-    } else {
-      const permissionss: string[] | undefined = user.role_adm?.map(
-        ({ role }) => {
-          return role.role_name;
-        }
-      );
-      return jwt.sign(
-        { ...user, permissions: permissionss ? permissionss : [] },
-        secreteKey,
-        time
-      );
+    try {
+      if (user.client) {
+        return jwt.sign(user, secreteKey, time);
+      } else {
+        const permissionss: string[] | undefined = user.role_adm?.map(
+          ({ role }) => {
+            return role.role_name;
+          }
+        );
+
+        return jwt.sign(
+          {
+            id: user.id,
+            cnpj: user.cnpj,
+            permissions: permissionss ? permissionss : [],
+          },
+          secreteKey,
+          time
+        );
+      }
+    } catch (error) {
+      throw error;
     }
   }
 }

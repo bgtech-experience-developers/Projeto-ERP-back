@@ -11,7 +11,9 @@ export class AdmService {
             }
             if (!(admRegister instanceof Array)) {
                 const passwordEqual = BycriptCripto.comparePassword(body.password, admRegister.password);
+                console.log(passwordEqual);
                 if (passwordEqual && process.env.ADM_JWT_SECRET) {
+                    console.log(process.env.ADM_JWT_SECRET);
                     const [clientWithPermisions] = (await AdmRepository.getUnique(undefined, admRegister.id, true));
                     const token = await JwtToken.getCodeToken(clientWithPermisions, process.env.ADM_JWT_SECRET, { expiresIn: "1h" });
                     return token;
@@ -25,11 +27,31 @@ export class AdmService {
         // const admRegister = await
         return "";
     }
+<<<<<<< HEAD
     static async getAll(query) {
+=======
+    static async create({ cnpj, password }, permission) {
+        try {
+            const security = 10;
+            const admRegister = await AdmRepository.getUnique(cnpj);
+            console.log(admRegister);
+            if (admRegister) {
+                throw new AllError("administrador ja cadastrado no sistema");
+            }
+            const senhaHash = BycriptCripto.createPassword(password, security);
+            password = senhaHash;
+            return await AdmRepository.create({ cnpj, password }, permission);
+        }
+        catch (error) {
+            console.log(error);
+
+    static async getAll(body) {
+>>>>>>> 6638f2e34ac65349d86dd1b6962d6860ef9c5ba9
         try {
             return (await AdmRepository.getAll(Number(query.page)));
         }
         catch (error) {
+
             throw error;
         }
     }

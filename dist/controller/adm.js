@@ -1,6 +1,8 @@
 import { AdmService } from "../service/Adm.js";
+
 class Adm {
     async login(request, response, next) {
+
         try {
             const token = await AdmService.login(request.body);
             return response.json("seu token gerado é " + token).status(200);
@@ -21,5 +23,17 @@ class Adm {
             next(error);
         }
     }
+    static async createAdm(request, response, next) {
+        try {
+            const { permissions } = request.body;
+            const body = request.body;
+            const mensagem = await AdmService.create(body, permissions);
+            response.json({ mensagem }).status(201);
+        }
+        catch (error) {
+            next(error);
+        }
+    }
+    static async updateAdm() { }
 }
 export default new Adm;
