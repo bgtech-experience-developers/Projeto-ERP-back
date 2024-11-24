@@ -20,4 +20,19 @@ export class AdmRepository {
             throw error;
         }
     }
+    static async getAll(skip) {
+        try {
+            const connectionDb = InstanciaPrisma.GetConnection();
+            return await connectionDb.adm.findMany({
+                take: 2,
+                skip,
+                select: {
+                    cnpj: true,
+                }
+            });
+        }
+        catch (error) {
+            throw error;
+        }
+    }
 }

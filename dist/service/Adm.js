@@ -25,4 +25,12 @@ export class AdmService {
         // const admRegister = await
         return "";
     }
+    static async getAll(body) {
+        try {
+            return (await AdmRepository.getAll(body.page));
+        }
+        catch (error) {
+            throw error;
+        }
+    }
 }

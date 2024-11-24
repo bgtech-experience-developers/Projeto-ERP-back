@@ -27,7 +27,7 @@ export class AdmRepository {
       const connectionDb = InstanciaPrisma.GetConnection();
 
       return await connectionDb.adm.findMany({
-        take: 10,
+        take: 2,
         skip,
         select: {
           cnpj: true,
