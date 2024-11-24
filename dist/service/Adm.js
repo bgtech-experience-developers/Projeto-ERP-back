@@ -25,9 +25,9 @@ export class AdmService {
         // const admRegister = await
         return "";
     }
-    static async getAll(body) {
+    static async getAll(query) {
         try {
-            return (await AdmRepository.getAll(body.page));
+            return (await AdmRepository.getAll(Number(query.page)));
         }
         catch (error) {
             throw error;

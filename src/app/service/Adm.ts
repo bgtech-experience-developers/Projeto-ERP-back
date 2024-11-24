@@ -44,9 +44,9 @@ export class AdmService {
     return "";
   }
 
-  static async getAll(body: { page: number}): Promise<adm[]> {
+  static async getAll(query: { page: number}): Promise<adm[]> {
     try {
-     return  (await AdmRepository.getAll(body.page)) 
+     return  (await AdmRepository.getAll(Number(query.page)));
     } catch(error) {
       throw error;
     }

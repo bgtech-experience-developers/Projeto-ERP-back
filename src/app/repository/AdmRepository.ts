@@ -30,6 +30,7 @@ export class AdmRepository {
         take: 2,
         skip,
         select: {
+          id: true,
           cnpj: true,
         }
       });

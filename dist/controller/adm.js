@@ -11,10 +11,10 @@ class Adm {
     }
     async getAll(request, response, next) {
         try {
-            const adm = await AdmService.getAll(request.body);
+            const adm = await AdmService.getAll(request.query);
             return response.json({
                 adm,
-                message: `Na page ${request.body.page} foi gerado mais 4 registros.`
+                message: `Na page ${request.query.page} foi gerado mais 4 registros.`
             }).status(200);
         }
         catch (error) {

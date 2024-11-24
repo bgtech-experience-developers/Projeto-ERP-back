@@ -11,14 +11,14 @@ import { AdmService } from "../service/Adm.js";
     }
   }
 
-  async getAll(request: Request, response: Response, next: NextFunction): Promise<any> {
+  async getAll(request: Request<any, any, any, {page: number}>, response: Response, next: NextFunction): Promise<any> {
 
     try {
-      const adm = await AdmService.getAll(request.body);
+      const adm = await AdmService.getAll(request.query);
 
       return response.json({
         adm,
-        message: `Na page ${request.body.page} foi gerado mais 4 registros.`
+        message: `Na page ${request.query.page} foi gerado mais 4 registros.`
       }).status(200)
     } catch(error) {
       next(error)
