@@ -17,6 +17,8 @@ model Client {
   state_registration String @db.VarChar(9)
   photo String?
   type_contribuition String
+  situtation Boolean @default(true)
+
   company_address company_address[]
   delivery_address delivery_address[]
   financinal_contact financial_contact[]
@@ -45,6 +47,14 @@ model sector {
    
    
 }
+ model imagem { //futuramente vou melhorar a lógica do upload de imagens
+   id Int @id @default(autoincrement())
+   link String
+   path String
+   created_at DateTime @default(now())
+    update_at DateTime @default(now())
+
+ }
 
 model Address {
   id Int @id @default(autoincrement())
@@ -123,9 +133,11 @@ model  accounting_contact{
 }
 model Adm {
   id Int @id @default(autoincrement())
-  cnpj String @db.Char(14)
+  cnpj String @db.Char(14) @unique
   password String 
   role_adm RoleAdm[]
+  created_at DateTime @default(now())
+  update_at DateTime @default(now())
   
 } 
 
@@ -133,6 +145,8 @@ model Role {
   id Int @id @default(autoincrement())
   role_name String
   role_adm RoleAdm[]
+   created_at DateTime @default(now())
+    update_at DateTime @default(now())
 
 }
 
@@ -141,6 +155,8 @@ model RoleAdm{
   role_id Int
   adm Adm @relation(fields: [adm_id], references: [id])
   role Role @relation(fields: [role_id], references: [id])
+   created_at DateTime @default(now())
+    update_at DateTime @default(now())
 
   @@id([adm_id, role_id])
 

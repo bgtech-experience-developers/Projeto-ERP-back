@@ -35,4 +35,20 @@ export class JoiValidation {
             SchemaAddress.validate(endereco_entrega),
         ]);
     }
+    static async schemaLogin(body) {
+        try {
+            const schemalogin = joi.object({
+                cnpj: joi.string().max(14).min(14).trim().required().messages({
+                    "string.max": "o campo deve conter no maximo 14 digitos",
+                    "string.min": "o campo cnpj deve conter pelo menos 14 digitos",
+                }),
+                password: joi.string().trim(),
+            });
+            return schemalogin.validate(body);
+        }
+        catch (error) {
+            console.log(error);
+            throw error;
+        }
+    }
 }

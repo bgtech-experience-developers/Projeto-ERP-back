@@ -4,6 +4,8 @@ import { AdmRepository } from "../repository/AdmRepository.js";
 import { BycriptCripto } from "../utils/bcrypt.js";
 import { JwtToken } from "../utils/Jwt.js";
 
+import { login } from "../middleware/admValidator.js";
+
 export class AdmService {
 
   static async login(body: {
@@ -21,7 +23,9 @@ export class AdmService {
           body.password,
           admRegister.password
         );
+        console.log(passwordEqual);
         if (passwordEqual && process.env.ADM_JWT_SECRET) {
+          console.log(process.env.ADM_JWT_SECRET);
           const [clientWithPermisions] = (await AdmRepository.getUnique(
             undefined,
             admRegister.id,
@@ -44,6 +48,23 @@ export class AdmService {
     return "";
   }
 
+  static async create({ cnpj, password }: login, permission: number[]) {
+    try {
+      const security = 10;
+      const admRegister = await AdmRepository.getUnique(cnpj);
+      console.log(admRegister);
+      if (admRegister) {
+        throw new AllError("administrador ja cadastrado no sistema");
+      }
+      const senhaHash = BycriptCripto.createPassword(password, security);
+      password = senhaHash;
+
+      return await AdmRepository.create({ cnpj, password }, permission);
+    } catch (error) {
+      console.log(error);
+      throw error;
+    }
+  }
   static async getAll(body: { page: number}): Promise<adm[]> {
     try {
      return  (await AdmRepository.getAll(body.page)) 
@@ -51,5 +72,4 @@ export class AdmService {
       throw error;
     }
   } 
-
 }

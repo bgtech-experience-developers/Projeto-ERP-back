@@ -3,6 +3,7 @@ import dotnev from "dotenv";
 import { clientRouter } from "./router/Client.js";
 import routerAdm from "./router/adm.js";
 import cors from "cors";
+import { routerAdm } from "./router/adm.js";
 dotnev.config();
 const app = express();
 const port = process.env.PORT;

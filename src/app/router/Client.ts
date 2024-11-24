@@ -8,7 +8,7 @@ import { Client } from "../controller/client.js";
 
 export const clientRouter = express.Router();
 const { CreateClientValidator } = new ClientValidator();
-const { showClients, showClientById } = new Client()
+const { showClients, showClientById } = new Client();
 
 clientRouter.post(
   "/criarCliente",
@@ -17,9 +17,8 @@ clientRouter.post(
   Client.CreateClient
 );
 
-
-clientRouter.get('/clientes', showClients)
-clientRouter.get('/:id', showClientById)
+clientRouter.get("/", showClients);
+clientRouter.get("/:id", showClientById);
 clientRouter.get("/enderecos/:id", Client.getAllAddress);
 
 clientRouter.use(GlobalError);

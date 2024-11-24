@@ -36,6 +36,8 @@ interface adm {
   id?: number;
   password?: string;
   cnpj: string;
+  created_at: Date;
+  update_at: Date;
 }
 interface admClient extends adm {
   client?: {
