@@ -15,9 +15,13 @@ export class AdmRepository {
         });
       }
       if (cnpj) {
-        return connectionDb.adm.findFirst({ where: { cnpj } });
+        return connectionDb.adm.findFirst({
+          where: { cnpj },
+        });
       }
-      return connectionDb.adm.findUnique({ where: { id } });
+      return connectionDb.adm.findUnique({
+        where: { id },
+      });
     } catch (error) {
       throw error;
     }
@@ -41,4 +45,5 @@ export class AdmRepository {
       throw err;
     }
   }
+  static async update() {}
 }

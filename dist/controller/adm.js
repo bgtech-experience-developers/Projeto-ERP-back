@@ -13,11 +13,12 @@ export class AdmController {
         try {
             const { permissions } = request.body;
             const body = request.body;
-            const mensagem = AdmService.create(body, permissions);
+            const mensagem = await AdmService.create(body, permissions);
             response.json({ mensagem }).status(201);
         }
         catch (error) {
             next(error);
         }
     }
+    static async updateAdm() { }
 }

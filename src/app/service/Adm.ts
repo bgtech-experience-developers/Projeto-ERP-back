@@ -19,7 +19,9 @@ export class AdmService {
           body.password,
           admRegister.password
         );
+        console.log(passwordEqual);
         if (passwordEqual && process.env.ADM_JWT_SECRET) {
+          console.log(process.env.ADM_JWT_SECRET);
           const [clientWithPermisions] = (await AdmRepository.getUnique(
             undefined,
             admRegister.id,
@@ -45,14 +47,16 @@ export class AdmService {
     try {
       const security = 10;
       const admRegister = await AdmRepository.getUnique(cnpj);
+      console.log(admRegister);
       if (admRegister) {
         throw new AllError("administrador ja cadastrado no sistema");
       }
       const senhaHash = BycriptCripto.createPassword(password, security);
       password = senhaHash;
-      console.log(password);
-      await AdmRepository.create({ cnpj, password }, permission);
+
+      return await AdmRepository.create({ cnpj, password }, permission);
     } catch (error) {
+      console.log(error);
       throw error;
     }
   }

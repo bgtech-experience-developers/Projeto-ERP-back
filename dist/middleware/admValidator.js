@@ -11,6 +11,9 @@ export class AdmValidator {
                 }
                 if (adm) {
                     const query$String = request.query.permission;
+                    if (!query$String) {
+                        throw new AllError("é necessário pelo menos uma permissão para criar um administrador");
+                    }
                     const arraystring = query$String.split(",");
                     if (arraystring.length === 0 || arraystring.includes("")) {
                         throw new AllError("é necessário pelo menos uma permissão para criar um administrador");

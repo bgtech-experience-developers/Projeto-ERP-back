@@ -4,11 +4,9 @@ import { AdmValidator } from "../middleware/admValidator.js";
 import { GlobalError } from "../middleware/GlobalError.js";
 
 export const routerAdm = Router();
-routerAdm.post("/login", AdmValidator.loginValidator(), (request, response) => {
-  response.json("voce veio para uma rota segura para bens"); // tomorrow
-});
+routerAdm.post("/login", AdmValidator.loginValidator(), AdmController.login);
 routerAdm.post(
-  "/criar/adm",
+  "/criar",
   AdmValidator.loginValidator(true),
   AdmController.createAdm
 );
