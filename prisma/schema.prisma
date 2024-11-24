@@ -122,20 +122,20 @@ model commercial_contact{
 
 }
 model  accounting_contact{
-   id Int @id @default(autoincrement())
-
-     sectorId Int
+  id Int @id @default(autoincrement())
+  sectorId Int
   clientId Int
   client Client @relation(fields: [clientId],references: [id])
   sector sector @relation(fields: [sectorId],references: [id])
-      created_at DateTime @default(now())
-    update_at DateTime @default(now())
+  created_at DateTime @default(now())
+  update_at DateTime @default(now())
 }
 model Adm {
+
   id Int @id @default(autoincrement())
   cnpj String @db.Char(14) @unique
   password String 
-  role_adm RoleAdm[]
+  role_adm RoleAdm[] 
   created_at DateTime @default(now())
   update_at DateTime @default(now())
   
@@ -145,18 +145,18 @@ model Role {
   id Int @id @default(autoincrement())
   role_name String
   role_adm RoleAdm[]
-   created_at DateTime @default(now())
-    update_at DateTime @default(now())
+  created_at DateTime @default(now())
+  update_at DateTime @default(now())
 
 }
 
 model RoleAdm{
   adm_id Int
   role_id Int
-  adm Adm @relation(fields: [adm_id], references: [id])
-  role Role @relation(fields: [role_id], references: [id])
-   created_at DateTime @default(now())
-    update_at DateTime @default(now())
+  adm Adm @relation(fields: [adm_id], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  role Role @relation(fields: [role_id], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  created_at DateTime @default(now())
+  update_at DateTime @default(now())
 
   @@id([adm_id, role_id])
 

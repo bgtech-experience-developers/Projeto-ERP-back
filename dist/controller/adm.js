@@ -37,4 +37,14 @@ export class AdmController {
             next(error);
         }
     }
+    static async delete(request, response, next) {
+        try {
+            await AdmService.delete(request.query);
+            response.status(204).json("Administrator deletado com sucesso!");
+            return;
+        }
+        catch (error) {
+            next(error);
+        }
+    }
 }

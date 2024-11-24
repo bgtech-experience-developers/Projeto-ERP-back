@@ -32,7 +32,7 @@ export class AdmController {
   }
   static async updateAdm() {}
 
-  static async getAll(request: Request<any, any, any, {page: number}>, response: Response, next: NextFunction) {
+  static async getAll(request: Request<any, any, any, {page: string}>, response: Response, next: NextFunction) {
     try {
       const adm = await AdmService.getAll(request.query);
 
@@ -47,6 +47,17 @@ export class AdmController {
     }
   
 }
+
+  static async delete(request: Request<any, any, any, {id: string}>, response: Response, next: NextFunction) {
+    try {
+      await AdmService.delete(request.query);
+      response.status(204).json("Administrator deletado com sucesso!");
+      return
+      
+    } catch(error) {
+      next(error);
+    }
+  }
 }
 
 
