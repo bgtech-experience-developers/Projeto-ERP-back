@@ -25,4 +25,20 @@ export class AdmService {
         // const admRegister = await
         return "";
     }
+    static async create({ cnpj, password }, permission) {
+        try {
+            const security = 10;
+            const admRegister = await AdmRepository.getUnique(cnpj);
+            if (admRegister) {
+                throw new AllError("administrador ja cadastrado no sistema");
+            }
+            const senhaHash = BycriptCripto.createPassword(password, security);
+            password = senhaHash;
+            console.log(password);
+            await AdmRepository.create({ cnpj, password }, permission);
+        }
+        catch (error) {
+            throw error;
+        }
+    }
 }

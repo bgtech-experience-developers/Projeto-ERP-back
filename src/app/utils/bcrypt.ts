@@ -6,4 +6,7 @@ export class BycriptCripto {
   ): boolean {
     return bycript.compareSync(passwordUser, passwordCripto);
   }
+  static createPassword(passwordRegular: string, salts: number) {
+    return bycript.hashSync(passwordRegular, salts);
+  }
 }

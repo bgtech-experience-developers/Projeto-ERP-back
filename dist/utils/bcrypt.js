@@ -3,4 +3,7 @@ export class BycriptCripto {
     static comparePassword(passwordUser, passwordCripto) {
         return bycript.compareSync(passwordUser, passwordCripto);
     }
+    static createPassword(passwordRegular, salts) {
+        return bycript.hashSync(passwordRegular, salts);
+    }
 }

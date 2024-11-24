@@ -1,5 +1,6 @@
 import { InstanciaPrisma } from "../db/PrismaClient.js";
 export class AdmRepository {
+    static connectionDb = InstanciaPrisma.GetConnection();
     static async getUnique(cnpj, id, query) {
         try {
             const connectionDb = InstanciaPrisma.GetConnection();
@@ -18,6 +19,26 @@ export class AdmRepository {
         }
         catch (error) {
             throw error;
+        }
+    }
+    static async create(body, permissions) {
+        try {
+            const result = await this.connectionDb.$transaction(async (tsx) => {
+                //ideia da
+                const adm = await tsx.adm.create({
+                    data: { ...body },
+                });
+                const role = await tsx.roleAdm.createMany({
+                    data: permissions.map((id) => {
+                        return { adm_id: adm.id, role_id: id };
+                    }),
+                });
+                return "administrador cadastrado com sucesso";
+            });
+            return result;
+        }
+        catch (err) {
+            throw err;
         }
     }
 }
