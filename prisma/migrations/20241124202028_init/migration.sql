@@ -8,6 +8,7 @@ CREATE TABLE "Client" (
     "state_registration" VARCHAR(9) NOT NULL,
     "photo" TEXT,
     "type_contribuition" TEXT NOT NULL,
+    "situtation" BOOLEAN NOT NULL DEFAULT true,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "update_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
@@ -27,6 +28,17 @@ CREATE TABLE "sector" (
     "update_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
     CONSTRAINT "sector_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "imagem" (
+    "id" SERIAL NOT NULL,
+    "link" TEXT NOT NULL,
+    "path" TEXT NOT NULL,
+    "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "update_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT "imagem_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -115,6 +127,8 @@ CREATE TABLE "Adm" (
     "id" SERIAL NOT NULL,
     "cnpj" CHAR(14) NOT NULL,
     "password" TEXT NOT NULL,
+    "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "update_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
     CONSTRAINT "Adm_pkey" PRIMARY KEY ("id")
 );
@@ -123,6 +137,8 @@ CREATE TABLE "Adm" (
 CREATE TABLE "Role" (
     "id" SERIAL NOT NULL,
     "role_name" TEXT NOT NULL,
+    "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "update_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
     CONSTRAINT "Role_pkey" PRIMARY KEY ("id")
 );
@@ -131,9 +147,14 @@ CREATE TABLE "Role" (
 CREATE TABLE "RoleAdm" (
     "adm_id" INTEGER NOT NULL,
     "role_id" INTEGER NOT NULL,
+    "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "update_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
     CONSTRAINT "RoleAdm_pkey" PRIMARY KEY ("adm_id","role_id")
 );
+
+-- CreateIndex
+CREATE UNIQUE INDEX "Adm_cnpj_key" ON "Adm"("cnpj");
 
 -- AddForeignKey
 ALTER TABLE "company_address" ADD CONSTRAINT "company_address_clientId_fkey" FOREIGN KEY ("clientId") REFERENCES "Client"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

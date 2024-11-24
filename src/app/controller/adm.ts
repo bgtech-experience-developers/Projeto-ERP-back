@@ -19,7 +19,11 @@ export class AdmController {
   ) {
     try {
       const { permissions } = request.body;
+      console.log(permissions);
+      
       const body = request.body;
+      console.log(body);
+      
       const mensagem = await AdmService.create(body, permissions);
       response.json({ mensagem }).status(201);
     } catch (error) {

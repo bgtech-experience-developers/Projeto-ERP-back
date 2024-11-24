@@ -10,10 +10,6 @@ routerAdm.post(
   AdmValidator.loginValidator(true),
   AdmController.createAdm
 );
-routerAdm.post("/all",  AdmController.getAll)
-routerAdm.use(GlobalError);
-
-
 
 routerAdm.get("/all", AdmController.getAll);
 routerAdm.get("/test", (request, response):any => {
@@ -24,4 +20,11 @@ routerAdm.get("/test", (request, response):any => {
     return response.status(200).json(data);
     
 } ) 
+
+routerAdm.post("/all",  AdmController.getAll)
+routerAdm.use(GlobalError);
+
+
+
+
 
