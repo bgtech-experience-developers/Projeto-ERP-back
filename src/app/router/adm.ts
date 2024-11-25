@@ -16,17 +16,15 @@ routerAdm.post("/refresh-token", async (request, response) => {
   const { token } = request.body;
   const secret = process.env.ADM_JWT_SECRET!;
   const { payload } = jwt.verify(token, secret, { complete: true });
+  response.status(200).json(payload);
+});
 routerAdm.get("/all", AdmController.getAll);
-routerAdm.get("/test", (request, response):any => {
-    const data =request.query
-    console.log(data);
-    
-    console.log("Estou aqui");
-    return response.status(200).json(data);
-    
-} ) 
+routerAdm.get("/test", (request, response): any => {
+  const data = request.query;
+  console.log(data);
+
+  console.log("Estou aqui");
+  response.status(200).json(data);
+});
 
 routerAdm.use(GlobalError);
-
-
-

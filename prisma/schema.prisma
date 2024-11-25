@@ -38,6 +38,7 @@ model sector {
    cell_phone String? @db.VarChar(100)
    rg String @db.VarChar(9)
    photo String?
+   cpf String @unique
    financial_contact financial_contact[]
    owner_partner owner_partner[]
    commercial_contact commercial_contact[]
