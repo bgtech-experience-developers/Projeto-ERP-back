@@ -14,6 +14,7 @@ export class ClientValidator {
     return async (request: Request, response: Response, next: NextFunction) => {
       try {
         const files = request.files as Express.Multer.File[];
+        console.log(files);
 
         request.body = JSON.parse(request.body.json);
 

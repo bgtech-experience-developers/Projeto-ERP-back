@@ -4,8 +4,12 @@ import { AllError } from "../error/AllError.js";
 export class AdmController {
   static async login(request: Request, response: Response, next: NextFunction) {
     try {
-      const token: string = await AdmService.login(request.body);
-      response.json("seu token gerado é " + token).status(200);
+      const { token, refreshToken } = await AdmService.login(request.body);
+      response
+        .json(
+          `seu token gerado é ${token}, e o seu refresh token gerado é ${refreshToken}`
+        )
+        .status(200);
     } catch (error) {
       next(error);
     }

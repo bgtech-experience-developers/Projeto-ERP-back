@@ -6,6 +6,7 @@ export class ClientValidator {
         return async (request, response, next) => {
             try {
                 const files = request.files;
+                console.log(files);
                 request.body = JSON.parse(request.body.json);
                 const allPromises = await JoiValidation.schemaCreateClient(request.body);
                 const err = allPromises.filter((promise) => promise.error ? promise.error : false);

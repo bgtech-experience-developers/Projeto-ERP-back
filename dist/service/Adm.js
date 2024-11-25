@@ -15,17 +15,19 @@ export class AdmService {
                 if (passwordEqual && process.env.ADM_JWT_SECRET) {
                     console.log(process.env.ADM_JWT_SECRET);
                     const [clientWithPermisions] = (await AdmRepository.getUnique(undefined, admRegister.id, true));
-                    const token = await JwtToken.getCodeToken(clientWithPermisions, process.env.ADM_JWT_SECRET, { expiresIn: "1h" });
-                    return token;
+                    const { token, payload } = await JwtToken.getCodeToken(clientWithPermisions, process.env.ADM_JWT_SECRET, { expiresIn: "15min" });
+                    const { role } = payload;
+                    const refreshToken = await JwtToken.RefreshToken(payload, role);
+                    return { token, refreshToken };
                 }
                 throw new AllError("as senhas não se coicidem");
             }
+            throw new AllError("erro interno");
         }
         catch (error) {
             throw error;
         }
         // const admRegister = await
-        return "";
     }
     static async create({ cnpj, password }, permission) {
         try {

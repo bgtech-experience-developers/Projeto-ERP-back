@@ -1,1 +1,25 @@
-export const authentication = () => { };
+import jwt from "jsonwebtoken";
+import { AllError } from "../error/AllError.js";
+export const authentication = (request, response, next) => {
+    try {
+        const { authorization } = request.headers;
+        const token = authorization && authorization.split(" ")[1];
+        if (!token) {
+            throw new AllError("token não fornecido");
+        }
+        const secret = process.env.ADM_JWT_SECRET;
+        if (!secret) {
+            throw new AllError("chave de assinatura não fornecida");
+        }
+        jwt.verify(token, secret, (err, payload) => {
+            if (err) {
+                throw new AllError("não autorizado");
+            }
+            request.body.user = payload;
+        });
+        next();
+    }
+    catch (error) {
+        next(error);
+    }
+};
