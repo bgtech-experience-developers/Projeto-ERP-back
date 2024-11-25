@@ -29,11 +29,11 @@ interface GenericFields {
 }
 
 interface adm {
-  id: number;
-  password: string;
+  id?: number;
+  password?: string;
   cnpj: string;
-  created_at: Date;
-  update_at: Date;
+  created_at?: Date;
+  update_at?: Date;
 }
 interface admClient extends adm {
   client?: {

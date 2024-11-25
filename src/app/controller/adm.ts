@@ -1,5 +1,6 @@
 import { NextFunction, query, Request, Response } from "express";
 import { AdmService } from "../service/Adm.js";
+
 import { AllError } from "../error/AllError.js";
 export class AdmController {
   static async login(request: Request, response: Response, next: NextFunction) {
@@ -29,4 +30,24 @@ export class AdmController {
     }
   }
   static async updateAdm() {}
+
+  static async getAll(
+    request: Request,
+    response: Response,
+    next: NextFunction
+  ) {
+    try {
+      const adm = await AdmService.getAll(request.body);
+
+      response
+        .json({
+          adm,
+          message: `Na page ${request.body.page} foi gerado mais 4 registros.`,
+        })
+        .status(200);
+      return;
+    } catch (error) {
+      next(error);
+    }
+  }
 }

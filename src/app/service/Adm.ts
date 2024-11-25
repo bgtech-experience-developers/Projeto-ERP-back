@@ -49,7 +49,6 @@ export class AdmService {
     } catch (error) {
       throw error;
     }
-    // const admRegister = await
   }
   static async create({ cnpj, password }: login, permission: number[]) {
     try {
@@ -65,6 +64,15 @@ export class AdmService {
       return await AdmRepository.create({ cnpj, password }, permission);
     } catch (error) {
       console.log(error);
+      throw error;
+    }
+
+    // const admRegister = await
+  }
+  static async getAll(body: { page: number }): Promise<adm[]> {
+    try {
+      return await AdmRepository.getAll(body.page);
+    } catch (error) {
       throw error;
     }
   }

@@ -5,6 +5,7 @@ import { ClientRepository } from "../repository/clientRepository.js";
 const { showCLients, showClientById } = new ClientRepository();
 import { number } from "joi";
 import { AllError } from "../error/AllError.js";
+
 export interface ClientCreate {
   cliente: ClientC;
   endereco_entrega: Address;

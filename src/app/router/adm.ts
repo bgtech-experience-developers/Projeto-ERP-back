@@ -20,4 +20,7 @@ routerAdm.post("/refresh-token", async (request, response) => {
   // const { payload } = await JwtToken.RefreshToken(token, secret);
   response.status(200).json(payload);
 });
+
+routerAdm.post("/all", AdmController.getAll);
+
 routerAdm.use(GlobalError);

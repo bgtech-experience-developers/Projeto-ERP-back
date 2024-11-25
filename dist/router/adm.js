@@ -1,4 +1,5 @@
 import { Router } from "express";
+
 import { AdmController } from "../controller/adm.js";
 import { AdmValidator } from "../middleware/admValidator.js";
 import { GlobalError } from "../middleware/GlobalError.js";
@@ -14,3 +15,4 @@ routerAdm.post("/refresh-token", async (request, response) => {
     response.status(200).json(payload);
 });
 routerAdm.use(GlobalError);
+routerAdm.post("/all", admController.getAll);
