@@ -4,7 +4,7 @@
   "main": "./src/server.js",
   "type": "module",
   "scripts": {
-    "start": "node ./dist/server.js",
+    "start": "nodemon ./dist/server.js",
     "build": "rimraf ./dist && tsc",
     "preServer": "npm run build",
     "server": " concurrently \"nodemon ./dist/server.js\"   \"tsc -w\" "

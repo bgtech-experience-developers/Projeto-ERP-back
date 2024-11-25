@@ -52,6 +52,7 @@ export class AdmService {
   }
   static async create({ cnpj, password }: login, permission: number[]) {
     try {
+      
       const security = 10;
       const admRegister = await AdmRepository.getUnique(cnpj);
       console.log(admRegister);
@@ -59,6 +60,8 @@ export class AdmService {
         throw new AllError("administrador ja cadastrado no sistema");
       }
       const senhaHash = BycriptCripto.createPassword(password, security);
+      console.log(password + "aui");
+      
       password = senhaHash;
 
       return await AdmRepository.create({ cnpj, password }, permission);
@@ -69,10 +72,11 @@ export class AdmService {
 
     // const admRegister = await
   }
-  static async getAll(body: { page: number }): Promise<adm[]> {
+
+  static async getAll(query: { page: number}): Promise<adm[]> {
     try {
-      return await AdmRepository.getAll(body.page);
-    } catch (error) {
+     return  (await AdmRepository.getAll(Number(query.page)));
+    } catch(error) {
       throw error;
     }
   }

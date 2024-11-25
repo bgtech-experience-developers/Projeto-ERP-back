@@ -38,18 +38,20 @@ export class AdmService {
                 throw new AllError("administrador ja cadastrado no sistema");
             }
             const senhaHash = BycriptCripto.createPassword(password, security);
+            console.log(password + "aui");
             password = senhaHash;
             return await AdmRepository.create({ cnpj, password }, permission);
         }
         catch (error) {
             console.log(error);
-
-    static async getAll(body) {
+            throw error;
+        }
+    }
+    static async getAll(query) {
         try {
-            return (await AdmRepository.getAll(body.page));
+            return (await AdmRepository.getAll(Number(query.page)));
         }
         catch (error) {
-
             throw error;
         }
     }

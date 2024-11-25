@@ -4,6 +4,7 @@ import { AdmService } from "../service/Adm.js";
 import { AllError } from "../error/AllError.js";
 export class AdmController {
   static async login(request: Request, response: Response, next: NextFunction) {
+
     try {
       const { token, refreshToken } = await AdmService.login(request.body);
       response
@@ -22,7 +23,11 @@ export class AdmController {
   ) {
     try {
       const { permissions } = request.body;
+      console.log(permissions);
+      
       const body = request.body;
+      console.log(body);
+      
       const mensagem = await AdmService.create(body, permissions);
       response.json({ mensagem }).status(201);
     } catch (error) {
@@ -31,14 +36,17 @@ export class AdmController {
   }
   static async updateAdm() {}
 
+
   static async getAll(
     request: Request,
     response: Response,
     next: NextFunction
   ) {
-    try {
-      const adm = await AdmService.getAll(request.body);
 
+  static async getAll(request: Request<any, any, any, {page: number}>, response: Response, next: NextFunction) {
+
+    try {
+      const adm = await AdmService.getAll(request.query);
       response
         .json({
           adm,
@@ -48,6 +56,14 @@ export class AdmController {
       return;
     } catch (error) {
       next(error);
+
+     
+
     }
   }
 }
+
+}
+
+
+
