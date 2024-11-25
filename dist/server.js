@@ -11,6 +11,7 @@ app.use(cors());
 app.use(express.json()); // parte para a deserializaç~~ao das informações
 app.use("/cliente", clientRouter);
 app.use("/adm", routerAdm);
+console.log(typeof (process.env.PORT));
 app.listen(port, () => {
     console.log("meu servidor está rodando na porta " + port);
 });

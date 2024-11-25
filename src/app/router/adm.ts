@@ -12,6 +12,9 @@ routerAdm.post(
 );
 
 routerAdm.get("/all", AdmController.getAll);
+routerAdm.post("/all",  AdmController.getAll)
+routerAdm.delete("/delete", AdmController.delete)
+
 routerAdm.get("/test", (request, response):any => {
     const data =request.query
     console.log(data);
@@ -20,8 +23,6 @@ routerAdm.get("/test", (request, response):any => {
     return response.status(200).json(data);
     
 } ) 
-
-routerAdm.post("/all",  AdmController.getAll)
 routerAdm.use(GlobalError);
 
 

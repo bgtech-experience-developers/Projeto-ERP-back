@@ -3,6 +3,7 @@ import { login } from "../middleware/admValidator.js";
 
 export class AdmRepository {
   static connectionDb = InstanciaPrisma.GetConnection();
+
   static async getUnique(cnpj?: string, id?: number, query?: boolean) {
     try {
       const connectionDb = InstanciaPrisma.GetConnection();
@@ -51,9 +52,7 @@ export class AdmRepository {
   static async getAll(skip: number): Promise<adm[]>{
 
     try {
-      const connectionDb = InstanciaPrisma.GetConnection();
-
-      return await connectionDb.adm.findMany({
+      return await this.connectionDb.adm.findMany({
         take: 10,
         skip,
         select: {
@@ -66,4 +65,20 @@ export class AdmRepository {
         throw error;
       }
   }
+
+  static async delete(id: number)  {
+    try {
+      this.connectionDb.adm.delete({
+        where: {
+          id
+        }
+      })
+      return
+    } catch(error) {
+      throw error;
+    }
+
+  }
+
+
 }

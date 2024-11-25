@@ -7,8 +7,11 @@ export const GlobalError = (
   response: Response,
   next: NextFunction
 ) => {
-  err instanceof AllError
-    ? response.json(err.message).status(err.status)
-    : response.json("erro interno do servidor").status(500);
-  return;
+if(  err instanceof AllError) {
+  console.log(err.status);
+  
+   response.status(err.status).json(err.message)
+}else {
+   response.json("erro interno do servidor").status(500);
+}
 };

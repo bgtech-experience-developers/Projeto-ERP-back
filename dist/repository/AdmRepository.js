@@ -48,8 +48,7 @@ export class AdmRepository {
     static async update() { }
     static async getAll(skip) {
         try {
-            const connectionDb = InstanciaPrisma.GetConnection();
-            return await connectionDb.adm.findMany({
+            return await this.connectionDb.adm.findMany({
                 take: 10,
                 skip,
                 select: {
@@ -57,6 +56,19 @@ export class AdmRepository {
                     cnpj: true,
                 }
             });
+        }
+        catch (error) {
+            throw error;
+        }
+    }
+    static async delete(id) {
+        try {
+            this.connectionDb.adm.delete({
+                where: {
+                    id
+                }
+            });
+            return;
         }
         catch (error) {
             throw error;

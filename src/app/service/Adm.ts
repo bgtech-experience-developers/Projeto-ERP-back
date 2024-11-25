@@ -68,11 +68,40 @@ export class AdmService {
       throw error;
     }
   }
-  static async getAll(query: { page: number}): Promise<adm[]> {
+
+  static async getAll(query: { page: string}): Promise<adm[]> {
     try {
      return  (await AdmRepository.getAll(Number(query.page)));
     } catch(error) {
+        throw error;
+    }
+  }
+
+  static async delete(query: {id: string}) {
+    try {
+      // Verifica se true e também verifica se o Number, retorna true, pois se for diferente de numeros ele retorna false
+      if(query.id && Number(query.id)) {
+        const id = Number(query.id)
+        
+        const adm = await AdmRepository.getUnique(undefined, id);
+        console.log(adm);
+        
+        if(!adm) {
+          throw new AllError("Administrator não encontrado no sistema", 404);
+        
+      }
+        return await AdmRepository.delete(id); 
+      }
+
+      throw new AllError("QueryString inválida/numeros primitivos, ou seja ser 1234, e não 'dbwdu' ", 400)
+
+    } catch(error) {
       throw error;
     }
-  } 
+  }
+
+
+
+
 }
+
