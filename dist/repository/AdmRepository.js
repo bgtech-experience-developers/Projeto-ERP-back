@@ -1,6 +1,7 @@
 import { InstanciaPrisma } from "../db/PrismaClient.js";
 export class AdmRepository {
     static connectionDb = InstanciaPrisma.GetConnection();
+    // async getUnique(cnpj:string):Promise<adm>
     static async getUnique(cnpj, id, query) {
         try {
             const connectionDb = InstanciaPrisma.GetConnection();

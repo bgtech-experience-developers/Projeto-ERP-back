@@ -2,17 +2,15 @@ import { object } from "joi";
 import { AllError } from "../error/AllError.js";
 import { AdmRepository } from "../repository/AdmRepository.js";
 import { BycriptCripto } from "../utils/bcrypt.js";
-import { JwtToken } from "../utils/Jwt.js";
-
+import { JwtToken, payload } from "../utils/Jwt.js";
 import { login } from "../middleware/admValidator.js";
+import { Payload } from "@prisma/client/runtime/library";
 
 export class AdmService {
-
   static async login(body: {
     cnpj: string;
     password: string;
-  }): Promise<string> {
-
+  }): Promise<{ token: string; refreshToken: string }> {
     try {
       const admRegister = await AdmRepository.getUnique(body.cnpj);
       if (!admRegister) {
@@ -32,22 +30,26 @@ export class AdmService {
             true
           )) as admClient[];
 
-          const token = await JwtToken.getCodeToken(
+          const { token, payload } = await JwtToken.getCodeToken(
             clientWithPermisions,
             process.env.ADM_JWT_SECRET,
-            { expiresIn: "1h" }
+            { expiresIn: "15min" }
           );
-          return token;
+          const { role } = payload as payload;
+          const refreshToken = await JwtToken.RefreshToken<typeof role>(
+            payload as payload,
+            role
+          );
+
+          return { token, refreshToken };
         }
         throw new AllError("as senhas não se coicidem");
       }
+      throw new AllError("erro interno");
     } catch (error) {
       throw error;
     }
-    // const admRegister = await
-    return "";
   }
-
   static async create({ cnpj, password }: login, permission: number[]) {
     try {
       
@@ -67,12 +69,15 @@ export class AdmService {
       console.log(error);
       throw error;
     }
+
+    // const admRegister = await
   }
+
   static async getAll(query: { page: number}): Promise<adm[]> {
     try {
      return  (await AdmRepository.getAll(Number(query.page)));
     } catch(error) {
       throw error;
     }
-  } 
+  }
 }

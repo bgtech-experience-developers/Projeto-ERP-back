@@ -27,11 +27,7 @@ interface GenericFields {
   rg: string;
   photo?: string;
 }
-interface payload {
-  id: number;
-  permission: string[];
-  cnpj: string;
-}
+
 interface adm {
   id?: number;
   password?: string;

@@ -119,7 +119,7 @@ export class Sharp {
     const size = order.length - files.length;
     let controller = 0;
     return order.map((boolean, index) => {
-      if (boolean) {
+      if (boolean && files[controller]) {
         const url = files[controller].secure_url;
 
         const index = url.indexOf("/client");

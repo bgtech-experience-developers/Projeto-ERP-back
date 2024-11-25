@@ -3,6 +3,7 @@ import { login } from "../middleware/admValidator.js";
 
 export class AdmRepository {
   static connectionDb = InstanciaPrisma.GetConnection();
+  // async getUnique(cnpj:string):Promise<adm>
   static async getUnique(cnpj?: string, id?: number, query?: boolean) {
     try {
       const connectionDb = InstanciaPrisma.GetConnection();
