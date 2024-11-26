@@ -26,6 +26,7 @@ interface GenericFields {
   cell_phone?: string;
   rg: string;
   photo?: string;
+  cpf: string;
 }
 
 interface adm {

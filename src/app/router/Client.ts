@@ -12,7 +12,7 @@ const { showClients, showClientById } = new Client();
 
 clientRouter.post(
   "/criarCliente",
-  UploadFile.Upload().array("photos", 4),
+  UploadFile.Upload().array("photos", 5),
   CreateClientValidator(),
   Client.CreateClient
 );
