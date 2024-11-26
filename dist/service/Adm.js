@@ -27,7 +27,6 @@ export class AdmService {
         catch (error) {
             throw error;
         }
-        // const admRegister = await
     }
     static async create({ cnpj, password }, permission) {
         try {
@@ -46,6 +45,7 @@ export class AdmService {
             console.log(error);
             throw error;
         }
+        // const admRegister = await
     }
     static async getAll(query) {
         try {

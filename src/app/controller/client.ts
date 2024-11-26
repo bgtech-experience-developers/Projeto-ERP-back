@@ -2,7 +2,7 @@ import { NextFunction, Request, Response } from "express";
 import { ClientService } from "../service/ClientService.js";
 import { Files } from "../middleware/ClientValidator.js";
 import { ClientRepository } from "../repository/clientRepository.js";
-const { showCLients, showClientById } = new ClientRepository();
+const { showClientById } = new ClientRepository();
 import { number } from "joi";
 import { AllError } from "../error/AllError.js";
 
@@ -39,11 +39,9 @@ export class Client {
 
   async showClients(request: Request, response: Response, next: NextFunction) {
     try {
-      const showClient = await showCLients();
+      const showClient = await ClientService.showClints();
       response.send(showClient);
     } catch (err) {
-      console.log(err);
-      response.status(500).json({ message: "erro interno do servidor! :(" });
       next(err);
     }
   }

@@ -95,13 +95,20 @@ export class ClientRepository {
             throw error;
         }
     }
-    async showCLients() {
+    static async showCLients() {
         try {
-            return await InstanciaPrisma.GetConnection().client.findMany({
-                orderBy: {
-                    id: "desc",
+            const allclients = await InstanciaPrisma.GetConnection().client.findMany({
+                include: {
+                    owner_partner: {
+                        include: {
+                            sector: {
+                                select: { name: true, email: true, cell_phone: true },
+                            },
+                        },
+                    },
                 },
             });
+            return allclients;
         }
         catch (err) {
             throw err;

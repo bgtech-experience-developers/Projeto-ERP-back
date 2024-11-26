@@ -3,6 +3,8 @@ import { InstanciaPrisma } from "../db/PrismaClient.js";
 import { ClientCreate } from "../controller/client.js";
 import { Files } from "../middleware/ClientValidator.js";
 import { AllError } from "../error/AllError.js";
+interface allClientes extends ClientC {}
+interface allClientes extends base_solid_allclient {}
 
 const connectionDb = InstanciaPrisma.GetConnection(); //gerando uma conexxão
 export class ClientRepository {
@@ -109,16 +111,22 @@ export class ClientRepository {
       throw error;
     }
   }
-  async showCLients() {
+  static async showCLients() {
     try {
-   
-    
-      return await InstanciaPrisma.GetConnection().client.findMany({
-      include:{
-        owner_partner:{include:{sector:{select:{name:true,email:true}}}}
-      }
-      });
-      console.log('ola mundo')
+      const allclients: allClientes[] =
+        await InstanciaPrisma.GetConnection().client.findMany({
+          include: {
+            owner_partner: {
+              include: {
+                sector: {
+                  select: { name: true, email: true, cell_phone: true },
+                },
+              },
+            },
+          },
+        });
+
+      return allclients;
     } catch (err) {
       throw err;
     }
@@ -128,7 +136,6 @@ export class ClientRepository {
     try {
       return await InstanciaPrisma.GetConnection().client.findUnique({
         where: { id: id },
-        
       });
     } catch (err) {
       throw err;

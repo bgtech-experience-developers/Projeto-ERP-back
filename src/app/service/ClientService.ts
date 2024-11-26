@@ -40,4 +40,36 @@ export class ClientService {
       throw error;
     }
   }
+  static async showClints() {
+    try {
+      const allClints = await ClientRepository.showCLients();
+      const newArray = allClints.map(
+        ({ branch_activity, situtation, fantasy_name, owner_partner }) => {
+          return {
+            branch_activity,
+            situtation,
+            fantasy_name,
+            name: [
+              ...owner_partner.map(({ sector }) => {
+                return sector.name;
+              }),
+            ],
+            email: [
+              ...owner_partner.map(({ sector }) => {
+                return sector.email;
+              }),
+            ],
+            telefone: [
+              ...owner_partner.map(({ sector }) => {
+                return sector.cell_phone;
+              }),
+            ],
+          };
+        }
+      );
+      return newArray;
+    } catch (error) {
+      throw error;
+    }
+  }
 }

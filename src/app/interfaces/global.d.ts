@@ -4,8 +4,25 @@ interface ClientC {
   branch_activity: string;
   cnpj: string;
   state_registration: string;
-  type_contribuition: "fisica" | "juridica";
-  cpf:string
+  photo?: string | null;
+  situtation: boolean;
+  type_contribuition: string;
+  created_at: Date;
+  update_at: Date;
+}
+interface base_solid_allclient {
+  owner_partner: {
+    sector: {
+      name: string;
+      email: string;
+      cell_phone: string | null;
+    };
+    id: number;
+    created_at: Date;
+    update_at: Date;
+    clientId: number;
+    sectorId: number;
+  }[];
 }
 interface bodyCreateClient {
   financeiro: GenericFields;
@@ -26,7 +43,7 @@ interface GenericFields {
   phone: string;
   cell_phone?: string;
   rg: string;
-  photo?: string;
+  photo?: string | null;
   cpf: string;
 }
 
