@@ -5,6 +5,7 @@ interface ClientC {
   cnpj: string;
   state_registration: string;
   type_contribuition: "fisica" | "juridica";
+  cpf:string
 }
 interface bodyCreateClient {
   financeiro: GenericFields;

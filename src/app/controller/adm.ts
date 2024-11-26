@@ -26,6 +26,7 @@ export class AdmController {
 
       const body = request.body;
       console.log(body);
+      
 
       const mensagem = await AdmService.create(body, permissions);
       response.json({ mensagem }).status(201);

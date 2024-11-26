@@ -25,6 +25,10 @@ export class JoiValidation {
       phone: joi.string().trim(),
       rg: joi.string().min(9).max(9),
       photo: joi.string(),
+      cpf:joi.string().max(11).min(11).messages({
+        "string.max": "o campo deve conter no maximo 14 digitos",
+          "string.min": "o campo cpf deve conter pelo menos 14 digitos",
+      })
     });
     const SchemaAddress = joi.object<$Interface, false, $Interface>({
       cep: joi.string().min(8).max(8).trim(),

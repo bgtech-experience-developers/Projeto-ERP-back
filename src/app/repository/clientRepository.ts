@@ -111,11 +111,14 @@ export class ClientRepository {
   }
   async showCLients() {
     try {
+   
+    
       return await InstanciaPrisma.GetConnection().client.findMany({
-        orderBy: {
-          id: "desc",
-        },
+      include:{
+        owner_partner:{include:{sector:{select:{name:true,email:true}}}}
+      }
       });
+      console.log('ola mundo')
     } catch (err) {
       throw err;
     }
@@ -125,6 +128,7 @@ export class ClientRepository {
     try {
       return await InstanciaPrisma.GetConnection().client.findUnique({
         where: { id: id },
+        
       });
     } catch (err) {
       throw err;
