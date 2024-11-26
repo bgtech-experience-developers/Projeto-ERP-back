@@ -11,10 +11,16 @@ const { CreateClientValidator } = new ClientValidator();
 const { showClients, showClientById } = new Client();
 
 clientRouter.post(
-  "/criarCliente",
-  UploadFile.Upload().array("photos", 4),
+  "/registro",
+  UploadFile.Upload().array("photos", 5),
   CreateClientValidator(),
   Client.CreateClient
+);
+clientRouter.put(
+  "/atualizar",
+  UploadFile.Upload().array("photos", 5),
+  CreateClientValidator(),
+  Client.updateClient
 );
 
 clientRouter.get("/", showClients);

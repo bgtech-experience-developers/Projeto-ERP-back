@@ -54,4 +54,16 @@ export class Client {
             next(error);
         }
     }
+    static async updateClient(request, response, next) {
+        try {
+            const order = request.body.imagens;
+            const imagens = request.files;
+            const bodyClient = request.body;
+            const allresources = await ClientService.updateClient(order, bodyClient, imagens);
+            response.status(200).json(allresources);
+        }
+        catch (error) {
+            next(error);
+        }
+    }
 }

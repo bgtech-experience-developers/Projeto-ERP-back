@@ -20,4 +20,18 @@ export const UploadCloudnary = async (files) => {
         throw error;
     }
 };
-export const DeleteResourcesCloud = async () => { };
+export async function DeleteResourcesCloud(public_id) {
+    try {
+        if (public_id instanceof Array) {
+            const deleted = await cloudinary.api.delete_resources(public_id);
+            return deleted;
+        }
+        else {
+            const result = await cloudinary.uploader.destroy(public_id);
+            return result;
+        }
+    }
+    catch (error) {
+        throw error;
+    }
+}

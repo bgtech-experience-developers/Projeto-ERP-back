@@ -69,9 +69,6 @@ export class ClientRepository {
         connectionDb.financial_contact.create({
           data: { sectorId: finance.id, clientId: client.id },
         }),
-        connectionDb.financial_contact.create({
-          data: { sectorId: finance.id, clientId: client.id },
-        }),
         connectionDb.owner_partner.create({
           data: { sectorId: owner.id, clientId: client.id },
         }),
@@ -105,6 +102,31 @@ export class ClientRepository {
           company_address: { select: { client: { select: { cnpj: true } } } },
         },
       });
+    } catch (error) {
+      throw error;
+    }
+  }
+  static async sector(id: number) {
+    try {
+      const connectionDb = InstanciaPrisma.GetConnection();
+      return connectionDb.sector.findFirst({ where: { id } });
+    } catch (error) {
+      throw error;
+    }
+  }
+  static async getAllresources(cnpj: string) {
+    try {
+      const connectionDb = InstanciaPrisma.GetConnection();
+      const getAllresources = await connectionDb.client.findMany({
+        where: { cnpj },
+        include: {
+          owner_partner: { select: { sectorId: true } },
+          commercial_contact: { select: { sectorId: true } },
+          financinal_contact: { select: { sectorId: true } },
+          accounting_contact: { select: { sectorId: true } },
+        },
+      });
+      return getAllresources;
     } catch (error) {
       throw error;
     }

@@ -46,18 +46,20 @@ const configCloudinary = cloud.config({
   api_key: process.env.CLOUDINARY_API_KEY,
   api_secret: process.env.CLOUDINARY_API_SECRET,
 });
-const url =
-  "https://res.cloudinary.com/dgl61q8hs/image/upload/v1732388934/client/mdcjnillguco2tpdwpkf.png";
-const index = url.indexOf("/client");
-const url2 = url.slice(index);
-console.log(url2);
-console.log(index);
-const result = await cloud.uploader.destroy(
-  "client/erp/c5c2009150c07359f096d342f9c4e1ec"
-);
-console.log(result);
-const ab = "c5c2009150c07359f096d342f9c4e1ec.jpg";
-const regex = /[\b.png\b.jg/]/gi;
 
-const trocar = ab.replace(regex, "");
-console.log(trocar);
+// const result = await cloud.api.delete_resources(
+//   ["client/erp/softhouse-loo", "client/erp/OKEMOe"],
+//   (err, resul) => {
+//     if (err) {
+//       console.log("o erro foi: ", err);
+//     }
+//     console.log(resul);
+//   }
+// );
+const result = await cloud.api.delete_resources();
+console.log("todo o resultado ", result);
+// const ab = "c5c2009150c07359f096d342f9c4e.jpg1ec.png";
+// const regex = /(\.png|\.jpg)$/gi;
+
+// const trocar = ab.replace(regex, "");
+// console.log(trocar);

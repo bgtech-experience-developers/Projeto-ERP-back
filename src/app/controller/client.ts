@@ -83,4 +83,23 @@ export class Client {
       next(error);
     }
   }
+  static async updateClient(
+    request: Request,
+    response: Response,
+    next: NextFunction
+  ) {
+    try {
+      const order: boolean[] = request.body.imagens;
+      const imagens = request.files as Express.Multer.File[];
+      const bodyClient: ClientCreate = request.body;
+      const allresources = await ClientService.updateClient(
+        order,
+        bodyClient,
+        imagens
+      );
+      response.status(200).json(allresources);
+    } catch (error) {
+      next(error);
+    }
+  }
 }

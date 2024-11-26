@@ -25,6 +25,7 @@ export class JoiValidation {
       phone: joi.string().trim(),
       rg: joi.string().min(9).max(9),
       photo: joi.string(),
+      cpf: joi.string().required(),
     });
     const SchemaAddress = joi.object<$Interface, false, $Interface>({
       cep: joi.string().min(8).max(8).trim(),
