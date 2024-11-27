@@ -2,22 +2,18 @@ import jwt from "jsonwebtoken";
 export class JwtToken {
     static async getCodeToken(user, secreteKey, time) {
         try {
-            if (user.client) {
-                const token = jwt.sign({ ...user, role: "Regular" }, secreteKey, time);
-                const { payload } = jwt.verify(token, secreteKey, { complete: true });
+            const secret = secreteKey === "adm"
+                ? process.env.ADM_JWT_SECRET
+                : process.env.ADM_JWT_REGULAR;
+            console.log(user);
+            if (secreteKey === "Regular") {
+                const token = jwt.sign({ ...user, role: "Regular" }, secret, time);
+                const { payload } = jwt.verify(token, secret, { complete: true });
                 return { token, payload };
             }
             else {
-                const permissionss = user.role_adm?.map(({ role }) => {
-                    return role.role_name;
-                });
-                const token = jwt.sign({
-                    id: user.id,
-                    cnpj: user.cnpj,
-                    role: "adm",
-                    permission: permissionss ? permissionss : [],
-                }, secreteKey, time);
-                const { payload } = jwt.verify(token, secreteKey, { complete: true });
+                const token = jwt.sign({ ...user, role: "adm" }, secret, time);
+                const { payload } = jwt.verify(token, secret, { complete: true });
                 return { token, payload };
             }
         }
@@ -44,12 +40,10 @@ export class JwtToken {
                     expiresIn: "1d",
                 });
             }
-            return "";
         }
         catch (error) {
             console.log(error);
             throw error;
         }
-        4;
     }
 }
