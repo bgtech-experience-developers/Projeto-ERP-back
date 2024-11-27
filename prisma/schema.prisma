@@ -1,4 +1,3 @@
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -9,156 +8,225 @@ datasource db {
 }
 
 model Client {
-  id Int @id @default(autoincrement())
-  corporate_reason String @db.VarChar(100)
-  fantasy_name String @db.VarChar(100) 
-  branch_activity String @db.VarChar(100)
-  cnpj String @db.VarChar(14) 
-  state_registration String @db.VarChar(9)
-  photo String?
+  id                 Int                  @default(autoincrement())
+  corporate_reason   String               @db.VarChar(100)
+  fantasy_name       String               @db.VarChar(100)
+  branch_activity    String               @db.VarChar(100)
+  cnpj               String               @db.VarChar(14)
+  state_registration String               @db.VarChar(9)
   type_contribuition String
-  situation Boolean @default(true)
-
-  company_address company_address[]
-  delivery_address delivery_address[]
+  situation          Boolean              @default(true)
+  image_company      image_company[]
+  company_address    company_address[]
+  delivery_address   delivery_address[]
   financinal_contact financial_contact[]
-  owner_partner owner_partner[]
-   commercial_contact commercial_contact[]
-   accounting_contact accounting_contact[]
+  owner_partner      owner_partner[]
+  commercial_contact commercial_contact[]
+  accounting_contact accounting_contact[]
+
   created_at DateTime @default(now())
-  update_at DateTime @default(now())
+  update_at  DateTime @default(now())
 
-
+  @@id([id])
 }
+
 model sector {
-   id Int @id @default(autoincrement())
-   name String @db.VarChar(100)
-   email String @db.VarChar(100) 
-   phone String? @db.VarChar(100)
-   cell_phone String @db.VarChar(100)
-   rg String @db.VarChar(9)
-   photo String?
-   cpf String 
-   financial_contact financial_contact[]
-   owner_partner owner_partner[]
-   commercial_contact commercial_contact[]
-   accounting_contact accounting_contact[]
-    created_at DateTime @default(now())
-  update_at DateTime @default(now())
-   
-   
-}
- model imagem { //futuramente vou melhorar a lógica do upload de imagens
-   id Int @id @default(autoincrement())
-   link String
-   path String
-   created_at DateTime @default(now())
-    update_at DateTime @default(now())
+  // id                       Int                        @id @default(autoincrement())
+  id                Int                 @default(autoincrement())
+  name              String              @db.VarChar(100)
+  email             String              @db.VarChar(100)
+  phone             String?             @db.VarChar(100)
+  cell_phone        String              @db.VarChar(100)
+  rg                String              @db.VarChar(9)
+  cpf               String              @db.VarChar(9)
+  financial_contact financial_contact[]
 
- }
+  owner_partner            owner_partner[]
+  commercial_contact       commercial_contact[]
+  accounting_contact       accounting_contact[]
+  financial_image          financial_image[]
+  commercial_image         commercial_image[]
+  owner_partner_image      owner_partner_image[]
+  accounting_contact_image accounting_contact_image[]
+
+  created_at DateTime @default(now())
+  update_at  DateTime @default(now())
+
+  @@id([id])
+}
+
+model imagem {
+  id Int @id @default(autoincrement())
+
+  path String?
+
+  image_company            image_company[]
+  financial_image          financial_image[]
+  commercial_imagem        commercial_image[]
+  owner_partner            owner_partner_image[]
+  accounting_contact_image accounting_contact_image[]
+  created_at               DateTime                   @default(now())
+  update_at                DateTime                   @default(now())
+}
 
 model Address {
-  id Int @id @default(autoincrement())
-  cep String @db.VarChar(8)
-  street String @db.VarChar(100)
-  number String @db.VarChar(100)
-  complement String @db.VarChar(100)
-  city String @db.VarChar(100)
-  neighborhood String @db.VarChar(100)
-  company_address company_address[]
+  id               Int                @id @default(autoincrement())
+  cep              String             @db.VarChar(8)
+  street           String             @db.VarChar(100)
+  number           String             @db.VarChar(100)
+  complement       String             @db.VarChar(100)
+  city             String             @db.VarChar(100)
+  neighborhood     String             @db.VarChar(100)
+  company_address  company_address[]
   delivery_address delivery_address[]
-  created_at DateTime @default(now())
-  update_at DateTime @default(now())
+  created_at       DateTime           @default(now())
+  update_at        DateTime           @default(now())
 }
+
 model company_address {
-  id Int @id @default(autoincrement())
-  adressId Int
-  clientId Int
-  client Client @relation(fields: [clientId],references: [id])
-  adress Address @relation(fields: [adressId],references: [id])
+  id         Int      @id @default(autoincrement())
+  adressId   Int
+  clientId   Int
+  client     Client   @relation(fields: [clientId], references: [id])
+  adress     Address  @relation(fields: [adressId], references: [id])
   created_at DateTime @default(now())
-  update_at DateTime @default(now())
+  update_at  DateTime @default(now())
+}
+
+model commercial_image {
+  imageId              Int
+  commercial_contactId Int
+  commercial           sector   @relation(fields: [commercial_contactId], references: [id])
+  image                imagem   @relation(fields: [imageId], references: [id])
+  created_at           DateTime @default(now())
+  update_at            DateTime @default(now())
+
+  @@id([imageId, commercial_contactId])
+}
+
+model image_company {
+  companyId  Int
+  imageId    Int
+  image      imagem   @relation(fields: [imageId], references: [id])
+  company    Client   @relation(fields: [companyId], references: [id])
+  created_at DateTime @default(now())
+  update_at  DateTime @default(now())
+
+  @@id([companyId, imageId])
 }
 
 model delivery_address {
-    id Int @id @default(autoincrement())
-    adressId Int
-    clientId Int
-    client Client @relation(fields: [clientId],references: [id])
-    adress Address @relation(fields: [adressId],references: [id])
-    created_at DateTime @default(now())
-    update_at DateTime @default(now())
-   
+  id         Int      @id @default(autoincrement())
+  adressId   Int
+  clientId   Int
+  client     Client   @relation(fields: [clientId], references: [id])
+  adress     Address  @relation(fields: [adressId], references: [id])
+  created_at DateTime @default(now())
+  update_at  DateTime @default(now())
+}
+
+model financial_image {
+  imageId             Int
+  financial_contactId Int
+  image               imagem   @relation(fields: [imageId], references: [id])
+  financial_contact   sector   @relation(fields: [financial_contactId], references: [id])
+  created_at          DateTime @default(now())
+  update_at           DateTime @default(now())
+
+  @@id([imageId, financial_contactId])
 }
 
 model financial_contact {
-  id Int @id @default(autoincrement())
-    sectorId Int
-    clientId Int
-    client Client @relation(fields: [clientId],references: [id])
-    sector sector @relation(fields: [sectorId],references: [id])
-    created_at DateTime @default(now())
-    update_at DateTime @default(now())
-   
-
-}
-model owner_partner{
-   id Int @id @default(autoincrement())
-   sectorId Int
-  clientId Int
-  client Client @relation(fields: [clientId],references: [id])
-  sector sector @relation(fields: [sectorId],references: [id])
-      created_at DateTime @default(now())
-    update_at DateTime @default(now())
-}
-model commercial_contact{
-     id Int @id @default(autoincrement())
-
-     sectorId Int
-  clientId Int
-  client Client @relation(fields: [clientId],references: [id])
-  sector sector @relation(fields: [sectorId],references: [id])
-      created_at DateTime @default(now())
-    update_at DateTime @default(now())
-
-}
-model  accounting_contact{
-   id Int @id @default(autoincrement())
-
-     sectorId Int
-  clientId Int
-  client Client @relation(fields: [clientId],references: [id])
-  sector sector @relation(fields: [sectorId],references: [id])
-      created_at DateTime @default(now())
-    update_at DateTime @default(now())
-}
-model Adm {
-  id Int @id @default(autoincrement())
-  cnpj String @db.Char(14) @unique
-  password String 
-  role_adm RoleAdm[]
+  sectorId   Int
+  clientId   Int
+  client     Client   @relation(fields: [clientId], references: [id])
+  sector     sector   @relation(fields: [sectorId], references: [id])
   created_at DateTime @default(now())
-  update_at DateTime @default(now())
-  
-} 
+  update_at  DateTime @default(now())
+
+  @@id([sectorId, clientId])
+}
+
+model owner_partner_image {
+  imageId         Int
+  owner_partnerId Int
+  image           imagem   @relation(fields: [imageId], references: [id])
+  owner_partner   sector   @relation(fields: [owner_partnerId], references: [id])
+  created_at      DateTime @default(now())
+  update_at       DateTime @default(now())
+
+  @@id([imageId, owner_partnerId])
+}
+
+model owner_partner {
+  sectorId   Int
+  clientId   Int
+  client     Client   @relation(fields: [clientId], references: [id])
+  sector     sector   @relation(fields: [sectorId], references: [id])
+  created_at DateTime @default(now())
+  update_at  DateTime @default(now())
+
+  @@id([sectorId, clientId])
+}
+
+model commercial_contact {
+  sectorId Int
+  clientId Int
+
+  client     Client   @relation(fields: [clientId], references: [id])
+  sector     sector   @relation(fields: [sectorId], references: [id])
+  created_at DateTime @default(now())
+  update_at  DateTime @default(now())
+
+  @@id([sectorId, clientId])
+}
+
+model accounting_contact_image {
+  imageId              Int
+  accounting_contactId Int
+  accounting_contact   sector   @relation(fields: [accounting_contactId], references: [id])
+  image                imagem   @relation(fields: [imageId], references: [id])
+  created_at           DateTime @default(now())
+  update_at            DateTime @default(now())
+
+  @@id([imageId, accounting_contactId])
+}
+
+model accounting_contact {
+  sectorId   Int
+  clientId   Int
+  client     Client   @relation(fields: [clientId], references: [id])
+  sector     sector   @relation(fields: [sectorId], references: [id])
+  created_at DateTime @default(now())
+  update_at  DateTime @default(now())
+
+  @@id([sectorId, clientId])
+}
+
+model Adm {
+  id         Int       @id @default(autoincrement())
+  cnpj       String    @unique @db.Char(14)
+  password   String
+  role_adm   RoleAdm[]
+  created_at DateTime  @default(now())
+  update_at  DateTime  @default(now())
+}
 
 model Role {
-  id Int @id @default(autoincrement())
-  role_name String
-  role_adm RoleAdm[]
-   created_at DateTime @default(now())
-    update_at DateTime @default(now())
-
+  id         Int       @id @default(autoincrement())
+  role_name  String
+  role_adm   RoleAdm[]
+  created_at DateTime  @default(now())
+  update_at  DateTime  @default(now())
 }
 
-model RoleAdm{
-  adm_id Int
-  role_id Int
-  adm Adm @relation(fields: [adm_id], references: [id])
-  role Role @relation(fields: [role_id], references: [id])
-   created_at DateTime @default(now())
-    update_at DateTime @default(now())
+model RoleAdm {
+  adm_id     Int
+  role_id    Int
+  adm        Adm      @relation(fields: [adm_id], references: [id])
+  role       Role     @relation(fields: [role_id], references: [id])
+  created_at DateTime @default(now())
+  update_at  DateTime @default(now())
 
   @@id([adm_id, role_id])
-
 }

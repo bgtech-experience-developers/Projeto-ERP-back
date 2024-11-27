@@ -68,4 +68,21 @@ export class JwtToken {
       throw error;
     }
   }
+  static getTokenApi(
+    payload: { app: "node-api" },
+    secretKey: "api",
+    time: jwt.SignOptions
+  ): string {
+    try {
+      const secret = secretKey === "api" ? process.env.API_PHP_SECRET : null;
+      if (!secret) {
+        throw new AllError(
+          "a chave secreta para assinatura do token para api não foi fornecida"
+        );
+      }
+      return jwt.sign({ ...payload }, secret, time);
+    } catch (error) {
+      throw error;
+    }
+  }
 }

@@ -4,12 +4,15 @@ const connectionDb = InstanciaPrisma.GetConnection(); //gerando uma conexxão
 export class ClientRepository {
     static async createCliente({ cliente, comercial, financeiro, contabil, socio, endereco_empresa, endereco_entrega, }, imagens) {
         try {
+            console.log(imagens);
             const connectionDb = InstanciaPrisma.GetConnection();
-            const [client, delivery, store, finance, commercial, accounting, owner] = await connectionDb.$transaction([
+            // const create = imagens.map((imagem) => {
+            //   return tsx.imagem.create({ data: {} });
+            // });
+            const [client, delivery, store, finance, commercial, accounting, owner, image_company, image_socio, image_commercial_contact, image_financial, image_contabil,] = await connectionDb.$transaction([
                 connectionDb.client.create({
                     data: {
                         ...cliente,
-                        photo: imagens[0] ? imagens[0].secure_url : null,
                     },
                     select: { id: true },
                 }),
@@ -18,26 +21,37 @@ export class ClientRepository {
                 connectionDb.sector.create({
                     data: {
                         ...financeiro,
-                        photo: imagens[3] ? imagens[3].secure_url : null,
                     },
                 }),
                 connectionDb.sector.create({
                     data: {
                         ...comercial,
-                        photo: imagens[2] ? imagens[2].secure_url : null,
                     },
                 }),
                 connectionDb.sector.create({
                     data: {
                         ...contabil,
-                        photo: imagens[4] ? imagens[4].secure_url : null,
                     },
                 }),
                 connectionDb.sector.create({
                     data: {
                         ...socio,
-                        photo: imagens[1] ? imagens[1].secure_url : null,
                     },
+                }),
+                connectionDb.imagem.create({
+                    data: { path: imagens[0] ? imagens[0] : null },
+                }),
+                connectionDb.imagem.create({
+                    data: { path: imagens[1] ? imagens[1] : null },
+                }),
+                connectionDb.imagem.create({
+                    data: { path: imagens[2] ? imagens[2] : null },
+                }),
+                connectionDb.imagem.create({
+                    data: { path: imagens[3] ? imagens[3] : null },
+                }),
+                connectionDb.imagem.create({
+                    data: { path: imagens[4] ? imagens[4] : null },
                 }),
             ]);
             await connectionDb.$transaction([
@@ -53,19 +67,41 @@ export class ClientRepository {
                 connectionDb.financial_contact.create({
                     data: { sectorId: finance.id, clientId: client.id },
                 }),
-                connectionDb.financial_contact.create({
-                    data: { sectorId: finance.id, clientId: client.id },
-                }),
                 connectionDb.owner_partner.create({
                     data: { sectorId: owner.id, clientId: client.id },
                 }),
                 connectionDb.accounting_contact.create({
                     data: { sectorId: accounting.id, clientId: client.id },
                 }),
+                connectionDb.image_company.create({
+                    data: { imageId: image_company.id, companyId: client.id },
+                }),
+                connectionDb.financial_image.create({
+                    data: {
+                        imageId: image_financial.id,
+                        financial_contactId: finance.id,
+                    },
+                }),
+                connectionDb.commercial_image.create({
+                    data: {
+                        imageId: image_commercial_contact.id,
+                        commercial_contactId: commercial.id,
+                    },
+                }),
+                connectionDb.owner_partner_image.create({
+                    data: { imageId: image_socio.id, owner_partnerId: owner.id },
+                }),
+                connectionDb.accounting_contact_image.create({
+                    data: {
+                        imageId: image_contabil.id,
+                        accounting_contactId: accounting.id,
+                    },
+                }),
             ]);
-            return { mensagem: "empresa cadastrada com sucesso" };
+            return { mensagem: "empresa registrada com sucesso" };
         }
         catch (error) {
+            console.log(error);
             throw new AllError("não foi possivel cadastrar o usuário", 400);
         }
     }

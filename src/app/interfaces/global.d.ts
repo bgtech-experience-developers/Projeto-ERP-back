@@ -4,8 +4,7 @@ interface ClientC {
   branch_activity: string;
   cnpj: string;
   state_registration: string;
-  photo?: string | null;
-  situtation: boolean;
+  situation: boolean;
   type_contribuition: string;
   created_at: Date;
   update_at: Date;
@@ -16,9 +15,8 @@ interface base_solid_allclient {
     sector: {
       name: string;
       email: string;
-      cell_phone: string | null;
+      cell_phone: string;
     };
-    id: number;
     created_at: Date;
     update_at: Date;
     clientId: number;
@@ -41,8 +39,8 @@ interface integral extends Address {}
 interface GenericFields {
   name: string;
   email: string;
-  phone: string;
-  cell_phone?: string;
+  phone?: string;
+  cell_phone: string;
   rg: string;
   photo?: string | null;
   cpf: string;

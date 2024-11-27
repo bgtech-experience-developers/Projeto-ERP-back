@@ -1,4 +1,5 @@
 import jwt from "jsonwebtoken";
+import { AllError } from "../error/AllError.js";
 export class JwtToken {
     static async getCodeToken(user, secreteKey, time) {
         try {
@@ -43,6 +44,18 @@ export class JwtToken {
         }
         catch (error) {
             console.log(error);
+            throw error;
+        }
+    }
+    static getTokenApi(payload, secretKey, time) {
+        try {
+            const secret = secretKey === "api" ? process.env.API_PHP_SECRET : null;
+            if (!secret) {
+                throw new AllError("a chave secreta para assinatura do token para api não foi fornecida");
+            }
+            return jwt.sign({ ...payload }, secret, time);
+        }
+        catch (error) {
             throw error;
         }
     }
