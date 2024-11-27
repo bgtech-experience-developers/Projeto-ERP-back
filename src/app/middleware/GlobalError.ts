@@ -7,6 +7,7 @@ export const GlobalError = (
   response: Response,
   next: NextFunction
 ) => {
+  console.log(err);
   err instanceof AllError
     ? response.status(err.status).json(err.message)
     : response.json("erro interno no servidor").status(500);

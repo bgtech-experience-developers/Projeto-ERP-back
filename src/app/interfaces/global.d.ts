@@ -10,6 +10,7 @@ interface ClientC {
   created_at: Date;
   update_at: Date;
 }
+
 interface base_solid_allclient {
   owner_partner: {
     sector: {

@@ -29,10 +29,17 @@ export class AdmService {
             admRegister.id,
             true
           )) as admClient[];
-
+          const permission = clientWithPermisions.role_adm?.map(({ role }) => {
+            return role.role_name;
+          });
+          const payloadAdm = {
+            permission,
+            id: clientWithPermisions.id,
+            cnpj: clientWithPermisions.cnpj,
+          };
           const { token, payload } = await JwtToken.getCodeToken(
-            clientWithPermisions,
-            process.env.ADM_JWT_SECRET,
+            payloadAdm,
+            "adm",
             { expiresIn: "15min" }
           );
           const { role } = payload as payload;
@@ -43,7 +50,7 @@ export class AdmService {
 
           return { token, refreshToken };
         }
-        throw new AllError("as senhas não se coicidem");
+        throw new AllError("dados incorretos");
       }
       throw new AllError("erro interno");
     } catch (error) {
@@ -52,7 +59,6 @@ export class AdmService {
   }
   static async create({ cnpj, password }: login, permission: number[]) {
     try {
-      
       const security = 10;
       const admRegister = await AdmRepository.getUnique(cnpj);
       console.log(admRegister);
@@ -60,8 +66,7 @@ export class AdmService {
         throw new AllError("administrador ja cadastrado no sistema");
       }
       const senhaHash = BycriptCripto.createPassword(password, security);
-      console.log(password + "aui");
-      
+
       password = senhaHash;
 
       return await AdmRepository.create({ cnpj, password }, permission);
@@ -73,10 +78,10 @@ export class AdmService {
     // const admRegister = await
   }
 
-  static async getAll(query: { page: number}): Promise<adm[]> {
+  static async getAll(query: { page: number }): Promise<adm[]> {
     try {
-     return  (await AdmRepository.getAll(Number(query.page)));
-    } catch(error) {
+      return await AdmRepository.getAll(Number(query.page));
+    } catch (error) {
       throw error;
     }
   }

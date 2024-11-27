@@ -11,7 +11,7 @@ const { CreateClientValidator } = new ClientValidator();
 const { showClients, showClientById } = new Client();
 
 clientRouter.post(
-  "/criarCliente",
+  "/registro",
   UploadFile.Upload().array("photos", 5),
   CreateClientValidator(),
   Client.CreateClient
