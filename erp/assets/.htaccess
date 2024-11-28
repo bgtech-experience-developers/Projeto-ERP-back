@@ -1,0 +1,22 @@
+
+# Bloquear a listagem de diretórios para toda a pasta 'assets'
+Options -Indexes
+
+# Permitir acesso às imagens na pasta 'img_product'
+<Directory "https://srv653-files.hstgr.io/4a7bdda9aa5c01b7/files/public_html/erp/assets/img_product/">
+    Options +Indexes
+    AllowOverride All
+    Require all granted
+</Directory>
+
+# Permitir acesso às imagens na pasta 'img_profile'
+<Directory "https://srv653-files.hstgr.io/4a7bdda9aa5c01b7/files/public_html/erp/assets/img_profile">
+    Options +Indexes
+    AllowOverride All
+    Require all granted
+</Directory>
+
+# Permitir acesso a imagens (tipos comuns como png, jpg, jpeg, gif)
+<FilesMatch "\.(jpg|jpeg|svg|png)$">
+    Require all granted
+</FilesMatch>
