@@ -44,10 +44,10 @@ export class ClientService {
     try {
       const allClints = await ClientRepository.showCLients();
       const newArray = allClints.map(
-        ({ branch_activity, situtation, fantasy_name, owner_partner }) => {
+        ({ branch_activity,situation, fantasy_name, owner_partner }) => {
           return {
             branch_activity,
-            situtation,
+           situation,
             fantasy_name,
             name: [
               ...owner_partner.map(({ sector }) => {
