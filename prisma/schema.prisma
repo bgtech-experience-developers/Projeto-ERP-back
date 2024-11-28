@@ -38,7 +38,7 @@ model sector {
   phone             String?             @db.VarChar(100)
   cell_phone        String              @db.VarChar(100)
   rg                String              @db.VarChar(9)
-  cpf               String              @db.VarChar(9)
+  cpf               String              @db.VarChar(11)
   financial_contact financial_contact[]
 
   owner_partner            owner_partner[]

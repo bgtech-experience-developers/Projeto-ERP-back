@@ -62,7 +62,7 @@ import path from "path";
 // const trocar = ab.replace(regex, "");
 // console.log(trocar);
 
-const file = ["caminho", null, null, "lucas"];
+// const file = ["caminho", null, null, "lucas"];
 // const imagens = file.map((imagem) => {
 //   return imagem.path ? imagem.path : null;
 // });
@@ -70,14 +70,14 @@ const file = ["caminho", null, null, "lucas"];
 // if (imagens.length != 0) {
 //   console.log("ola mundo");
 // }
-const apiPhp = file.filter((file) => {
-  return file ? file : null;
-});
-console.log(apiPhp);
-const arrayNovo = ["path", "name"];
-let controle = 0;
-file.forEach((value, index) => {
-  console.log(value);
-  value ? ((file[index] = arrayNovo[controle]), controle++) : "";
-});
-console.log(file);
+// const apiPhp = file.filter((file) => {
+//   return file ? file : null;
+// });
+// console.log(apiPhp);
+// const arrayNovo = ["path", "name"];
+// let controle = 0;
+// file.forEach((value, index) => {
+//   console.log(value);
+//   value ? ((file[index] = arrayNovo[controle]), controle++) : "";
+// });
+// console.log(file);

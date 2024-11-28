@@ -1,108 +1,80 @@
 import { InstanciaPrisma } from "../db/PrismaClient.js";
 import { AllError } from "../error/AllError.js";
+import { ApiPhpUtils } from "../utils/ApiPhp.js";
 const connectionDb = InstanciaPrisma.GetConnection(); //gerando uma conexxão
 export class ClientRepository {
-    static async createCliente({ cliente, comercial, financeiro, contabil, socio, endereco_empresa, endereco_entrega, }, imagens) {
+    static async createCliente({ cliente, comercial, financeiro, contabil, socio, endereco_empresa, endereco_entrega, }, imagens, files) {
         try {
+            console.log(comercial);
             console.log(imagens);
             const connectionDb = InstanciaPrisma.GetConnection();
-            // const create = imagens.map((imagem) => {
-            //   return tsx.imagem.create({ data: {} });
-            // });
-            const [client, delivery, store, finance, commercial, accounting, owner, image_company, image_socio, image_commercial_contact, image_financial, image_contabil,] = await connectionDb.$transaction([
-                connectionDb.client.create({
+            //consumo da api do marney para armazenar as imagens
+            const result = connectionDb.$transaction(async (tsx) => {
+                const client = await tsx.client.create({ data: { ...cliente }, select: { id: true } });
+                const delivery = await tsx.address.create({ data: { ...endereco_entrega }, select: { id: true } });
+                const store = await tsx.address.create({ data: { ...endereco_empresa }, select: { id: true } });
+                const finance = await tsx.sector.create({ data: { ...financeiro }, select: { id: true } });
+                const commercial = await tsx.sector.create({ data: { ...comercial }, select: { id: true } });
+                const accounting = await tsx.sector.create({ data: { ...contabil }, select: { id: true } });
+                const owner = await tsx.sector.create({ data: { ...socio }, select: { id: true } });
+                const imagesUsers = await ApiPhpUtils(imagens, "img_profile", files);
+                const Allimagens = imagesUsers.map(async (imagem) => {
+                    return tsx.imagem.create({
+                        data: { path: imagem ? imagem : null },
+                        select: { id: true },
+                    });
+                });
+                const imagensRegister = await Promise.all(Allimagens);
+                console.log(imagensRegister);
+                await tsx.commercial_image.create({
                     data: {
-                        ...cliente,
-                    },
-                    select: { id: true },
-                }),
-                connectionDb.address.create({ data: { ...endereco_empresa } }),
-                connectionDb.address.create({ data: { ...endereco_entrega } }),
-                connectionDb.sector.create({
-                    data: {
-                        ...financeiro,
-                    },
-                }),
-                connectionDb.sector.create({
-                    data: {
-                        ...comercial,
-                    },
-                }),
-                connectionDb.sector.create({
-                    data: {
-                        ...contabil,
-                    },
-                }),
-                connectionDb.sector.create({
-                    data: {
-                        ...socio,
-                    },
-                }),
-                connectionDb.imagem.create({
-                    data: { path: imagens[0] ? imagens[0] : null },
-                }),
-                connectionDb.imagem.create({
-                    data: { path: imagens[1] ? imagens[1] : null },
-                }),
-                connectionDb.imagem.create({
-                    data: { path: imagens[2] ? imagens[2] : null },
-                }),
-                connectionDb.imagem.create({
-                    data: { path: imagens[3] ? imagens[3] : null },
-                }),
-                connectionDb.imagem.create({
-                    data: { path: imagens[4] ? imagens[4] : null },
-                }),
-            ]);
-            await connectionDb.$transaction([
-                connectionDb.delivery_address.create({
-                    data: { adressId: delivery.id, clientId: client.id },
-                }),
-                connectionDb.company_address.create({
-                    data: { adressId: store.id, clientId: client.id },
-                }),
-                connectionDb.commercial_contact.create({
-                    data: { sectorId: commercial.id, clientId: client.id },
-                }),
-                connectionDb.financial_contact.create({
-                    data: { sectorId: finance.id, clientId: client.id },
-                }),
-                connectionDb.owner_partner.create({
-                    data: { sectorId: owner.id, clientId: client.id },
-                }),
-                connectionDb.accounting_contact.create({
-                    data: { sectorId: accounting.id, clientId: client.id },
-                }),
-                connectionDb.image_company.create({
-                    data: { imageId: image_company.id, companyId: client.id },
-                }),
-                connectionDb.financial_image.create({
-                    data: {
-                        imageId: image_financial.id,
-                        financial_contactId: finance.id,
-                    },
-                }),
-                connectionDb.commercial_image.create({
-                    data: {
-                        imageId: image_commercial_contact.id,
+                        imageId: imagensRegister[2].id,
                         commercial_contactId: commercial.id,
                     },
-                }),
-                connectionDb.owner_partner_image.create({
-                    data: { imageId: image_socio.id, owner_partnerId: owner.id },
-                }),
-                connectionDb.accounting_contact_image.create({
+                });
+                await tsx.image_company.create({
+                    data: { imageId: imagensRegister[0].id, companyId: client.id },
+                });
+                await tsx.financial_image.create({
                     data: {
-                        imageId: image_contabil.id,
+                        imageId: imagensRegister[3].id,
+                        financial_contactId: finance.id,
+                    },
+                });
+                await tsx.owner_partner_image.create({
+                    data: { imageId: imagensRegister[1].id, owner_partnerId: owner.id },
+                });
+                await tsx.accounting_contact_image.create({
+                    data: {
+                        imageId: imagensRegister[4].id,
                         accounting_contactId: accounting.id,
                     },
+                });
+                await tsx.delivery_address.create({
+                    data: { adressId: delivery.id, clientId: client.id },
                 }),
-            ]);
-            return { mensagem: "empresa registrada com sucesso" };
+                    await tsx.company_address.create({
+                        data: { adressId: store.id, clientId: client.id },
+                    }),
+                    await tsx.commercial_contact.create({
+                        data: { sectorId: commercial.id, clientId: client.id },
+                    }),
+                    await tsx.financial_contact.create({
+                        data: { sectorId: finance.id, clientId: client.id },
+                    }),
+                    await tsx.owner_partner.create({
+                        data: { sectorId: owner.id, clientId: client.id },
+                    }),
+                    await tsx.accounting_contact.create({
+                        data: { sectorId: accounting.id, clientId: client.id },
+                    });
+                return { mensagem: "empresa registrada com sucesso nesse novo estilo" };
+            });
+            return await result;
         }
         catch (error) {
             console.log(error);
-            throw new AllError("não foi possivel cadastrar o usuário", 400);
+            throw error;
         }
     }
     static async GetuniqueClient(cnpj, id) {

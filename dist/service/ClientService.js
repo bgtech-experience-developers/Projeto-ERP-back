@@ -1,7 +1,6 @@
 import { AllError } from "../error/AllError.js";
 import { ClientRepository } from "../repository/clientRepository.js";
 import { Sharp } from "../utils/sharp.js";
-import { ApiPhpUtils } from "../utils/ApiPhp.js";
 export class ClientService {
     static async CreateClientService(body, image, order) {
         try {
@@ -12,14 +11,12 @@ export class ClientService {
                 //   throw new AllError(mensagem);
                 // }
                 const imagens = Sharp.allImagens(image, order);
-                const apiPhp = await ApiPhpUtils(imagens);
-                console.log(apiPhp);
-                return { mensagem: "tudo certo" };
-                const { error, mensagem } = await Sharp.removeImagens(image);
-                if (error) {
-                    throw new AllError(mensagem);
-                }
-                return ClientRepository.createCliente(body, apiPhp);
+                // const apiPhp = await ApiPhpUtils(imagens);
+                // const { error, mensagem } = await Sharp.removeImagens(image);
+                // if (error) {
+                //   throw new AllError(mensagem);
+                // }
+                return ClientRepository.createCliente(body, imagens, image); // ja to enviando de forma aliada o caminho da imagens e os camops null de qum não enviou
             }
             Sharp.removeImagens(image);
             throw new AllError("cliente ja cadastrado no sistema");

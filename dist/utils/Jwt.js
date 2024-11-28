@@ -13,7 +13,12 @@ export class JwtToken {
                 return { token, payload };
             }
             else {
-                const token = jwt.sign({ ...user, role: "adm" }, secret, time);
+                const token = jwt.sign({
+                    id: user.id,
+                    cnpj: user.cnpj,
+                    permission: [...user.permission],
+                    role: 'adm',
+                }, secret, time);
                 const { payload } = jwt.verify(token, secret, { complete: true });
                 return { token, payload };
             }

@@ -21,14 +21,14 @@ export class ClientService {
         // }
 
         const imagens = Sharp.allImagens(image, order);
-        const apiPhp = await ApiPhpUtils(imagens);
-        console.log(apiPhp);
-        return { mensagem: "tudo certo" };
-        const { error, mensagem } = await Sharp.removeImagens(image);
-        if (error) {
-          throw new AllError(mensagem);
-        }
-        return ClientRepository.createCliente(body, apiPhp);
+
+        // const apiPhp = await ApiPhpUtils(imagens);
+
+        // const { error, mensagem } = await Sharp.removeImagens(image);
+        // if (error) {
+        //   throw new AllError(mensagem);
+        // }
+        return ClientRepository.createCliente(body, imagens, image); // ja to enviando de forma aliada o caminho da imagens e os camops null de qum não enviou
       }
       Sharp.removeImagens(image);
       throw new AllError("cliente ja cadastrado no sistema");
