@@ -16,7 +16,7 @@ routerAdm.get("/refresh-token", async (request, response, next) => {
             response.status(200).json("usuário deslogado com sucesso");
             return;
         }
-        const refreshToken = request.headers.cookies;
+        const refreshToken = request.cookies.refreshToken;
         console.log("esse é ", refreshToken);
         console.log(refreshToken); // esse é o token que eu armazenei durante o login
         const secretKeyRefresh = process.env.REFRESH_TOKEN;
@@ -40,11 +40,10 @@ routerAdm.get("/refresh-token", async (request, response, next) => {
         response.cookie("refreshToken", refreshToken, {
             httpOnly: true,
             maxAge: 24 * 60 * 60 * 7000,
+            secure: false,
+            sameSite: "none",
         });
-        response.json("esse agora é seu novo token de acesso " +
-            acessToken +
-            "e esse agora é seu novo refresh token " +
-            refreshToken);
+        response.json({ acessToken });
     }
     catch (error) {
         next(error);

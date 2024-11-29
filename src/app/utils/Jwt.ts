@@ -12,7 +12,7 @@ export interface payload extends JwtPayload {
 
 type role = "adm" | "Regular";
 export class JwtToken {
-  static async getCodeToken<$Payload extends admClient>(
+  static async getCodeToken<$Payload extends payload>(
     user: $Payload,
     secreteKey: role,
     time: jwt.SignOptions
@@ -28,7 +28,12 @@ export class JwtToken {
         const { payload } = jwt.verify(token, secret!, { complete: true });
         return { token, payload };
       } else {
-        const token = jwt.sign({ ...user, role: "adm" }, secret!, time);
+        const token = jwt.sign( {
+          id: user.id,
+          cnpj: user.cnpj,
+          permission: [...user.permission],
+          role: 'adm',
+        }, secret!, time);
         const { payload } = jwt.verify(token, secret!, { complete: true });
 
         return { token, payload };
@@ -65,6 +70,23 @@ export class JwtToken {
       }
     } catch (error) {
       console.log(error);
+      throw error;
+    }
+  }
+  static getTokenApi(
+    payload: { app: "node-api" },
+    secretKey: "api",
+    time: jwt.SignOptions
+  ): string {
+    try {
+      const secret = secretKey === "api" ? process.env.API_PHP_SECRET : null;
+      if (!secret) {
+        throw new AllError(
+          "a chave secreta para assinatura do token para api não foi fornecida"
+        );
+      }
+      return jwt.sign({ ...payload }, secret, time);
+    } catch (error) {
       throw error;
     }
   }

@@ -1,20 +1,22 @@
 import { AllError } from "../error/AllError.js";
 import { ClientRepository } from "../repository/clientRepository.js";
-import { UploadCloudnary } from "../utils/cloudinary.js";
 import { Sharp } from "../utils/sharp.js";
 export class ClientService {
     static async CreateClientService(body, image, order) {
         try {
             const cliente = await ClientRepository.GetuniqueClient(body.cliente.cnpj);
             if (!cliente) {
-                const uploadCloud = await UploadCloudnary(image);
-                const { error, mensagem } = await Sharp.removeImagens(image);
-                if (error) {
-                    throw new AllError(mensagem);
-                }
-                console.log("eu passo por aqui papai");
-                const imagens = Sharp.allImagens(uploadCloud, order);
-                return ClientRepository.createCliente(body, imagens);
+                // const { error, mensagem } = await Sharp.removeImagens(image);
+                // if (error) {
+                //   throw new AllError(mensagem);
+                // }
+                const imagens = Sharp.allImagens(image, order);
+                // const apiPhp = await ApiPhpUtils(imagens);
+                // const { error, mensagem } = await Sharp.removeImagens(image);
+                // if (error) {
+                //   throw new AllError(mensagem);
+                // }
+                return ClientRepository.createCliente(body, imagens, image); // ja to enviando de forma aliada o caminho da imagens e os camops null de qum não enviou
             }
             Sharp.removeImagens(image);
             throw new AllError("cliente ja cadastrado no sistema");
@@ -38,10 +40,10 @@ export class ClientService {
     static async showClints() {
         try {
             const allClints = await ClientRepository.showCLients();
-            const newArray = allClints.map(({ branch_activity, situtation, fantasy_name, owner_partner }) => {
+            const newArray = allClints.map(({ branch_activity, situation, fantasy_name, owner_partner }) => {
                 return {
                     branch_activity,
-                    situtation,
+                    situation,
                     fantasy_name,
                     name: [
                         ...owner_partner.map(({ sector }) => {

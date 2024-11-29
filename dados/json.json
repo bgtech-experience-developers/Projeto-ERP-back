@@ -1,5 +1,5 @@
 {
-  "imagens": [true, false, false, true],
+  "imagens": [true, false, false, true, false],
   "cliente": {
     "corporate_reason": "não sei",
     "fantasy_name": "emprsa do elo musca",
@@ -29,6 +29,7 @@
     "phone": "859281812912",
     "cell_phone": "10210210",
     "rg": "123456789",
+    "cpf": "12345678919",
     "email": "lixeira@gmail.com"
   },
   "comercial": {
@@ -36,18 +37,23 @@
     "phone": "859281812912",
     "cell_phone": "10210210",
     "rg": "123456789",
+    "cpf": "12345678911",
     "email": "emanuel@gmail.com"
   },
   "contabil": {
     "name": "lucio",
     "phone": "859281812912",
+    "cell_phone": "10210210",
     "rg": "123456789",
+    "cpf": "12345678912",
     "email": "lisboa@gmail.com"
   },
   "socio": {
     "name": "lucio",
     "phone": "859281812912",
     "rg": "123456789",
+    "cell_phone": "10210210",
+    "cpf": "12345678913",
     "email": "fransisco@gmail.com"
   }
 }

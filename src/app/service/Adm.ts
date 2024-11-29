@@ -38,7 +38,7 @@ export class AdmService {
             cnpj: clientWithPermisions.cnpj,
           };
           const { token, payload } = await JwtToken.getCodeToken(
-            payloadAdm,
+            payloadAdm as payload,
             "adm",
             { expiresIn: "15min" }
           );
