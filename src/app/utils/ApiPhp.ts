@@ -15,6 +15,7 @@ export const ApiPhpUtils = async (
         filePath: [...filesPath],
         typeFolder,
         files,
+        action:'POST'
       });
       if (allPaths instanceof Array) {
         imagems.forEach((value, index) => {

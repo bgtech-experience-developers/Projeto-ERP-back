@@ -10,6 +10,7 @@ export interface Files {
 }
 
 export class ClientValidator {
+
   CreateClientValidator<$Interface>() {
     return async (request: Request, response: Response, next: NextFunction) => {
       try {
@@ -45,4 +46,7 @@ export class ClientValidator {
       }
     };
   }
+
+  
+
 }

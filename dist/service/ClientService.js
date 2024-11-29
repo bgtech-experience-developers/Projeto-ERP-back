@@ -68,4 +68,20 @@ export class ClientService {
             throw error;
         }
     }
+    static async deleteClient(param) {
+        try {
+            console.log('oi');
+            if (param && Number(param)) {
+                console.log('peste');
+                const company = await ClientRepository.GetuniqueClient(undefined, Number(param));
+                console.log(company);
+                if (!company) {
+                    throw new AllError("Cliente/Empresa não cadastrada no sistema!", 404);
+                }
+                console.log(await ClientRepository.getImage(Number(param)));
+            }
+        }
+        catch (error) {
+        }
+    }
 }

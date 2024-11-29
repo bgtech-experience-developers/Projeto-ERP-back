@@ -12,6 +12,7 @@ export const ApiPhp = async (filepath) => {
             }
         });
         formdata.append("typeFolder", filepath.typeFolder);
+        formdata.append("action", filepath.action);
         const token = JwtToken.getTokenApi({ app: "node-api" }, "api", {
             expiresIn: "1h",
         });

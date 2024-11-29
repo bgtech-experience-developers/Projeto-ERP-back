@@ -79,6 +79,7 @@ export class ClientRepository {
     }
     static async GetuniqueClient(cnpj, id) {
         try {
+            console.log('passei');
             const connectionDb = InstanciaPrisma.GetConnection();
             if (cnpj) {
                 return await connectionDb.client.findFirst({ where: { cnpj } });
@@ -130,6 +131,96 @@ export class ClientRepository {
         }
         catch (err) {
             throw err;
+        }
+    }
+    static async deleteClient() {
+    }
+    static async getImage(id) {
+        try {
+            const pathImages = await connectionDb.client.findUnique({
+                where: {
+                    id
+                },
+                include: {
+                    image_company: {
+                        include: {
+                            image: {
+                                select: {
+                                    path: true
+                                }
+                            }
+                        }
+                    }, owner_partner: {
+                        include: {
+                            sector: {
+                                include: {
+                                    owner_partner_image: {
+                                        select: {
+                                            image: {
+                                                select: {
+                                                    path: true
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }, commercial_contact: {
+                        include: {
+                            sector: {
+                                include: {
+                                    commercial_image: {
+                                        select: {
+                                            image: {
+                                                select: {
+                                                    path: true
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }, financinal_contact: {
+                        include: {
+                            sector: {
+                                include: {
+                                    financial_image: {
+                                        select: {
+                                            image: {
+                                                select: {
+                                                    path: true
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }, accounting_contact: {
+                        include: {
+                            sector: {
+                                include: {
+                                    accounting_contact_image: {
+                                        select: {
+                                            image: {
+                                                select: {
+                                                    path: true
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+            console.log(pathImages);
+        }
+        catch (error) {
+            throw error;
         }
     }
 }

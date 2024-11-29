@@ -10,4 +10,5 @@ clientRouter.post("/registro", UploadFile.Upload().array("photos", 5), CreateCli
 clientRouter.get("/", showClients);
 clientRouter.get("/:id", showClientById);
 clientRouter.get("/enderecos/:id", Client.getAllAddress);
+clientRouter.delete("/remove/:id", Client.deleteClient);
 clientRouter.use(GlobalError);

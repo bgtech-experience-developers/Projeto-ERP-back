@@ -20,5 +20,6 @@ clientRouter.post(
 clientRouter.get("/", showClients);
 clientRouter.get("/:id", showClientById);
 clientRouter.get("/enderecos/:id", Client.getAllAddress);
+clientRouter.delete("/remove/:id",Client.deleteClient)
 
 clientRouter.use(GlobalError);

@@ -12,6 +12,7 @@ interface allClientes extends base_solid_allclient {}
 
 const connectionDb = InstanciaPrisma.GetConnection(); //gerando uma conexxão
 export class ClientRepository {
+
   static async createCliente(
     {
       cliente,
@@ -100,8 +101,11 @@ export class ClientRepository {
       throw error;
     }
   }
-  static async GetuniqueClient<$Interface>(cnpj: $Interface, id?: number) {
+
+  static async GetuniqueClient<$Interface>(cnpj?: $Interface, id?: number) {
     try {
+      console.log('passei');
+      
       const connectionDb = InstanciaPrisma.GetConnection();
       if (cnpj) {
         return await connectionDb.client.findFirst({ where: { cnpj } });
@@ -111,6 +115,7 @@ export class ClientRepository {
       throw new AllError("servidor fora do ar");
     }
   }
+
   static async GetAllAddress(id: number) {
     try {
       const connectionDb = InstanciaPrisma.GetConnection();
@@ -124,6 +129,7 @@ export class ClientRepository {
       throw error;
     }
   }
+
   static async showCLients() {
     try {
       const allclients: allClientes[] =
@@ -154,4 +160,103 @@ export class ClientRepository {
       throw err;
     }
   }
+
+  static async deleteClient() {
+
+  }
+
+  static async getImage(id: number) {
+    try {
+      // const pathImages = await connectionDb.client.findUnique({
+      //   where: {
+      //     id
+      //   },
+      //   include: {
+      //     image_company: {
+      //       include: {
+      //         image: {
+      //           select: {
+      //             path: true
+      //           }
+      //         }
+      //       }
+      //     }, owner_partner: {
+      //       include: {
+      //         sector: {
+      //           include: {
+      //             owner_partner_image: {
+      //               select: {
+      //                 image: {
+      //                   select: {
+      //                     path: true
+      //                   }
+      //                 }
+      //               }
+      //             }
+      //           }
+      //         }
+      //       }
+      //     }, commercial_contact: {
+      //       include: {
+      //         sector: {
+      //           include: {
+      //             commercial_image: {
+      //               select: {
+      //                 image: {
+      //                   select: {
+      //                     path: true
+      //                   }
+      //                 }
+      //               }
+      //             }
+      //           }
+      //         }
+      //       }
+      //     }, financinal_contact: {
+      //       include: {
+      //         sector: {
+      //           include: {
+      //             financial_image: {
+      //               select: {
+      //                 image: {
+      //                   select: {
+      //                     path: true
+      //                   }
+      //                 }
+      //               }
+      //             }
+      //           }
+      //         }
+      //       }
+      //     }, accounting_contact: {
+      //       include: {
+      //         sector: {
+      //           include: {
+      //             accounting_contact_image: {
+      //               select: {
+      //                 image: {
+      //                   select: {
+      //                     path: true
+      //                   }
+      //                 }
+      //               }
+      //             }
+      //           }
+      //         }
+      //       }
+      //     }
+      //   }
+      // })
+      // console.log(pathImages);
+      
+
+    } catch(error) {
+      throw error
+    }
+  }
+
+
+
+
+
 }

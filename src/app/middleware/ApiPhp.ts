@@ -10,7 +10,8 @@ export const ApiPhp = async (filepath: {
   filePath: (string | null)[];
   typeFolder: "img_product" | "img_profile";
   files: Express.Multer.File[];
-}): Promise<returnApiPhp[] | { message: string }> => {
+  action : 'POST' | 'DELETE'
+}, ): Promise<returnApiPhp[] | { message: string }> => {
   try {
     const formdata = new FormData();
     filepath.filePath.forEach((file, index) => {
@@ -19,6 +20,7 @@ export const ApiPhp = async (filepath: {
       }
     });
     formdata.append("typeFolder", filepath.typeFolder);
+    formdata.append("action",filepath.action)
 
     const token = JwtToken.getTokenApi({ app: "node-api" }, "api", {
       expiresIn: "1h",
