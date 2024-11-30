@@ -42,11 +42,13 @@ export class ClientRepository {
         const owner = await tsx.sector.create({data:{...socio},select:{id:true}})
         const imagesUsers = await ApiPhpUtils(imagens, "img_profile", files);
         const Allimagens = imagesUsers.map(async (imagem) => {
-          return tsx.imagem.create({
+             await tsx.imagem.create({
             data: { path: imagem ? imagem : null },
             select: { id: true },
           });
         });
+
+        console.log(Allimagens)
         const imagensRegister = await Promise.all(Allimagens);
         console.log(imagensRegister);
         await tsx.commercial_image.create({
@@ -167,87 +169,91 @@ export class ClientRepository {
 
   static async getImage(id: number) {
     try {
-      // const pathImages = await connectionDb.client.findUnique({
-      //   where: {
-      //     id
-      //   },
-      //   include: {
-      //     image_company: {
-      //       include: {
-      //         image: {
-      //           select: {
-      //             path: true
-      //           }
-      //         }
-      //       }
-      //     }, owner_partner: {
-      //       include: {
-      //         sector: {
-      //           include: {
-      //             owner_partner_image: {
-      //               select: {
-      //                 image: {
-      //                   select: {
-      //                     path: true
-      //                   }
-      //                 }
-      //               }
-      //             }
-      //           }
-      //         }
-      //       }
-      //     }, commercial_contact: {
-      //       include: {
-      //         sector: {
-      //           include: {
-      //             commercial_image: {
-      //               select: {
-      //                 image: {
-      //                   select: {
-      //                     path: true
-      //                   }
-      //                 }
-      //               }
-      //             }
-      //           }
-      //         }
-      //       }
-      //     }, financinal_contact: {
-      //       include: {
-      //         sector: {
-      //           include: {
-      //             financial_image: {
-      //               select: {
-      //                 image: {
-      //                   select: {
-      //                     path: true
-      //                   }
-      //                 }
-      //               }
-      //             }
-      //           }
-      //         }
-      //       }
-      //     }, accounting_contact: {
-      //       include: {
-      //         sector: {
-      //           include: {
-      //             accounting_contact_image: {
-      //               select: {
-      //                 image: {
-      //                   select: {
-      //                     path: true
-      //                   }
-      //                 }
-      //               }
-      //             }
-      //           }
-      //         }
-      //       }
-      //     }
-      //   }
-      // })
-      // console.log(pathImages);
+      const pathImages = await connectionDb.client.findUnique({
+        where: {
+          id
+        },
+        include: {
+          image_company: {
+            include: {
+              image: {
+                select: {
+                  path: true
+                }
+              }
+            }
+          }, owner_partner: {
+            include: {
+              sector: {
+                include: {
+                  owner_partner_image: {
+                    select: {
+                      image: {
+                        select: {
+                          path: true
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }, commercial_contact: {
+            include: {
+              sector: {
+                include: {
+                  commercial_image: {
+                    select: {
+                      image: {
+                        select: {
+                          path: true
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }, financinal_contact: {
+            include: {
+              sector: {
+                include: {
+                  financial_image: {
+                    select: {
+                      image: {
+                        select: {
+                          path: true
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }, accounting_contact: {
+            include: {
+              sector: {
+                include: {
+                  accounting_contact_image: {
+                    select: {
+                      image: {
+                        select: {
+                          path: true
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      })
+      // console.log(pathImages?.owner_partner[0].sector.owner_partner_image);
+      // console.log(pathImages?.commercial_contact[0].sector.commercial_image);
+      console.log(pathImages?.accounting_contact[0].sector.accounting_contact_image);
+      
+      
       
 
     } catch(error) {

@@ -19,11 +19,12 @@ export class ClientRepository {
                 const owner = await tsx.sector.create({ data: { ...socio }, select: { id: true } });
                 const imagesUsers = await ApiPhpUtils(imagens, "img_profile", files);
                 const Allimagens = imagesUsers.map(async (imagem) => {
-                    return tsx.imagem.create({
+                    await tsx.imagem.create({
                         data: { path: imagem ? imagem : null },
                         select: { id: true },
                     });
                 });
+                console.log(Allimagens);
                 const imagensRegister = await Promise.all(Allimagens);
                 console.log(imagensRegister);
                 await tsx.commercial_image.create({
@@ -217,7 +218,9 @@ export class ClientRepository {
                     }
                 }
             });
-            console.log(pathImages);
+            // console.log(pathImages?.owner_partner[0].sector.owner_partner_image);
+            // console.log(pathImages?.commercial_contact[0].sector.commercial_image);
+            console.log(pathImages?.accounting_contact[0].sector.accounting_contact_image);
         }
         catch (error) {
             throw error;

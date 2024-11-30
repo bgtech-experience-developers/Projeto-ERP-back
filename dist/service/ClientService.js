@@ -74,7 +74,7 @@ export class ClientService {
             if (param && Number(param)) {
                 console.log('peste');
                 const company = await ClientRepository.GetuniqueClient(undefined, Number(param));
-                console.log(company);
+                // console.log(company);1
                 if (!company) {
                     throw new AllError("Cliente/Empresa não cadastrada no sistema!", 404);
                 }
