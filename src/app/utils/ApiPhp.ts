@@ -15,7 +15,7 @@ export const ApiPhpUtils = async (
         filePath: [...filesPath],
         typeFolder,
         files,
-        action:'POST'
+        action:'upload'
       });
       if (allPaths instanceof Array) {
         imagems.forEach((value, index) => {
@@ -30,3 +30,4 @@ export const ApiPhpUtils = async (
     throw error;
   }
 };
+  

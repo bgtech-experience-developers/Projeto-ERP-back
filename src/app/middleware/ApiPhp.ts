@@ -10,7 +10,7 @@ export const ApiPhp = async (filepath: {
   filePath: (string | null)[];
   typeFolder: "img_product" | "img_profile";
   files: Express.Multer.File[];
-  action : 'POST' | 'DELETE'
+  action : 'upload' | 'delete'
 }, ): Promise<returnApiPhp[] | { message: string }> => {
   try {
     const formdata = new FormData();

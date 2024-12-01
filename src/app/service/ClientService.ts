@@ -6,6 +6,7 @@ import { UploadCloudnary } from "../utils/cloudinary.js";
 import { Sharp } from "../utils/sharp.js";
 import { ApiPhp } from "../middleware/ApiPhp.js";
 import { ApiPhpUtils } from "../utils/ApiPhp.js";
+const paths = []
 export class ClientService {
 
   static async CreateClientService(
@@ -86,11 +87,9 @@ export class ClientService {
 
   static async deleteClient(param: string | number) {
       try {
-        console.log('oi');
-               
+           
+        const paths = []; 
         if(param && Number(param)) {
-          console.log('peste');
-          
             const company = await ClientRepository.GetuniqueClient(undefined, Number(param));
             // console.log(company);1
             
@@ -98,9 +97,31 @@ export class ClientService {
               throw new AllError("Cliente/Empresa não cadastrada no sistema!", 404);
             }
 
-            console.log(await ClientRepository.getImage(Number(param)))
+            const pathImages = await ClientRepository.getImage(Number(param))
+            // console.log(pathImages);
+            
+            paths.push(pathImages?.image_company[0].image.path);
+            paths.push(pathImages?.owner_partner[0].sector.owner_partner_image[0].image.path);
+            paths.push(pathImages?.commercial_contact[0].sector.commercial_image[0].image.path);
+            paths.push(pathImages?.accounting_contact[0].sector.accounting_contact_image[0].image.path);
+            paths.push(pathImages?.financinal_contact[0].sector.financial_image[0].image.path);
+            
+            
+            const pathsAll = paths.filter((path) => path != null || undefined );
+            const newPath = pathsAll.map((path) => {
+              const paths = path?.replace("https://bgtech.com.br/erp/assets/", "")
+              return paths ? paths : null
+            })
 
+            ApiPhp({
+              filePath: [...newPath],
+              action: 'delete',
+              files: null,
+              typeFolder: "img_profile"
+            })
+            console.log(newPath);
 
+            
 
         }
 
@@ -108,4 +129,6 @@ export class ClientService {
 
       }
   }
+
+
 }
