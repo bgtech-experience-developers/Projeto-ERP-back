@@ -152,7 +152,6 @@ function handleDelete($filePaths)
 
 // Recebe a Requisição vinda da API do Node.js
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // Verifica se a requisição contém um parâmetro "action" e "typeFolder" no POST
     $typeFolder = $_POST['typeFolder'] ?? null; // img_product | img_profile
 
     if (!$typeFolder) {
@@ -169,15 +168,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 } else if ($_SERVER['REQUEST_METHOD'] === 'DELETE') {
     // Lê o corpo da requisição (em JSON) para obter os caminhos dos arquivos
     $inputData = file_get_contents('php://input');
-    $decodedData = json_decode($inputData, true); // Decodifica o JSON
+    $decodedData = json_decode($inputData, true);
 
-    // Verifica se a decodificação foi bem-sucedida
     if ($decodedData === null) {
         echo json_encode(['status' => '400', 'message' => 'Erro ao decodificar JSON']);
         exit;
     }
 
-    $filePaths = $decodedData['paths'] ?? null; // Array de caminhos das imagens a serem deletadas
+    // Array de caminhos das imagens a serem deletadas (img_product/1733159838818.png | img_profile/1733159838923.png)
+    $filePaths = $decodedData['paths'] ?? null;
 
     if (!$filePaths || !is_array($filePaths)) {
         echo json_encode(['status' => '400', 'message' => 'Parâmetro "paths" é obrigatório e deve ser um array.']);
