@@ -32,15 +32,37 @@ export class ClientRepository {
 
       //consumo da api do marney para armazenar as imagens
       const result = connectionDb.$transaction(async (tsx) => {
-        const client = await tsx.client.create({data:{...cliente},select:{id:true}})
-        const delivery = await tsx.address.create({data:{...endereco_entrega},select:{id:true}})
-        const store = await tsx.address.create({data:{...endereco_empresa},select:{id:true}})
-        const finance = await tsx.sector.create({data:{...financeiro},select:{id:true}})
-        const commercial = await tsx.sector.create({data:{...comercial},select:{id:true}})
-        const accounting = await tsx.sector.create({data:{...contabil},select:{id:true}})
-        const owner = await tsx.sector.create({data:{...socio},select:{id:true}})
+        const client = await tsx.client.create({
+          data: { ...cliente },
+          select: { id: true },
+        });
+        const delivery = await tsx.address.create({
+          data: { ...endereco_entrega },
+          select: { id: true },
+        });
+        const store = await tsx.address.create({
+          data: { ...endereco_empresa },
+          select: { id: true },
+        });
+        const finance = await tsx.sector.create({
+          data: { ...financeiro },
+          select: { id: true },
+        });
+        const commercial = await tsx.sector.create({
+          data: { ...comercial },
+          select: { id: true },
+        });
+        const accounting = await tsx.sector.create({
+          data: { ...contabil },
+          select: { id: true },
+        });
+        const owner = await tsx.sector.create({
+          data: { ...socio },
+          select: { id: true },
+        });
         const imagesUsers = await ApiPhpUtils(imagens, "img_profile", files);
         const Allimagens = imagesUsers.map(async (imagem) => {
+          console.log(imagem);
           return tsx.imagem.create({
             data: { path: imagem ? imagem : null },
             select: { id: true },
