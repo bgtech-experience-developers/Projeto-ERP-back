@@ -13,7 +13,7 @@ export const ApiPhp = async (filepath) => {
         });
         formdata.append("typeFolder", filepath.typeFolder);
         const token = JwtToken.getTokenApi({ app: "node-api" }, "api", {
-            expiresIn: "1h",
+            expiresIn: "15min",
         });
         const response = await axios.post("https://bgtech.com.br/erp/assets/assets-handler.php", formdata, {
             headers: {
@@ -29,4 +29,18 @@ export const ApiPhp = async (filepath) => {
     catch (error) {
         throw error;
     }
+};
+export const deleteUpload = async (arrayImagens) => {
+    const token = JwtToken.getTokenApi({ app: "node-api" }, "api", {
+        expiresIn: "15min",
+    });
+    const response = await axios.delete("https://bgtech.com.br/erp/assets/assets-handler.php", {
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+        },
+        data: { paths: arrayImagens },
+    });
+    const data = response.data;
+    return data;
 };

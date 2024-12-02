@@ -20,5 +20,11 @@ clientRouter.post(
 clientRouter.get("/", showClients);
 clientRouter.get("/:id", showClientById);
 clientRouter.get("/enderecos/:id", Client.getAllAddress);
+clientRouter.patch(
+  "/atualizar-cliente/:id",
+  UploadFile.Upload().array("photos", 5),
+  CreateClientValidator(),
+  Client.updateClient
+);
 
 clientRouter.use(GlobalError);
