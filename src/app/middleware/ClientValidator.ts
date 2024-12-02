@@ -39,6 +39,7 @@ export class ClientValidator {
           Sharp.removeImagens(files);
           throw new AllError(error[0].mesagem);
         }
+
         next();
       } catch (error) {
         next(error);

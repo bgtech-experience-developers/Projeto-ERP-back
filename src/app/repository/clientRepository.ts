@@ -9,9 +9,10 @@ import { Sharp } from "../utils/sharp.js";
 
 interface allClientes extends ClientC {}
 interface allClientes extends base_solid_allclient {}
+type imageStorageDb = { path: string | null; id: number }[];
 
-const connectionDb = InstanciaPrisma.GetConnection(); //gerando uma conexxão
 export class ClientRepository {
+  static connectionDb = InstanciaPrisma.GetConnection(); //gerando uma conexxão
   static async createCliente(
     {
       cliente,
@@ -174,6 +175,159 @@ export class ClientRepository {
       });
     } catch (err) {
       throw err;
+    }
+  }
+  static async updateClient(
+    body: ClientCreate,
+    images: (string | null)[],
+    idsSector: number[],
+    paths: imageStorageDb,
+    files: Express.Multer.File[]
+  ) {
+    const message = this.connectionDb.$transaction(async (connection) => {
+      const imagesUsers = await ApiPhpUtils(images, "img_profile", files);
+      paths.forEach(({ path, id }, index) => {
+        if (imagesUsers[index]) {
+          console.log(imagesUsers[index]);
+
+          paths[index].path = imagesUsers[index];
+          console.log(paths[index].path);
+        }
+      });
+      await connection.client.update({
+        where: { id: idsSector[0] },
+        data: { ...body.cliente, situation: body.situation },
+      });
+      //agora vou atualizar vários registros de uma vez utilizando uma estrutura de laço de repetição
+      const bodyArrya = [
+        body.socio,
+        body.comercial,
+        body.financeiro,
+        body.contabil,
+      ];
+      const allregisterUpd = bodyArrya.map(async (props, index) => {
+        return await connection.sector.update({
+          where: { id: idsSector[index + 1] },
+          data: { ...props },
+        });
+      });
+      const all = await Promise.all(allregisterUpd);
+
+      const allimages = paths.map(async ({ path, id }) => {
+        return await this.connectionDb.imagem.update({
+          where: { id },
+          data: { path: path ? path : null },
+        });
+      });
+      const allImagens = await Promise.all(allimages);
+      return "cliente atualizado com êxito";
+    });
+    return message;
+  }
+  static async idSector(id: number) {
+    try {
+      const arrayIds = this.connectionDb.$transaction(async (connection) => {
+        const commercial_id_sector =
+          await connection.commercial_contact.findFirst({
+            where: { clientId: id },
+            select: { sectorId: true },
+          });
+        const finance_id_sector = await connection.financial_contact.findFirst({
+          where: { clientId: id },
+          select: { sectorId: true },
+        });
+        const accounting_contact_id_sector =
+          await connection.accounting_contact.findFirst({
+            where: { clientId: id },
+            select: { sectorId: true },
+          });
+        const owner_partner_id_sector =
+          await connection.owner_partner.findFirst({
+            where: { clientId: id },
+            select: { sectorId: true },
+          });
+        if (
+          owner_partner_id_sector &&
+          finance_id_sector &&
+          commercial_id_sector &&
+          accounting_contact_id_sector
+        ) {
+          return [
+            id,
+            owner_partner_id_sector.sectorId,
+            commercial_id_sector.sectorId,
+            finance_id_sector.sectorId,
+            accounting_contact_id_sector.sectorId,
+          ];
+        }
+        return [];
+      });
+      return arrayIds;
+    } catch (error) {
+      throw error;
+    }
+  }
+  static async getImage(arrayIdsector: number[]) {
+    try {
+      const result = this.connectionDb.$transaction(async (connection) => {
+        const imagepathCompany = await connection.image_company.findFirst({
+          where: { companyId: arrayIdsector[0] },
+          select: { imageId: true },
+        });
+
+        const imagepathOwner = await connection.owner_partner_image.findFirst({
+          where: { owner_partnerId: arrayIdsector[1] },
+          select: { imageId: true },
+        });
+        const imagePathCommercial = await connection.commercial_image.findFirst(
+          {
+            where: { commercial_contactId: arrayIdsector[2] },
+            select: { imageId: true },
+          }
+        );
+        const imagePathFinance = await connection.financial_image.findFirst({
+          where: { financial_contactId: arrayIdsector[3] },
+          select: { imageId: true },
+        });
+        const imagePathAccounting =
+          await connection.accounting_contact_image.findFirst({
+            where: { accounting_contactId: arrayIdsector[4] },
+            select: { imageId: true },
+          });
+        if (
+          imagePathCommercial &&
+          imagepathCompany &&
+          imagePathAccounting &&
+          imagePathFinance &&
+          imagepathOwner
+        ) {
+          const AllPathsImages = await connection.imagem.findMany({
+            where: {
+              id: {
+                in: [
+                  imagepathCompany.imageId,
+                  imagepathOwner.imageId,
+                  imagePathCommercial.imageId,
+                  imagePathFinance.imageId,
+                  imagePathAccounting.imageId,
+                ],
+              },
+            },
+            select: { path: true, id: true },
+          });
+          console.log(
+            "todos os registros conforme os ids que foram passados é ",
+            AllPathsImages
+          );
+
+          return AllPathsImages;
+        }
+        [false, true, false, false, false];
+        return [];
+      });
+      return result;
+    } catch (error) {
+      throw error;
     }
   }
 }

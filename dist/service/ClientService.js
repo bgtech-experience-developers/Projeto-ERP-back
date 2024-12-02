@@ -1,21 +1,13 @@
 import { AllError } from "../error/AllError.js";
 import { ClientRepository } from "../repository/clientRepository.js";
 import { Sharp } from "../utils/sharp.js";
+import { deleteUpload } from "../middleware/ApiPhp.js";
 export class ClientService {
     static async CreateClientService(body, image, order) {
         try {
             const cliente = await ClientRepository.GetuniqueClient(body.cliente.cnpj);
             if (!cliente) {
-                // const { error, mensagem } = await Sharp.removeImagens(image);
-                // if (error) {
-                //   throw new AllError(mensagem);
-                // }
                 const imagens = Sharp.allImagens(image, order);
-                // const apiPhp = await ApiPhpUtils(imagens);
-                // const { error, mensagem } = await Sharp.removeImagens(image);
-                // if (error) {
-                //   throw new AllError(mensagem);
-                // }
                 return ClientRepository.createCliente(body, imagens, image); // ja to enviando de forma aliada o caminho da imagens e os camops null de qum não enviou
             }
             Sharp.removeImagens(image);
@@ -63,6 +55,41 @@ export class ClientService {
                 };
             });
             return newArray;
+        }
+        catch (error) {
+            throw error;
+        }
+    }
+    static async updateClient(body, order, files) {
+        try {
+            const client = await ClientRepository.GetuniqueClient(body.cliente.cnpj);
+            if (!client) {
+                throw new AllError("não é possivel atualizar o cliente pois não existe registro no sistema");
+            }
+            const allIdsSector = await ClientRepository.idSector(client.id);
+            if (allIdsSector.length === 0) {
+                throw new AllError("não existe nenhum registro relacionado com a empresa");
+            }
+            console.log(allIdsSector);
+            const allPaths = await ClientRepository.getImage(allIdsSector);
+            console.log(allPaths);
+            // nesse caso eu ja tenho as imagens que foram armazenadas no banco de dados
+            const deletePathsFilter = allPaths.filter(({ path }, index) => {
+                if (order[index]) {
+                    return path ? path : false;
+                }
+            });
+            if (deletePathsFilter.length != 0) {
+                const deletePaths = deletePathsFilter.map(({ path }) => {
+                    const paths = path
+                        ? path.replace("https://bgtech.com.br/erp/assets/", "")
+                        : null;
+                    return paths;
+                });
+                await deleteUpload([...deletePaths]);
+            }
+            const imagens = Sharp.allImagens(files, order);
+            return await ClientRepository.updateClient(body, imagens, allIdsSector, allPaths, files);
         }
         catch (error) {
             throw error;

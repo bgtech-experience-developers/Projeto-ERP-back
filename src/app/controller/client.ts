@@ -14,6 +14,8 @@ export interface ClientCreate {
   socio: GenericFields;
   comercial: GenericFields;
   contabil: GenericFields;
+  situation: boolean;
+  [key: string]: unknown;
 }
 
 export class Client {
@@ -77,6 +79,29 @@ export class Client {
         return;
       }
       throw new AllError("soment numeros");
+    } catch (error) {
+      next(error);
+    }
+  }
+  static async updateClient(
+    request: Request,
+    response: Response,
+    next: NextFunction
+  ) {
+    try {
+      const files = request.files as Express.Multer.File[];
+      const order: boolean[] = request.body.imagens;
+      const isActive = request.query.isActive ? false : true;
+      const body: ClientCreate = request.body;
+
+      body["situation"] = isActive;
+      console.log(
+        "a situação do cliente nesse exato momento é " + body.situation
+      );
+
+      const message = await ClientService.updateClient(body, order, files);
+      console.log(message);
+      response.status(201).json({ message });
     } catch (error) {
       next(error);
     }

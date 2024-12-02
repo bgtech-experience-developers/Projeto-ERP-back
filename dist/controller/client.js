@@ -52,4 +52,20 @@ export class Client {
             next(error);
         }
     }
+    static async updateClient(request, response, next) {
+        try {
+            const files = request.files;
+            const order = request.body.imagens;
+            const isActive = request.query.isActive ? false : true;
+            const body = request.body;
+            body["situation"] = isActive;
+            console.log("a situação do cliente nesse exato momento é " + body.situation);
+            const message = await ClientService.updateClient(body, order, files);
+            console.log(message);
+            response.status(201).json({ message });
+        }
+        catch (error) {
+            next(error);
+        }
+    }
 }
