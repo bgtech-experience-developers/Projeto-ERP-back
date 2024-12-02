@@ -1,39 +1,42 @@
 <?php
 $secretKey = '$2b$10$5SSRVdotger0qAIrDxy1jOblB8wDCSRHQuXqr6NRE1FCn7FYnuFJW'; // BGTech-ERP-assets
-/*
-// ===== Validação do Cabeçalho Authorization =====
-$headers = getallheaders();
-if (!isset($headers['Authorization'])) {
-    http_response_code(403);
-    echo json_encode(['message' => 'Acesso não autorizado']);
-    exit;
-}
 
-$authHeader = $headers['Authorization'];
-list($type, $token) = explode(' ', $authHeader);
-
-if ($type !== 'Bearer') {
-    http_response_code(403);
-    echo json_encode(['message' => 'Tipo de token inválido']);
-    exit;
-}
-
-// Verificar o token
-try {
-    $payload = json_decode(base64_decode(explode('.', $token)[1]), true);
-    if ($payload['app'] !== 'node-api') {
-        throw new Exception('Token inválido');
+function validateToken()
+{
+    // ===== Validação do Cabeçalho Authorization =====
+    $headers = getallheaders();
+    if (!isset($headers['Authorization'])) {
+        http_response_code(403);
+        echo json_encode(['message' => 'Acesso não autorizado']);
+        exit;
     }
-} catch (Exception $e) {
-    http_response_code(403);
-    echo json_encode(['message' => 'Token inválido']);
-    exit;
+    
+    $authHeader = $headers['Authorization'];
+    list($type, $token) = explode(' ', $authHeader);
+    
+    if ($type !== 'Bearer') {
+        http_response_code(403);
+        echo json_encode(['message' => 'Tipo de token inválido']);
+        exit;
+    }
+    
+    // Verificar o token
+    try {
+        $payload = json_decode(base64_decode(explode('.', $token)[1]), true);
+        if ($payload['app'] !== 'node-api') {
+            throw new Exception('Token inválido');
+        }
+    } catch (Exception $e) {
+        http_response_code(403);
+        echo json_encode(['message' => 'Token inválido']);
+        exit;
+    }
 }
-*/
 
 // Upload de Imagens
 function handleUpload($typeFolder)
 {
+    validateToken();
     $uploadDir = __DIR__ . '/' . $typeFolder . '/';
 
     // Se o diretório não existir, cria com as permissões de leitura e escrita
@@ -90,109 +93,99 @@ function handleUpload($typeFolder)
 }
 
 // Função para deletar arquivos
-function handleDelete($filePath)
+function handleDelete($filePaths)
 {
-    $file = __DIR__ . '/' . $filePath;
+    validateToken();
+    $responses = [];
 
-    if (file_exists($file)) {
-        // Exclui o arquivo
-        if (unlink($file)) {
-            $logMessage = sprintf(
-                "[%s] (SUCCESS) Delete: assets/%s\n",
-                date('Y-m-d H:i:s'),
-                $filePath
-            );
-            file_put_contents('uploads.log', $logMessage, FILE_APPEND);
+    foreach ($filePaths as $filePath) {
+        $file = __DIR__ . '/' . $filePath;
 
-            return [
-                'status' => '200',
-                'message' => 'Arquivo excluído com sucesso.',
-            ];
+        if (file_exists($file)) {
+            // Exclui o arquivo
+            if (unlink($file)) {
+                $logMessage = sprintf(
+                    "[%s] (SUCCESS) Delete: %s\n",
+                    date('Y-m-d H:i:s'),
+                    $filePath
+                );
+                file_put_contents('uploads.log', $logMessage, FILE_APPEND);
 
+                $responses[] = [
+                    'path' => $filePath,
+                    'status' => '200',
+                    'message' => 'Arquivo excluído com sucesso.',
+                ];
+
+            } else {
+                $logMessage = sprintf(
+                    "[%s] (ERROR) Delete: %s\n",
+                    date('Y-m-d H:i:s'),
+                    $filePath
+                );
+                file_put_contents('delete_error.log', $logMessage, FILE_APPEND);
+
+                $responses[] = [
+                    'path' => $filePath,
+                    'status' => '400',
+                    'message' => 'Erro ao deletar o arquivo.',
+                ];
+            }
         } else {
             $logMessage = sprintf(
-                "[%s] (ERROR) Delete: assets/%s\n",
+                "[%s] (ERROR) File Not Found: %s\n",
                 date('Y-m-d H:i:s'),
                 $filePath
             );
             file_put_contents('delete_error.log', $logMessage, FILE_APPEND);
 
-            return [
-                'status' => '400',
-                'message' => 'Erro ao deletar o arquivo.',
+            $responses[] = [
+                'path' => $filePath,
+                'status' => '404',
+                'message' => 'Arquivo não encontrado.',
             ];
         }
-    } else {
-        $logMessage = sprintf(
-            "[%s] (ERROR) File Not Found: assets/%s\n",
-            date('Y-m-d H:i:s'),
-            $filePath
-        );
-        file_put_contents('delete_error.log', $logMessage, FILE_APPEND);
-
-        return [
-            'status' => '404',
-            'message' => 'Arquivo não encontrado.',
-        ];
     }
+
+    return $responses;
 }
 
 // Recebe a Requisição vinda da API do Node.js
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $action = $_POST['action'] ?? null; // upload | delete
+    // Verifica se a requisição contém um parâmetro "action" e "typeFolder" no POST
+    $typeFolder = $_POST['typeFolder'] ?? null; // img_product | img_profile
 
-    if (!$action) {
+    if (!$typeFolder) {
         $response[] = [
             'status' => '400',
-            'message' => 'Parâmetro "action" é obrigatório.',
+            'message' => 'Parâmetro "typeFolder" é obrigatório.',
         ];
         echo json_encode(['message' => $response]);
         exit;
     }
 
-    if ($action === 'upload') {
-        $typeFolder = $_POST['typeFolder'] ?? null; // img_product | img_profile
+    $response = handleUpload($typeFolder);
 
-        if (!$typeFolder) {
-            $response[] = [
-                'status' => '400',
-                'message' => 'Parâmetro "typeFolder" é obrigatório.',
-            ];
-            echo json_encode(['message' => $response]);
-            exit;
-        }
+} else if ($_SERVER['REQUEST_METHOD'] === 'DELETE') {
+    // Lê o corpo da requisição (em JSON) para obter os caminhos dos arquivos
+    $inputData = file_get_contents('php://input');
+    $decodedData = json_decode($inputData, true); // Decodifica o JSON
 
-        $response = handleUpload($typeFolder);
-
-    } else if ($action === 'delete') {
-        $filePath = $_POST['path'] ?? null; // img_product/12345.png
-
-        if (!$filePath) {
-            $response[] = [
-                'status' => '400',
-                'message' => 'Parâmetro "path" é obrigatório.',
-            ];
-            echo json_encode(['message' => $response]);
-            exit;
-        }
-
-        $response = handleDelete($filePath);
-
-    } else {
-        $response[] = [
-            'status' => '400',
-            'message' => 'Ação inválida.',
-        ];
+    // Verifica se a decodificação foi bem-sucedida
+    if ($decodedData === null) {
+        echo json_encode(['status' => '400', 'message' => 'Erro ao decodificar JSON']);
+        exit;
     }
 
-    echo json_encode($response);
-    exit;
+    $filePaths = $decodedData['paths'] ?? null; // Array de caminhos das imagens a serem deletadas
+
+    if (!$filePaths || !is_array($filePaths)) {
+        echo json_encode(['status' => '400', 'message' => 'Parâmetro "paths" é obrigatório e deve ser um array.']);
+        exit;
+    }
+
+    $response = handleDelete($filePaths);
 }
 
-// Caso outro método seja utilizado ou acesso não autorizado
-http_response_code(403);
-$response[] = [
-    'status' => '403',
-    'message' => 'Acesso não autorizado.',
-];
-echo json_encode(['message' => $response]);
+echo json_encode($response);
+exit;
