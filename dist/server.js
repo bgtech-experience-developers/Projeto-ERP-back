@@ -5,7 +5,7 @@ import cors from "cors";
 import { routerAdm } from "./router/adm.js";
 dotnev.config();
 const app = express();
-const port = process.env.PORT;
+const port = Number(process.env.PORT);
 app.use("/files", express.static("uploads")); // diretório acessível para requisições vindo do cliente, tendo acesso à arquivos hospedado internamente dentro dessa pasta!
 app.use(cors());
 app.use(express.json()); // parte para a deserializaç~~ao das informações

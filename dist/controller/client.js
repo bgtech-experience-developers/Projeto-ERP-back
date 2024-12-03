@@ -68,4 +68,14 @@ export class Client {
             next(error);
         }
     }
+    static async deleteClient(request, response, next) {
+        try {
+            const { id } = request.params;
+            await ClientService.deleteClient(id);
+            response.status(200).json("Empresa/Cliente excluído com sucesso!");
+        }
+        catch (error) {
+            next(error);
+        }
+    }
 }

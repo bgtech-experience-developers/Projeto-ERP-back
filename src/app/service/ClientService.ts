@@ -4,9 +4,11 @@ import { ClientRepository } from "../repository/clientRepository.js";
 import { Files } from "../middleware/ClientValidator.js";
 import { UploadCloudnary } from "../utils/cloudinary.js";
 import { Sharp } from "../utils/sharp.js";
-import { ApiPhp, deleteUpload } from "../middleware/ApiPhp.js";
+import { ApiPhp, deleteApiPhp, deleteUpload } from "../middleware/ApiPhp.js";
+
 import { ApiPhpUtils } from "../utils/ApiPhp.js";
 export class ClientService {
+
   static async CreateClientService(
     body: ClientCreate,
     image: Express.Multer.File[],
@@ -23,7 +25,9 @@ export class ClientService {
     } catch (error) {
       throw error;
     }
+  
   }
+
   static async getAllAddress(id: number) {
     try {
       const client = await ClientRepository.GetuniqueClient<null>(null, id);
@@ -35,6 +39,7 @@ export class ClientService {
       throw error;
     }
   }
+
   static async showClints() {
     try {
       const allClints = await ClientRepository.showCLients();
@@ -67,6 +72,7 @@ export class ClientService {
       throw error;
     }
   }
+
   static async updateClient(
     body: ClientCreate,
     order: boolean[],
@@ -118,4 +124,55 @@ export class ClientService {
       throw error;
     }
   }
+
+  
+  static async deleteClient(param: string | number) {
+  try {
+       
+    const paths = []; 
+    if(param && Number(param)) {
+        const company = await ClientRepository.GetuniqueClient(undefined, Number(param));
+        // console.log(company);1
+        
+        if(!company) {
+          throw new AllError("Cliente/Empresa não cadastrada no sistema!", 404);
+        }
+
+        const pathImages = await ClientRepository.getImage(Number(param))
+        // console.log(pathImages);
+        
+        paths.push(pathImages?.image_company[0].image.path);
+        paths.push(pathImages?.owner_partner[0].sector.owner_partner_image[0].image.path);
+        paths.push(pathImages?.commercial_contact[0].sector.commercial_image[0].image.path);
+        paths.push(pathImages?.accounting_contact[0].sector.accounting_contact_image[0].image.path);
+        paths.push(pathImages?.financinal_contact[0].sector.financial_image[0].image.path);
+        
+        
+        const pathsAll = paths.filter((path) => path != null || undefined );
+        const newPath = pathsAll.map((path) => {
+          const paths = path?.replace("https://bgtech.com.br/erp/assets/", "")
+          return paths ? paths : null
+        })
+        console.log(newPath);
+        
+
+        deleteApiPhp(newPath);
+
+        const deleteClient = await ClientRepository.deleteClient(Number(param));
+        console.log(deleteClient);
+
+        return deleteClient;
+        
+    }
+
+  } catch(error) {
+    throw error;
+  }
 }
+
+
+}
+
+
+
+
