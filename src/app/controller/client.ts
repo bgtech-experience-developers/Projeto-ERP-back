@@ -56,8 +56,8 @@ export class Client {
   ) {
     try {
       const { id } = request.params;
-      const showOneClient = await showClientById(id);
-      response.send(showOneClient);
+      const showOneClient = await showClientById(Number(id));
+      response.status(200).json(showOneClient);
     } catch (err) {
       console.log(err);
       response.status(500).json({ message: "erro interno do servidor! :(" });

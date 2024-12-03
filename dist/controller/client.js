@@ -27,8 +27,8 @@ export class Client {
     async showClientById(request, response, next) {
         try {
             const { id } = request.params;
-            const showOneClient = await showClientById(id);
-            response.send(showOneClient);
+            const showOneClient = await showClientById(Number(id));
+            response.status(200).json(showOneClient);
         }
         catch (err) {
             console.log(err);
