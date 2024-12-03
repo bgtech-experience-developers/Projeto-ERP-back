@@ -1,7 +1,7 @@
 import { AllError } from "../error/AllError.js";
 import { ClientRepository } from "../repository/clientRepository.js";
 import { Sharp } from "../utils/sharp.js";
-import { ApiPhp } from "../middleware/ApiPhp.js";
+import { deleteApiPhp } from "../middleware/ApiPhp.js";
 const paths = [];
 export class ClientService {
     static async CreateClientService(body, image, order) {
@@ -91,16 +91,15 @@ export class ClientService {
                     const paths = path?.replace("https://bgtech.com.br/erp/assets/", "");
                     return paths ? paths : null;
                 });
-                ApiPhp({
-                    filePath: [...newPath],
-                    action: 'delete',
-                    files: null,
-                    typeFolder: "img_profile"
-                });
                 console.log(newPath);
+                deleteApiPhp(newPath);
+                const deleteClient = await ClientRepository.deleteClient(Number(param));
+                console.log(deleteClient);
+                return deleteClient;
             }
         }
         catch (error) {
+            throw error;
         }
     }
 }

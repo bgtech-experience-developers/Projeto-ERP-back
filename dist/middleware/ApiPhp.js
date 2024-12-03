@@ -12,7 +12,6 @@ export const ApiPhp = async (filepath) => {
             }
         });
         formdata.append("typeFolder", filepath.typeFolder);
-        formdata.append("action", filepath.action);
         const token = JwtToken.getTokenApi({ app: "node-api" }, "api", {
             expiresIn: "1h",
         });
@@ -30,4 +29,27 @@ export const ApiPhp = async (filepath) => {
     catch (error) {
         throw error;
     }
+};
+export const deleteApiPhp = async (filePath) => {
+    const token = JwtToken.getTokenApi({ app: 'node-api' }, "api", {
+        expiresIn: "5m"
+    });
+    // const formData = new FormData();
+    // formData. append('action', filePath.action);
+    // formData.append('paths', JSON.stringify(filePath.paths));
+    // filePath.paths.forEach((path) => {
+    //   if(path) {
+    //     formData.append('paths', path)
+    //   }
+    // })
+    const response = await axios.delete("https://bgtech.com.br/erp/assets/assets-handler.php", {
+        headers: {
+            "Content-Type": 'application/json',
+            Authorization: `Bearer ${token}`,
+            // ...formData.getHeaders()
+        },
+        data: { paths: filePath }
+    });
+    const data = response.data;
+    console.log(data);
 };

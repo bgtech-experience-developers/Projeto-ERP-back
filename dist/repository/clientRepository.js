@@ -134,7 +134,18 @@ export class ClientRepository {
             throw err;
         }
     }
-    static async deleteClient() {
+    static async deleteClient(id) {
+        try {
+            return await this.connectionDb.client.delete({
+                where: {
+                    id
+                }
+            });
+        }
+        catch (error) {
+            throw error;
+            22;
+        }
     }
     static async getImage(id) {
         try {

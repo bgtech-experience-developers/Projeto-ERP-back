@@ -4,7 +4,7 @@ import { ClientRepository } from "../repository/clientRepository.js";
 import { Files } from "../middleware/ClientValidator.js";
 import { UploadCloudnary } from "../utils/cloudinary.js";
 import { Sharp } from "../utils/sharp.js";
-import { ApiPhp } from "../middleware/ApiPhp.js";
+import { ApiPhp, deleteApiPhp } from "../middleware/ApiPhp.js";
 import { ApiPhpUtils } from "../utils/ApiPhp.js";
 const paths = []
 export class ClientService {
@@ -112,21 +112,20 @@ export class ClientService {
               const paths = path?.replace("https://bgtech.com.br/erp/assets/", "")
               return paths ? paths : null
             })
-
-            ApiPhp({
-              filePath: [...newPath],
-              action: 'delete',
-              files: null,
-              typeFolder: "img_profile"
-            })
             console.log(newPath);
-
             
 
+            deleteApiPhp(newPath);
+
+            const deleteClient = await ClientRepository.deleteClient(Number(param));
+            console.log(deleteClient);
+
+            return deleteClient;
+            
         }
 
       } catch(error) {
-
+        throw error;
       }
   }
 
