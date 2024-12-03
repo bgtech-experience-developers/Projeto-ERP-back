@@ -86,7 +86,7 @@ export class ClientService {
         );
       }
       console.log(allIdsSector);
-      const allPaths = await ClientRepository.getImage(allIdsSector);
+      const allPaths = await ClientRepository.getImagee(allIdsSector);
       console.log(allPaths);
       // nesse caso eu ja tenho as imagens que foram armazenadas no banco de dados
       const deletePathsFilter = allPaths.filter(({ path }, index) => {

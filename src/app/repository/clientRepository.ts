@@ -267,7 +267,7 @@ export class ClientRepository {
       throw error;
     }
   }
-  static async getImage(arrayIdsector: number[]) {
+  static async getImagee(arrayIdsector: number[]) {
     try {
       const result = this.connectionDb.$transaction(async (connection) => {
         const imagepathCompany = await connection.image_company.findFirst({
