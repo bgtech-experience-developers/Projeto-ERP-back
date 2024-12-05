@@ -19,11 +19,14 @@ export class ClientService {
     }
     static async getAllAddress(id) {
         try {
-            const client = await ClientRepository.GetuniqueClient(null, id);
-            if (client) {
-                return await ClientRepository.GetAllAddress(client.id);
+            if (Number(id) && id) {
+                const client = await ClientRepository.GetuniqueClient(null, id);
+                if (client) {
+                    return await ClientRepository.GetAllAddress(client.id);
+                }
+                throw new AllError("client não existe", 400);
             }
-            throw new AllError("client não existe", 400);
+            throw new AllError("Argumentos inválidos, tipo inesperado.");
         }
         catch (error) {
             throw error;
@@ -98,7 +101,7 @@ export class ClientService {
     static async deleteClient(param) {
         try {
             const paths = [];
-            if (param && Number(param)) {
+            if (Number(param) && param) {
                 const company = await ClientRepository.GetuniqueClient(undefined, Number(param));
                 // console.log(company);1
                 if (!company) {
@@ -125,6 +128,7 @@ export class ClientService {
                 console.log(deleteClient);
                 return deleteClient;
             }
+            throw new AllError("Argumentos inválidos, tipo inesperado.");
         }
         catch (error) {
             throw error;

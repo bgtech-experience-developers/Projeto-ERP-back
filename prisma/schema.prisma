@@ -70,7 +70,7 @@ model imagem {
 
   path String?
 
-  client_id Int            @default(1)
+  client_id Int           
   Client                   Client                     @relation(fields: [client_id], references: [id], onDelete: Cascade, onUpdate: Cascade)         
   image_company            image_company[]
   financial_image          financial_image[]

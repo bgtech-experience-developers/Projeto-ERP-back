@@ -67,7 +67,7 @@ export class ClientRepository {
         const Allimagens = imagesUsers.map(async (imagem) => {
           console.log(imagem);
           return await tsx.imagem.create({
-            data: { path: imagem ? imagem : null,  },
+            data: { path: imagem ? imagem : null, client_id: client.id },
             select: { id: true },
           });
         });

@@ -18,6 +18,7 @@ export class Client {
     async showClients(request, response, next) {
         try {
             const showClient = await ClientService.showClints();
+            console.log(showClient);
             response.send(showClient);
         }
         catch (err) {

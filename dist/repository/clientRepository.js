@@ -42,7 +42,7 @@ export class ClientRepository {
                 const Allimagens = imagesUsers.map(async (imagem) => {
                     console.log(imagem);
                     return await tsx.imagem.create({
-                        data: { path: imagem ? imagem : null, },
+                        data: { path: imagem ? imagem : null, client_id: client.id },
                         select: { id: true },
                     });
                 });
@@ -161,7 +161,7 @@ export class ClientRepository {
                     owner_partner: {
                         include: {
                             sector: {
-                                select: { name: true, email: true, cell_phone: true },
+                                select: { name: true, email: true, cell_phone: true, id: true },
                             },
                         },
                     },
