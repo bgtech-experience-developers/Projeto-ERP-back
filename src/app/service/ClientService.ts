@@ -28,11 +28,17 @@ export class ClientService {
 
   static async getAllAddress(id: number) {
     try {
-      const client = await ClientRepository.GetuniqueClient<null>(null, id);
-      if (client) {
-        return await ClientRepository.GetAllAddress(client.id);
+      if(Number(id) && id) {
+        const client = await ClientRepository.GetuniqueClient<null>(null, id);
+        if (client) {
+          return await ClientRepository.GetAllAddress(client.id);
+        }
+        throw new AllError("client não existe", 400);
       }
-      throw new AllError("client não existe", 400);
+
+      throw new AllError("Argumentos inválidos, tipo inesperado.")
+      
+
     } catch (error) {
       throw error;
     }
@@ -126,7 +132,7 @@ export class ClientService {
   static async deleteClient(param: string | number) {
     try {
       const paths = [];
-      if (param && Number(param)) {
+      if (Number(param) && param) {
         const company = await ClientRepository.GetuniqueClient(
           undefined,
           Number(param)
@@ -166,12 +172,14 @@ export class ClientService {
         deleteApiPhp(newPath);
         
         const idSector = await ClientRepository.idSector(company.id)
-        
+
         const deleteClient = await ClientRepository.deleteClient(Number(param));
         console.log(deleteClient);
 
         return deleteClient;
       }
+
+      throw new AllError("Argumentos inválidos, tipo inesperado.")
     } catch (error) {
       throw error;
     }
