@@ -54,13 +54,6 @@ export class Client {
     }
     static async updateClient(request, response, next) {
         try {
-<<<<<<< HEAD
-            const order = request.body.imagens;
-            const imagens = request.files;
-            const bodyClient = request.body;
-            const allresources = await ClientService.updateClient(order, bodyClient, imagens);
-            response.status(200).json(allresources);
-=======
             const files = request.files;
             const order = request.body.imagens;
             const isActive = request.query.isActive ? false : true;
@@ -80,7 +73,6 @@ export class Client {
             const { id } = request.params;
             await ClientService.deleteClient(id);
             response.status(200).json("Empresa/Cliente excluído com sucesso!");
->>>>>>> 470d696e41de1ac25ea70adf4d126560e327371e
         }
         catch (error) {
             next(error);

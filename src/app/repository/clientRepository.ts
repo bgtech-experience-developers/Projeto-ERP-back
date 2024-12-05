@@ -48,26 +48,26 @@ export class ClientRepository {
           select: { id: true },
         });
         const finance = await tsx.sector.create({
-          data: { ...financeiro },
+          data: { ...financeiro, client_id: client.id },
           select: { id: true },
         });
         const commercial = await tsx.sector.create({
-          data: { ...comercial },
+          data: { ...comercial, client_id: client.id  },
           select: { id: true },
         });
         const accounting = await tsx.sector.create({
-          data: { ...contabil },
+          data: { ...contabil, client_id: client.id  },
           select: { id: true },
         });
         const owner = await tsx.sector.create({
-          data: { ...socio },
+          data: { ...socio, client_id: client.id  },
           select: { id: true },
         });
         const imagesUsers = await ApiPhpUtils(imagens, "img_profile", files);
         const Allimagens = imagesUsers.map(async (imagem) => {
           console.log(imagem);
           return await tsx.imagem.create({
-            data: { path: imagem ? imagem : null },
+            data: { path: imagem ? imagem : null,  },
             select: { id: true },
           });
         });
@@ -381,8 +381,7 @@ export class ClientRepository {
     }
   }
 
-  
-static async getImage(id: number) {
+  static async getImage(id: number) {
   try {
 
     const pathImages = await this.connectionDb.client.findUnique({

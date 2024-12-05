@@ -23,26 +23,26 @@ export class ClientRepository {
                     select: { id: true },
                 });
                 const finance = await tsx.sector.create({
-                    data: { ...financeiro },
+                    data: { ...financeiro, client_id: client.id },
                     select: { id: true },
                 });
                 const commercial = await tsx.sector.create({
-                    data: { ...comercial },
+                    data: { ...comercial, client_id: client.id },
                     select: { id: true },
                 });
                 const accounting = await tsx.sector.create({
-                    data: { ...contabil },
+                    data: { ...contabil, client_id: client.id },
                     select: { id: true },
                 });
                 const owner = await tsx.sector.create({
-                    data: { ...socio },
+                    data: { ...socio, client_id: client.id },
                     select: { id: true },
                 });
                 const imagesUsers = await ApiPhpUtils(imagens, "img_profile", files);
                 const Allimagens = imagesUsers.map(async (imagem) => {
                     console.log(imagem);
                     return await tsx.imagem.create({
-                        data: { path: imagem ? imagem : null },
+                        data: { path: imagem ? imagem : null, },
                         select: { id: true },
                     });
                 });
@@ -75,25 +75,6 @@ export class ClientRepository {
                 await tsx.delivery_address.create({
                     data: { adressId: delivery.id, clientId: client.id },
                 }),
-<<<<<<< HEAD
-                connectionDb.company_address.create({
-                    data: { adressId: store.id, clientId: client.id },
-                }),
-                connectionDb.commercial_contact.create({
-                    data: { sectorId: commercial.id, clientId: client.id },
-                }),
-                connectionDb.financial_contact.create({
-                    data: { sectorId: finance.id, clientId: client.id },
-                }),
-                connectionDb.owner_partner.create({
-                    data: { sectorId: owner.id, clientId: client.id },
-                }),
-                connectionDb.accounting_contact.create({
-                    data: { sectorId: accounting.id, clientId: client.id },
-                }),
-            ]);
-            return { mensagem: "empresa cadastrada com sucesso" };
-=======
                     await tsx.company_address.create({
                         data: { adressId: store.id, clientId: client.id },
                     }),
@@ -113,7 +94,6 @@ export class ClientRepository {
                 return { mensagem: "empresa registrada com sucesso nesse novo estilo" };
             });
             return await result;
->>>>>>> 470d696e41de1ac25ea70adf4d126560e327371e
         }
         catch (error) {
             console.log(error);
@@ -147,7 +127,6 @@ export class ClientRepository {
             throw error;
         }
     }
-<<<<<<< HEAD
     static async sector(id) {
         try {
             const connectionDb = InstanciaPrisma.GetConnection();
@@ -175,10 +154,7 @@ export class ClientRepository {
             throw error;
         }
     }
-    async showCLients() {
-=======
     static async showCLients() {
->>>>>>> 470d696e41de1ac25ea70adf4d126560e327371e
         try {
             const allclients = await InstanciaPrisma.GetConnection().client.findMany({
                 include: {
@@ -435,39 +411,6 @@ export class ClientRepository {
                 }
             });
             return pathImages;
-            // console.log(pathImages?.image_company[0].image.path);
-            // console.log(pathImages?.owner_partner[0].sector.owner_partner_image[0].image.path);
-            // console.log(pathImages?.commercial_contact[0].sector.commercial_image[0].image.path);
-            // console.log(pathImages?.accounting_contact[0].sector.accounting_contact_image[0].image.path);
-            // console.log(pathImages?.financinal_contact[0].sector.financial_image[0].image.path);
-            // const allPaths =  this.connectionDb.$transaction(async (tsx) => {
-            // const commercial_contact =  await this.connectionDb.commercial_contact.findFirst({
-            //   where: {
-            //     clientId: id
-            //   }
-            // })
-            // const financial_contact = await this.connectionDb.financial_contact.findFirst({
-            //   where: {
-            //     clientId: id
-            //   }
-            // })
-            // const accounting_contact = await this.connectionDb.accounting_contact.findFirst({
-            //   where: {
-            //     clientId: id
-            //   }
-            // })
-            // const image_company = await this.connectionDb.image_company.findFirst({
-            //   where: {
-            //     companyId: id
-            //   }
-            // })
-            // const owner_partner =  await this.connectionDb.owner_partner.findFirst({
-            //   where: {
-            //     clientId: id
-            //   }
-            // })
-            // const commercial_image = await this.
-            // })
         }
         catch (error) {
             throw error;

@@ -16,14 +16,10 @@ export class JoiValidation {
             phone: joi.string().trim(),
             rg: joi.string().min(9).max(9),
             photo: joi.string(),
-<<<<<<< HEAD
-            cpf: joi.string().required(),
-=======
             cpf: joi.string().max(11).min(11).messages({
                 "string.max": "o campo deve conter no maximo 14 digitos",
                 "string.min": "o campo cpf deve conter pelo menos 14 digitos",
             })
->>>>>>> 470d696e41de1ac25ea70adf4d126560e327371e
         });
         const SchemaAddress = joi.object({
             cep: joi.string().min(8).max(8).trim(),

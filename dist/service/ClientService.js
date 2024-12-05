@@ -1,9 +1,5 @@
 import { AllError } from "../error/AllError.js";
 import { ClientRepository } from "../repository/clientRepository.js";
-<<<<<<< HEAD
-import { DeleteResourcesCloud, UploadCloudnary } from "../utils/cloudinary.js";
-=======
->>>>>>> 470d696e41de1ac25ea70adf4d126560e327371e
 import { Sharp } from "../utils/sharp.js";
 import { deleteApiPhp, deleteUpload } from "../middleware/ApiPhp.js";
 export class ClientService {
@@ -33,24 +29,6 @@ export class ClientService {
             throw error;
         }
     }
-<<<<<<< HEAD
-    static async updateClient(order, body, image) {
-        try {
-            const client = await ClientRepository.GetuniqueClient(body.cliente.cnpj);
-            if (client) {
-                const regex = /[\b.png\b.jpg/]/gi;
-                const imagens = image.map((imagem) => {
-                    return `erp/${imagem.originalname.replace(regex, "")}`;
-                });
-                const result = await DeleteResourcesCloud([...imagens]);
-                const error = imagens.filter((string) => result.deleted[string] === "not found");
-                if (error.length != 0) {
-                    throw new AllError("não foi possivel deletar a imagem no serviço da nuvem");
-                }
-                await Sharp.removeImagens(image);
-            }
-            throw new AllError("empresa não encontrada no sistema");
-=======
     static async showClints() {
         try {
             const allClints = await ClientRepository.showCLients();
@@ -130,8 +108,10 @@ export class ClientService {
                 // console.log(pathImages);
                 paths.push(pathImages?.image_company[0].image.path);
                 paths.push(pathImages?.owner_partner[0].sector.owner_partner_image[0].image.path);
-                paths.push(pathImages?.commercial_contact[0].sector.commercial_image[0].image.path);
-                paths.push(pathImages?.accounting_contact[0].sector.accounting_contact_image[0].image.path);
+                paths.push(pathImages?.commercial_contact[0].sector.commercial_image[0].image
+                    .path);
+                paths.push(pathImages?.accounting_contact[0].sector.accounting_contact_image[0]
+                    .image.path);
                 paths.push(pathImages?.financinal_contact[0].sector.financial_image[0].image.path);
                 const pathsAll = paths.filter((path) => path != null || undefined);
                 const newPath = pathsAll.map((path) => {
@@ -140,11 +120,11 @@ export class ClientService {
                 });
                 console.log(newPath);
                 deleteApiPhp(newPath);
+                const idSector = await ClientRepository.idSector(company.id);
                 const deleteClient = await ClientRepository.deleteClient(Number(param));
                 console.log(deleteClient);
                 return deleteClient;
             }
->>>>>>> 470d696e41de1ac25ea70adf4d126560e327371e
         }
         catch (error) {
             throw error;

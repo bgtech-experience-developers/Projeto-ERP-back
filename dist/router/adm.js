@@ -8,13 +8,6 @@ import { AllError } from "../error/AllError.js";
 export const routerAdm = Router();
 routerAdm.post("/login", AdmValidator.loginValidator(), AdmController.login);
 routerAdm.post("/criar", AdmValidator.loginValidator(true), AdmController.createAdm);
-<<<<<<< HEAD
-routerAdm.post("/refresh-token", async (request, response) => {
-    const { token } = request.body;
-    const secret = process.env.ADM_JWT_SECRET;
-    const { payload } = jwt.verify(token, secret, { complete: true });
-    response.status(200).json(payload);
-=======
 routerAdm.get("/refresh-token", async (request, response, next) => {
     try {
         const { logout } = request.query;
@@ -62,7 +55,6 @@ routerAdm.post("/payload/:type", (req, res) => {
     const secreteKey = type === "adm" ? process.env.ADM_JWT_SECRET : process.env.REGULAR_JWT_SECRE;
     const { payload } = jwt.verify(token, secreteKey, { complete: true });
     res.status(200).json(payload);
->>>>>>> 470d696e41de1ac25ea70adf4d126560e327371e
 });
 routerAdm.get("/all", AdmController.getAll);
 routerAdm.get("/test", (request, response) => {

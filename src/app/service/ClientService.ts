@@ -164,7 +164,9 @@ export class ClientService {
         console.log(newPath);
 
         deleteApiPhp(newPath);
-
+        
+        const idSector = await ClientRepository.idSector(company.id)
+        
         const deleteClient = await ClientRepository.deleteClient(Number(param));
         console.log(deleteClient);
 
