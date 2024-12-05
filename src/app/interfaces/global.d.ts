@@ -1,4 +1,5 @@
 interface ClientC {
+  id: number;
   corporate_reason: string;
   fantasy_name: string;
   branch_activity: string;

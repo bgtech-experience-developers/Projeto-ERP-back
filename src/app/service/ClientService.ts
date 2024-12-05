@@ -6,6 +6,7 @@ import { DeleteResourcesCloud, UploadCloudnary } from "../utils/cloudinary.js";
 import { Sharp } from "../utils/sharp.js";
 import { ApiPhp, deleteApiPhp, deleteUpload } from "../middleware/ApiPhp.js";
 import { ApiPhpUtils } from "../utils/ApiPhp.js";
+import { all } from "axios";
 
 export class ClientService {
   static async CreateClientService(
@@ -47,9 +48,11 @@ export class ClientService {
   static async showClints() {
     try {
       const allClints = await ClientRepository.showCLients();
+      
       const newArray = allClints.map(
-        ({ branch_activity, situation, fantasy_name, owner_partner }) => {
+        ({id, branch_activity, situation, fantasy_name, owner_partner, }) => {
           return {
+            id,
             branch_activity,
             situation,
             fantasy_name,
