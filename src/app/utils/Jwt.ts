@@ -1,4 +1,4 @@
-import jwt from "jsonwebtoken";
+import jwt, { Jwt } from "jsonwebtoken";
 import { AdmRepository } from "../repository/AdmRepository.js";
 import { AllError } from "../error/AllError.js";
 import { JwtPayload } from "jsonwebtoken";
@@ -12,34 +12,29 @@ export interface payload extends JwtPayload {
 
 type role = "adm" | "Regular";
 export class JwtToken {
-  static async getCodeToken<$Payload extends admClient>(
+  static async getCodeToken<$Payload extends payload>(
     user: $Payload,
-    secreteKey: string,
+    secreteKey: role,
     time: jwt.SignOptions
   ): Promise<{ token: string; payload: jwt.JwtPayload | string }> {
     try {
-      if (user.client) {
-        const token = jwt.sign({ ...user, role: "Regular" }, secreteKey, time);
-        const { payload } = jwt.verify(token, secreteKey, { complete: true });
+      const secret =
+        secreteKey === "adm"
+          ? process.env.ADM_JWT_SECRET
+          : process.env.ADM_JWT_REGULAR;
+      console.log(user);
+      if (secreteKey === "Regular") {
+        const token = jwt.sign({ ...user, role: "Regular" }, secret!, time);
+        const { payload } = jwt.verify(token, secret!, { complete: true });
         return { token, payload };
       } else {
-        const permissionss: string[] | undefined = user.role_adm?.map(
-          ({ role }) => {
-            return role.role_name;
-          }
-        );
-
-        const token = jwt.sign(
-          {
-            id: user.id,
-            cnpj: user.cnpj,
-            role: "adm",
-            permission: permissionss ? permissionss : [],
-          },
-          secreteKey,
-          time
-        );
-        const { payload } = jwt.verify(token, secreteKey, { complete: true });
+        const token = jwt.sign( {
+          id: user.id,
+          cnpj: user.cnpj,
+          permission: [...user.permission],
+          role: 'adm',
+        }, secret!, time);
+        const { payload } = jwt.verify(token, secret!, { complete: true });
 
         return { token, payload };
       }
@@ -73,11 +68,26 @@ export class JwtToken {
           expiresIn: "1d",
         });
       }
-      return "";
     } catch (error) {
       console.log(error);
       throw error;
     }
-    4;
+  }
+  static getTokenApi(
+    payload: { app: "node-api" },
+    secretKey: "api",
+    time: jwt.SignOptions
+  ): string {
+    try {
+      const secret = secretKey === "api" ? process.env.API_PHP_SECRET : null;
+      if (!secret) {
+        throw new AllError(
+          "a chave secreta para assinatura do token para api não foi fornecida"
+        );
+      }
+      return jwt.sign({ ...payload }, secret, time);
+    } catch (error) {
+      throw error;
+    }
   }
 }

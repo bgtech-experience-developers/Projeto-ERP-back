@@ -10,3 +10,4 @@ export class BycriptCripto {
     return bycript.hashSync(passwordRegular, salts);
   }
 }
+

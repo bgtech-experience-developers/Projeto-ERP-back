@@ -4,11 +4,25 @@ interface ClientC {
   branch_activity: string;
   cnpj: string;
   state_registration: string;
+
+  situation: boolean;
   type_contribuition: string;
-  situtation: boolean;
-  photo?: string | null;
   created_at: Date;
   update_at: Date;
+}
+
+interface base_solid_allclient {
+  owner_partner: {
+    sector: {
+      name: string;
+      email: string;
+      cell_phone: string;
+    };
+    created_at: Date;
+    update_at: Date;
+    clientId: number;
+    sectorId: number;
+  }[];
 }
 interface bodyCreateClient {
   financeiro: GenericFields;
@@ -26,8 +40,8 @@ interface integral extends Address {}
 interface GenericFields {
   name: string;
   email: string;
-  phone: string;
-  cell_phone?: string;
+  phone?: string;
+  cell_phone: string;
   rg: string;
   photo?: string | null;
   cpf: string;
@@ -46,6 +60,7 @@ interface adm {
   created_at?: Date;
   update_at?: Date;
 }
+
 interface admClient extends adm {
   client?: {
     id?: number;
@@ -61,10 +76,12 @@ interface admClient extends adm {
     }
   ];
 }
+
 interface upload {
   secure_url: string;
   original_filename: string;
 }
+
 interface adminPermission {
   adm?: {
     role_adm: [
@@ -76,6 +93,7 @@ interface adminPermission {
     ];
   };
 }
+
 interface Address {
   cep: string;
   street: string;
@@ -84,4 +102,5 @@ interface Address {
   city: string;
   neighborhood: string;
 }
+
 type AllImagens = (string | null)[];

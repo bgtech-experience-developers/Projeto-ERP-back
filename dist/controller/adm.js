@@ -3,9 +3,19 @@ export class AdmController {
     static async login(request, response, next) {
         try {
             const { token, refreshToken } = await AdmService.login(request.body);
+<<<<<<< HEAD
             response
                 .json(`seu token gerado é ${token}, e o seu refresh token gerado é ${refreshToken}`)
                 .status(200);
+=======
+            response.cookie("refreshToken", refreshToken, {
+                httpOnly: true,
+                secure: false,
+                maxAge: 24 * 60 * 60 * 7000,
+                sameSite: "none", // validade do token , equivale a 7 dias
+            });
+            response.json({ token, refreshToken }).status(200);
+>>>>>>> 470d696e41de1ac25ea70adf4d126560e327371e
         }
         catch (error) {
             next(error);

@@ -10,6 +10,7 @@ export interface Files {
 }
 
 export class ClientValidator {
+
   CreateClientValidator<$Interface>() {
     return async (request: Request, response: Response, next: NextFunction) => {
       try {
@@ -39,10 +40,14 @@ export class ClientValidator {
           Sharp.removeImagens(files);
           throw new AllError(error[0].mesagem);
         }
+
         next();
       } catch (error) {
         next(error);
       }
     };
   }
+
+  
+
 }

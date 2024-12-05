@@ -1,5 +1,9 @@
 {
+<<<<<<< HEAD
   "imagens": [true, false, false, false],
+=======
+  "imagens": [true, false, false, true, false],
+>>>>>>> 470d696e41de1ac25ea70adf4d126560e327371e
   "cliente": {
     "corporate_reason": "não sei",
     "fantasy_name": "emprsa do elo musca",
@@ -29,29 +33,51 @@
     "phone": "859281812912",
     "cell_phone": "10210210",
     "rg": "123456789",
+<<<<<<< HEAD
     "email": "lixeira@gmail.com",
     "cpf": "103002041023032"
+=======
+    "cpf": "12345678919",
+    "email": "lixeira@gmail.com"
+>>>>>>> 470d696e41de1ac25ea70adf4d126560e327371e
   },
   "comercial": {
     "name": "lucio",
     "phone": "859281812912",
     "cell_phone": "10210210",
     "rg": "123456789",
+<<<<<<< HEAD
     "email": "emanuel@gmail.com",
     "cpf": "10300204102303"
+=======
+    "cpf": "12345678911",
+    "email": "emanuel@gmail.com"
+>>>>>>> 470d696e41de1ac25ea70adf4d126560e327371e
   },
   "contabil": {
     "name": "lucio",
     "phone": "859281812912",
+    "cell_phone": "10210210",
     "rg": "123456789",
+<<<<<<< HEAD
     "email": "lisboa@gmail.com",
     "cpf": "1030020410230"
+=======
+    "cpf": "12345678912",
+    "email": "lisboa@gmail.com"
+>>>>>>> 470d696e41de1ac25ea70adf4d126560e327371e
   },
   "socio": {
     "name": "lucio",
     "phone": "859281812912",
     "rg": "123456789",
+<<<<<<< HEAD
     "email": "fransisco@gmail.com",
     "cpf": "103002041022"
+=======
+    "cell_phone": "10210210",
+    "cpf": "12345678913",
+    "email": "fransisco@gmail.com"
+>>>>>>> 470d696e41de1ac25ea70adf4d126560e327371e
   }
 }

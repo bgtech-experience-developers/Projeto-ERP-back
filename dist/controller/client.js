@@ -1,6 +1,6 @@
 import { ClientService } from "../service/ClientService.js";
 import { ClientRepository } from "../repository/clientRepository.js";
-const { showCLients, showClientById } = new ClientRepository();
+const { showClientById } = new ClientRepository();
 import { AllError } from "../error/AllError.js";
 export class Client {
     static async CreateClient(request, response, next) {
@@ -17,20 +17,18 @@ export class Client {
     }
     async showClients(request, response, next) {
         try {
-            const showClient = await showCLients();
+            const showClient = await ClientService.showClints();
             response.send(showClient);
         }
         catch (err) {
-            console.log(err);
-            response.status(500).json({ message: "erro interno do servidor! :(" });
             next(err);
         }
     }
     async showClientById(request, response, next) {
         try {
             const { id } = request.params;
-            const showOneClient = await showClientById(id);
-            response.send(showOneClient);
+            const showOneClient = await showClientById(Number(id));
+            response.status(200).json(showOneClient);
         }
         catch (err) {
             console.log(err);
@@ -56,11 +54,33 @@ export class Client {
     }
     static async updateClient(request, response, next) {
         try {
+<<<<<<< HEAD
             const order = request.body.imagens;
             const imagens = request.files;
             const bodyClient = request.body;
             const allresources = await ClientService.updateClient(order, bodyClient, imagens);
             response.status(200).json(allresources);
+=======
+            const files = request.files;
+            const order = request.body.imagens;
+            const isActive = request.query.isActive ? false : true;
+            const body = request.body;
+            body["situation"] = isActive;
+            console.log("a situação do cliente nesse exato momento é " + body.situation);
+            const message = await ClientService.updateClient(body, order, files);
+            console.log(message);
+            response.status(201).json({ message });
+        }
+        catch (error) {
+            next(error);
+        }
+    }
+    static async deleteClient(request, response, next) {
+        try {
+            const { id } = request.params;
+            await ClientService.deleteClient(id);
+            response.status(200).json("Empresa/Cliente excluído com sucesso!");
+>>>>>>> 470d696e41de1ac25ea70adf4d126560e327371e
         }
         catch (error) {
             next(error);

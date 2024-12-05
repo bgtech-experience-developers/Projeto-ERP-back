@@ -1,20 +1,18 @@
 import { AllError } from "../error/AllError.js";
 import { ClientRepository } from "../repository/clientRepository.js";
+<<<<<<< HEAD
 import { DeleteResourcesCloud, UploadCloudnary } from "../utils/cloudinary.js";
+=======
+>>>>>>> 470d696e41de1ac25ea70adf4d126560e327371e
 import { Sharp } from "../utils/sharp.js";
+import { deleteApiPhp, deleteUpload } from "../middleware/ApiPhp.js";
 export class ClientService {
     static async CreateClientService(body, image, order) {
         try {
             const cliente = await ClientRepository.GetuniqueClient(body.cliente.cnpj);
             if (!cliente) {
-                const uploadCloud = await UploadCloudnary(image);
-                const { error, mensagem } = await Sharp.removeImagens(image);
-                if (error) {
-                    throw new AllError(mensagem);
-                }
-                console.log("eu passo por aqui papai");
-                const imagens = Sharp.allImagens(uploadCloud, order);
-                return ClientRepository.createCliente(body, imagens);
+                const imagens = Sharp.allImagens(image, order);
+                return ClientRepository.createCliente(body, imagens, image); // ja to enviando de forma aliada o caminho da imagens e os camops null de qum não enviou
             }
             await Sharp.removeImagens(image);
             throw new AllError("cliente ja cadastrado no sistema");
@@ -35,6 +33,7 @@ export class ClientService {
             throw error;
         }
     }
+<<<<<<< HEAD
     static async updateClient(order, body, image) {
         try {
             const client = await ClientRepository.GetuniqueClient(body.cliente.cnpj);
@@ -51,6 +50,101 @@ export class ClientService {
                 await Sharp.removeImagens(image);
             }
             throw new AllError("empresa não encontrada no sistema");
+=======
+    static async showClints() {
+        try {
+            const allClints = await ClientRepository.showCLients();
+            const newArray = allClints.map(({ branch_activity, situation, fantasy_name, owner_partner }) => {
+                return {
+                    branch_activity,
+                    situation,
+                    fantasy_name,
+                    name: [
+                        ...owner_partner.map(({ sector }) => {
+                            return sector.name;
+                        }),
+                    ],
+                    email: [
+                        ...owner_partner.map(({ sector }) => {
+                            return sector.email;
+                        }),
+                    ],
+                    telefone: [
+                        ...owner_partner.map(({ sector }) => {
+                            return sector.cell_phone;
+                        }),
+                    ],
+                };
+            });
+            return newArray;
+        }
+        catch (error) {
+            throw error;
+        }
+    }
+    static async updateClient(body, order, files) {
+        try {
+            const client = await ClientRepository.GetuniqueClient(body.cliente.cnpj);
+            if (!client) {
+                throw new AllError("não é possivel atualizar o cliente pois não existe registro no sistema");
+            }
+            const allIdsSector = await ClientRepository.idSector(client.id);
+            if (allIdsSector.length === 0) {
+                throw new AllError("não existe nenhum registro relacionado com a empresa");
+            }
+            console.log(allIdsSector);
+            const allPaths = await ClientRepository.getImagee(allIdsSector);
+            console.log(allPaths);
+            // nesse caso eu ja tenho as imagens que foram armazenadas no banco de dados
+            const deletePathsFilter = allPaths.filter(({ path }, index) => {
+                if (order[index]) {
+                    return path ? path : false;
+                }
+            });
+            if (deletePathsFilter.length != 0) {
+                const deletePaths = deletePathsFilter.map(({ path }) => {
+                    const paths = path
+                        ? path.replace("https://bgtech.com.br/erp/assets/", "")
+                        : null;
+                    return paths;
+                });
+                await deleteUpload([...deletePaths]);
+            }
+            const imagens = Sharp.allImagens(files, order);
+            return await ClientRepository.updateClient(body, imagens, allIdsSector, allPaths, files);
+        }
+        catch (error) {
+            throw error;
+        }
+    }
+    static async deleteClient(param) {
+        try {
+            const paths = [];
+            if (param && Number(param)) {
+                const company = await ClientRepository.GetuniqueClient(undefined, Number(param));
+                // console.log(company);1
+                if (!company) {
+                    throw new AllError("Cliente/Empresa não cadastrada no sistema!", 404);
+                }
+                const pathImages = await ClientRepository.getImage(Number(param));
+                // console.log(pathImages);
+                paths.push(pathImages?.image_company[0].image.path);
+                paths.push(pathImages?.owner_partner[0].sector.owner_partner_image[0].image.path);
+                paths.push(pathImages?.commercial_contact[0].sector.commercial_image[0].image.path);
+                paths.push(pathImages?.accounting_contact[0].sector.accounting_contact_image[0].image.path);
+                paths.push(pathImages?.financinal_contact[0].sector.financial_image[0].image.path);
+                const pathsAll = paths.filter((path) => path != null || undefined);
+                const newPath = pathsAll.map((path) => {
+                    const paths = path?.replace("https://bgtech.com.br/erp/assets/", "");
+                    return paths ? paths : null;
+                });
+                console.log(newPath);
+                deleteApiPhp(newPath);
+                const deleteClient = await ClientRepository.deleteClient(Number(param));
+                console.log(deleteClient);
+                return deleteClient;
+            }
+>>>>>>> 470d696e41de1ac25ea70adf4d126560e327371e
         }
         catch (error) {
             throw error;
