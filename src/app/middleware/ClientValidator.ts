@@ -20,6 +20,12 @@ export class ClientValidator {
         request.body = JSON.parse(request.body.json);
         
 
+        // Retira as Máscaras de Telefone, CPF, CNPJ e CEP.
+        request.body.telefone = request.body.telefone.replace(/\D/g, "");
+        request.body.cpf = request.body.cpf.replace(/\D/g, "");
+        request.body.cnpj = request.body.cnpj.replace(/\D/g, "");
+        request.body.cep = request.body.cep.replace(/\D/g, "");
+
         const allPromises = await JoiValidation.schemaCreateClient(
           request.body
         );
@@ -48,7 +54,4 @@ export class ClientValidator {
       }
     };
   }
-
-  
-
 }
