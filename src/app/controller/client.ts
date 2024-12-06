@@ -14,7 +14,7 @@ export interface ClientCreate {
   comercial: GenericFields;
   contabil: GenericFields;
   situation: boolean;
-  [key: string]: unknown;
+  [key: string]:unknown;
 }
 
 export class Client {

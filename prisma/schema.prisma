@@ -40,7 +40,6 @@ model Client {
 }
 
 model sector {
-  // id                       Int                        @id @default(autoincrement())
   id                Int                 @default(autoincrement())
   name              String              @db.VarChar(100)
   email             String              @db.VarChar(100)
@@ -64,7 +63,6 @@ model sector {
 
   @@id([id])
 }
-
 model imagem {
   id Int @id @default(autoincrement())
 

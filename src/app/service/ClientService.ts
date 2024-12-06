@@ -30,7 +30,7 @@ export class ClientService {
   static async getAllAddress(id: number) {
     try {
       if(Number(id) && id) {
-        const client = await ClientRepository.GetuniqueClient<null>(null, id);
+        const client = await ClientRepository.GetuniqueClient(null, id);
         if (client) {
           return await ClientRepository.GetAllAddress(client.id);
         }
@@ -82,12 +82,56 @@ export class ClientService {
 
   static async showClientById(id: string) {
     try {
-      const showOneClient = await ClientRepository.showClientById(Number(id));
-      if(!showOneClient) {
-        throw new AllError("Usuário não cadastrado/encontrado no sistema", 404)
+      if(Number(id)){
+       const idClient = Number(id)
+        const showOneClient = await ClientRepository.GetuniqueClient(null,idClient) as getUnic;
+        if(!showOneClient) {
+          throw new AllError("Usuário não cadastrado/encontrado no sistema", 404)
+          
+        }
+
+      const BodyCommercial = await Promise.all(showOneClient.commercial_contact.map(async({sectorId})=>{
+        return await ClientRepository.sector(sectorId)
+      }))
+      const bodyFinance = await Promise.all(showOneClient.financinal_contact.map(async({sectorId})=>{
+        return await ClientRepository.sector(sectorId)
+      }))
+      const bodyAccouting = await Promise.all(showOneClient.accounting_contact.map(async({sectorId})=>{
+        return await ClientRepository.sector(sectorId)
+      }))
+      const bodyOwern = await Promise.all(showOneClient.owner_partner.map(async({sectorId})=>{
+        return await ClientRepository.sector(sectorId)
+      }))
+      
+      const allIdsCommercial = BodyCommercial.map((props)=>{
+        return props?.id
+      })
+      const allIdsFinance = bodyFinance.map((props)=>{
+        return props?.id
+      })
+      const allIdssocio = bodyOwern.map((props)=>{
+        return props?.id
+      })
+      const allIdsaccouting = bodyAccouting.map((props)=>{
+        return props?.id
+      })
+      if(allIdsCommercial && allIdsFinance && allIdssocio && allIdsaccouting){
+        const allIdsImagens = await ClientRepository.getImageAll({commercial:[...allIdsCommercial],contabil:[]})
         
       }
-      return showOneClient
+        return {
+          ...showOneClient,
+            finance:bodyFinance.map((body,index)=>{
+              return {...body}
+            }),
+            commercial:BodyCommercial.map((body,index)=>{
+              return {...body}
+            })
+
+        }
+
+      }
+      throw new AllError('parametro não aceito, envie somente números')
   
 
     } catch(error) {

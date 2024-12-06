@@ -18,6 +18,7 @@ export class ClientValidator {
         console.log(files);
 
         request.body = JSON.parse(request.body.json);
+        
 
         const allPromises = await JoiValidation.schemaCreateClient(
           request.body

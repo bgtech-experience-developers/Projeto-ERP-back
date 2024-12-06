@@ -6,10 +6,17 @@ import { AllError } from "../error/AllError.js";
 import { ApiPhpUtils } from "../utils/ApiPhp.js";
 import { promises } from "form-data";
 import { Sharp } from "../utils/sharp.js";
-
+import { PrismaClient } from "@prisma/client/extension";
+type allTables = 'accounting_contact_image' | 'commercial_image' | 'owner_partner_image' | 'financial_image' | 'image_company'
 interface allClientes extends ClientC {}
 interface allClientes extends base_solid_allclient {}
 type imageStorageDb = { path: string | null; id: number }[];
+interface imagensIds {
+ commercial: number[]
+ financeiro:number[]
+ socio:number[]
+ contabil:number[]
+}
 
 export class ClientRepository {
 
@@ -128,18 +135,23 @@ export class ClientRepository {
       throw error;
     }
   }
-
-  static async GetuniqueClient<$Interface>(cnpj?: $Interface, id?: number) {
+  static async GetuniqueClient<$Interface>(cnpj?: $Interface, id?: number):Promise<ClientC | getUnic | null>{
     try {
-      console.log('passei');
-      
       const connectionDb = InstanciaPrisma.GetConnection();
       if (cnpj) {
-        return await connectionDb.client.findFirst({ where: { cnpj } });
+        const getuniqueClient =  await connectionDb.client.findFirst({ where: { cnpj } });
+        return getuniqueClient
+      }else{
+        const getUniqueClient: getUnic | null =  await connectionDb.client.findUnique({ where: { id },include:{
+           financinal_contact:{select:{sectorId:true}},commercial_contact:{select:{sectorId:true}},accounting_contact:{select:{sectorId:true}}
+       ,owner_partner:{select:{sectorId:true}}
+           }});
+           
+         return getUniqueClient
+
       }
-      return await connectionDb.client.findUnique({ where: { id } });
     } catch (error) {
-      throw new AllError("servidor fora do ar");
+      throw error;
     }
   }
 
@@ -159,7 +171,7 @@ export class ClientRepository {
   static async sector(id: number) {
     try {
       const connectionDb = InstanciaPrisma.GetConnection();
-      return connectionDb.sector.findFirst({ where: { id } });
+      return connectionDb.sector.findFirst({ where: { id }});
     } catch (error) {
       throw error;
     }
@@ -180,6 +192,22 @@ export class ClientRepository {
     } catch (error) {
       throw error;
     }
+  }
+  static async getImageAll(arrayId:imagensIds){
+    try{
+      
+      const connectionDb = InstanciaPrisma.GetConnection()
+     const allImagensCommercial = await Promise.all(arrayId.commercial.map(async(id)=>{return await connectionDb.commercial_image.findFirst({where:{commercial_contactId:id},select:{imageId:true}})}))
+     const allimagensfinanceiro = await Promise.all(arrayId.financeiro.map(async(id)=>{return await connectionDb.financial_image.findFirst({where:{financial_contactId:id},select:{imageId:true}})}))
+     const allimagensSocio = await Promise.all(arrayId.socio.map(async(id)=>{return await connectionDb.owner_partner_image.findFirst({where:{owner_partnerId:id},select:{imageId:true}})}))
+     const allimagensCotabil = await Promise.all(arrayId.contabil.map(async(id)=>{return await connectionDb.accounting_contact_image.findFirst({where:{accounting_contactId:id},select:{imageId:true}})}))
+     return {
+      allimagensCotabil,allimagensfinanceiro,allimagensSocio,allImagensCommercial
+     }
+    }catch(error){
+      throw error
+    }
+
   }
 
   static async showCLients() {
@@ -204,10 +232,10 @@ export class ClientRepository {
     }
   }
 
-  static async showClientById(id: any) {
+  static async showClientById(id:number) {
     try {
       return await InstanciaPrisma.GetConnection().client.findUnique({
-        where: { id: id },
+        where: { id },
       });
     } catch (err) {
       throw err;
@@ -305,6 +333,14 @@ export class ClientRepository {
       throw error;
     }
   }
+  static async Allimage(id:number){
+    try{
+      const connectionDb = InstanciaPrisma.GetConnection()
+      return await connectionDb.imagem.findUnique({where:{id},select:{path:true}})
+    }catch(error){
+      throw error
+    }
+  }
 
   static async getImagee(arrayIdsector: number[]) {
     try {
@@ -378,7 +414,7 @@ export class ClientRepository {
         }
       })
     } catch(error) {
-      throw error;22
+      throw error;
     }
   }
 
