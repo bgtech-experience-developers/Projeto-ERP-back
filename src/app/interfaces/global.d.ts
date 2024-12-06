@@ -53,6 +53,7 @@ interface adm {
   created_at?: Date;
   update_at?: Date;
 }
+
 interface admClient extends adm {
   client?: {
     id?: number;
@@ -68,10 +69,12 @@ interface admClient extends adm {
     }
   ];
 }
+
 interface upload {
   secure_url: string;
   original_filename: string;
 }
+
 interface adminPermission {
   adm?: {
     role_adm: [
@@ -83,6 +86,7 @@ interface adminPermission {
     ];
   };
 }
+
 interface Address {
   cep: string;
   street: string;
@@ -91,4 +95,5 @@ interface Address {
   city: string;
   neighborhood: string;
 }
+
 type AllImagens = (string | null)[];

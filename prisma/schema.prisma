@@ -4,7 +4,7 @@ generator client {
 
 datasource db {
   provider = "mysql"
-  url      = env("DATABASE_URL")
+  url = env("DATABASE_URL")
 }
 
 model Client {
@@ -87,8 +87,8 @@ model company_address {
   id         Int      @id @default(autoincrement())
   adressId   Int
   clientId   Int
-  client     Client   @relation(fields: [clientId], references: [id])
-  adress     Address  @relation(fields: [adressId], references: [id])
+  client     Client   @relation(fields: [clientId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  adress     Address  @relation(fields: [adressId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   created_at DateTime @default(now())
   update_at  DateTime @default(now())
 }
@@ -96,8 +96,8 @@ model company_address {
 model commercial_image {
   imageId              Int
   commercial_contactId Int
-  commercial           sector   @relation(fields: [commercial_contactId], references: [id])
-  image                imagem   @relation(fields: [imageId], references: [id])
+  commercial           sector   @relation(fields: [commercial_contactId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  image                imagem   @relation(fields: [imageId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   created_at           DateTime @default(now())
   update_at            DateTime @default(now())
 
@@ -107,8 +107,8 @@ model commercial_image {
 model image_company {
   companyId  Int
   imageId    Int
-  image      imagem   @relation(fields: [imageId], references: [id])
-  company    Client   @relation(fields: [companyId], references: [id])
+  image      imagem   @relation(fields: [imageId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  company    Client   @relation(fields: [companyId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   created_at DateTime @default(now())
   update_at  DateTime @default(now())
 
@@ -119,8 +119,8 @@ model delivery_address {
   id         Int      @id @default(autoincrement())
   adressId   Int
   clientId   Int
-  client     Client   @relation(fields: [clientId], references: [id])
-  adress     Address  @relation(fields: [adressId], references: [id])
+  client     Client   @relation(fields: [clientId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  adress     Address  @relation(fields: [adressId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   created_at DateTime @default(now())
   update_at  DateTime @default(now())
 }
@@ -128,8 +128,8 @@ model delivery_address {
 model financial_image {
   imageId             Int
   financial_contactId Int
-  image               imagem   @relation(fields: [imageId], references: [id])
-  financial_contact   sector   @relation(fields: [financial_contactId], references: [id])
+  image               imagem   @relation(fields: [imageId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  financial_contact   sector   @relation(fields: [financial_contactId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   created_at          DateTime @default(now())
   update_at           DateTime @default(now())
 
@@ -139,8 +139,8 @@ model financial_image {
 model financial_contact {
   sectorId   Int
   clientId   Int
-  client     Client   @relation(fields: [clientId], references: [id])
-  sector     sector   @relation(fields: [sectorId], references: [id])
+  client     Client   @relation(fields: [clientId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  sector     sector   @relation(fields: [sectorId], references: [id], onDelete: Cascade,onUpdate: Cascade)
   created_at DateTime @default(now())
   update_at  DateTime @default(now())
 
@@ -150,8 +150,8 @@ model financial_contact {
 model owner_partner_image {
   imageId         Int
   owner_partnerId Int
-  image           imagem   @relation(fields: [imageId], references: [id])
-  owner_partner   sector   @relation(fields: [owner_partnerId], references: [id])
+  image           imagem   @relation(fields: [imageId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  owner_partner   sector   @relation(fields: [owner_partnerId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   created_at      DateTime @default(now())
   update_at       DateTime @default(now())
 
@@ -161,8 +161,8 @@ model owner_partner_image {
 model owner_partner {
   sectorId   Int
   clientId   Int
-  client     Client   @relation(fields: [clientId], references: [id])
-  sector     sector   @relation(fields: [sectorId], references: [id])
+  client     Client   @relation(fields: [clientId], references: [id],onDelete: Cascade, onUpdate: Cascade)
+  sector     sector   @relation(fields: [sectorId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   created_at DateTime @default(now())
   update_at  DateTime @default(now())
 
@@ -173,8 +173,8 @@ model commercial_contact {
   sectorId Int
   clientId Int
 
-  client     Client   @relation(fields: [clientId], references: [id])
-  sector     sector   @relation(fields: [sectorId], references: [id])
+  client     Client   @relation(fields: [clientId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  sector     sector   @relation(fields: [sectorId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   created_at DateTime @default(now())
   update_at  DateTime @default(now())
 
@@ -184,8 +184,8 @@ model commercial_contact {
 model accounting_contact_image {
   imageId              Int
   accounting_contactId Int
-  accounting_contact   sector   @relation(fields: [accounting_contactId], references: [id])
-  image                imagem   @relation(fields: [imageId], references: [id])
+  accounting_contact   sector   @relation(fields: [accounting_contactId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  image                imagem   @relation(fields: [imageId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   created_at           DateTime @default(now())
   update_at            DateTime @default(now())
 
@@ -195,8 +195,8 @@ model accounting_contact_image {
 model accounting_contact {
   sectorId   Int
   clientId   Int
-  client     Client   @relation(fields: [clientId], references: [id])
-  sector     sector   @relation(fields: [sectorId], references: [id])
+  client     Client   @relation(fields: [clientId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  sector     sector   @relation(fields: [sectorId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   created_at DateTime @default(now())
   update_at  DateTime @default(now())
 
@@ -223,8 +223,8 @@ model Role {
 model RoleAdm {
   adm_id     Int
   role_id    Int
-  adm        Adm      @relation(fields: [adm_id], references: [id])
-  role       Role     @relation(fields: [role_id], references: [id])
+  adm        Adm      @relation(fields: [adm_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  role       Role     @relation(fields: [role_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
   created_at DateTime @default(now())
   update_at  DateTime @default(now())
 

@@ -19,6 +19,7 @@ export interface ClientCreate {
 }
 
 export class Client {
+
   static async CreateClient(
     request: Request,
     response: Response,
@@ -55,8 +56,8 @@ export class Client {
   ) {
     try {
       const { id } = request.params;
-      const showOneClient = await showClientById(id);
-      response.send(showOneClient);
+      const showOneClient = await showClientById(Number(id));
+      response.status(200).json(showOneClient);
     } catch (err) {
       console.log(err);
       response.status(500).json({ message: "erro interno do servidor! :(" });
@@ -83,6 +84,7 @@ export class Client {
       next(error);
     }
   }
+
   static async updateClient(
     request: Request,
     response: Response,
@@ -106,4 +108,19 @@ export class Client {
       next(error);
     }
   }
+
+  static async deleteClient(request: Request, response: Response, next: NextFunction) {
+
+    try {
+  
+      const {id} = request.params;
+  
+      await ClientService.deleteClient(id);
+      response.status(200).json("Empresa/Cliente excluído com sucesso!");
+  
+    } catch(error) {
+      next(error)
+    }
+  }
 }
+

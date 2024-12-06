@@ -41,7 +41,7 @@ export class ClientRepository {
                 const imagesUsers = await ApiPhpUtils(imagens, "img_profile", files);
                 const Allimagens = imagesUsers.map(async (imagem) => {
                     console.log(imagem);
-                    return tsx.imagem.create({
+                    return await tsx.imagem.create({
                         data: { path: imagem ? imagem : null },
                         select: { id: true },
                     });
@@ -90,6 +90,7 @@ export class ClientRepository {
                     await tsx.accounting_contact.create({
                         data: { sectorId: accounting.id, clientId: client.id },
                     });
+                console.log(Allimagens);
                 return { mensagem: "empresa registrada com sucesso nesse novo estilo" };
             });
             return await result;
@@ -101,6 +102,7 @@ export class ClientRepository {
     }
     static async GetuniqueClient(cnpj, id) {
         try {
+            console.log('passei');
             const connectionDb = InstanciaPrisma.GetConnection();
             if (cnpj) {
                 return await connectionDb.client.findFirst({ where: { cnpj } });
@@ -232,7 +234,7 @@ export class ClientRepository {
             throw error;
         }
     }
-    static async getImage(arrayIdsector) {
+    static async getImagee(arrayIdsector) {
         try {
             const result = this.connectionDb.$transaction(async (connection) => {
                 const imagepathCompany = await connection.image_company.findFirst({
@@ -281,6 +283,140 @@ export class ClientRepository {
                 return [];
             });
             return result;
+        }
+        catch (error) {
+            throw error;
+        }
+    }
+    static async deleteClient(id) {
+        try {
+            return await this.connectionDb.client.delete({
+                where: {
+                    id
+                }
+            });
+        }
+        catch (error) {
+            throw error;
+            22;
+        }
+    }
+    static async getImage(id) {
+        try {
+            const pathImages = await this.connectionDb.client.findUnique({
+                where: {
+                    id
+                },
+                include: {
+                    image_company: {
+                        include: {
+                            image: {
+                                select: {
+                                    path: true
+                                }
+                            }
+                        }
+                    }, owner_partner: {
+                        include: {
+                            sector: {
+                                include: {
+                                    owner_partner_image: {
+                                        select: {
+                                            image: {
+                                                select: {
+                                                    path: true
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }, commercial_contact: {
+                        include: {
+                            sector: {
+                                include: {
+                                    commercial_image: {
+                                        select: {
+                                            image: {
+                                                select: {
+                                                    path: true
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }, financinal_contact: {
+                        include: {
+                            sector: {
+                                include: {
+                                    financial_image: {
+                                        select: {
+                                            image: {
+                                                select: {
+                                                    path: true
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }, accounting_contact: {
+                        include: {
+                            sector: {
+                                include: {
+                                    accounting_contact_image: {
+                                        select: {
+                                            image: {
+                                                select: {
+                                                    path: true
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+            return pathImages;
+            // console.log(pathImages?.image_company[0].image.path);
+            // console.log(pathImages?.owner_partner[0].sector.owner_partner_image[0].image.path);
+            // console.log(pathImages?.commercial_contact[0].sector.commercial_image[0].image.path);
+            // console.log(pathImages?.accounting_contact[0].sector.accounting_contact_image[0].image.path);
+            // console.log(pathImages?.financinal_contact[0].sector.financial_image[0].image.path);
+            // const allPaths =  this.connectionDb.$transaction(async (tsx) => {
+            // const commercial_contact =  await this.connectionDb.commercial_contact.findFirst({
+            //   where: {
+            //     clientId: id
+            //   }
+            // })
+            // const financial_contact = await this.connectionDb.financial_contact.findFirst({
+            //   where: {
+            //     clientId: id
+            //   }
+            // })
+            // const accounting_contact = await this.connectionDb.accounting_contact.findFirst({
+            //   where: {
+            //     clientId: id
+            //   }
+            // })
+            // const image_company = await this.connectionDb.image_company.findFirst({
+            //   where: {
+            //     companyId: id
+            //   }
+            // })
+            // const owner_partner =  await this.connectionDb.owner_partner.findFirst({
+            //   where: {
+            //     clientId: id
+            //   }
+            // })
+            // const commercial_image = await this.
+            // })
         }
         catch (error) {
             throw error;

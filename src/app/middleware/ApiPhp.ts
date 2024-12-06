@@ -11,7 +11,7 @@ export const ApiPhp = async (filepath: {
   filePath: (string | null)[];
   typeFolder: "img_product" | "img_profile";
   files: Express.Multer.File[];
-}): Promise<returnApiPhp[] | { message: string }> => {
+}, ): Promise<returnApiPhp[] | { message: string }> => {
   try {
     const formdata = new FormData();
     filepath.filePath.forEach((file, index) => {
@@ -43,6 +43,8 @@ export const ApiPhp = async (filepath: {
     throw error;
   }
 };
+
+
 export const deleteUpload = async (arrayImagens: (string | null)[]) => {
   const token = JwtToken.getTokenApi({ app: "node-api" }, "api", {
     expiresIn: "15min",
@@ -60,3 +62,36 @@ export const deleteUpload = async (arrayImagens: (string | null)[]) => {
   const data = response.data;
   return data;
 };
+
+
+export const deleteApiPhp = async (filePath: (string | null)[] ) => {
+  const token  = JwtToken.getTokenApi({app: 'node-api'}, "api", {
+    expiresIn: "5m"
+  })
+
+  // const formData = new FormData();
+  // formData. append('action', filePath.action);
+  // formData.append('paths', JSON.stringify(filePath.paths));
+  // filePath.paths.forEach((path) => {
+  //   if(path) {
+  //     formData.append('paths', path)
+  //   }
+
+  // })
+  
+
+
+  const response = await axios.delete("https://bgtech.com.br/erp/assets/assets-handler.php", {
+    headers: {
+      "Content-Type": 'application/json',
+      Authorization: `Bearer ${token}`,
+      // ...formData.getHeaders()
+    },
+    data: {paths: filePath}
+  } );
+
+  const data = response.data;
+  console.log(data);
+
+}
+

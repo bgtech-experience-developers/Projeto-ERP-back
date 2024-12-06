@@ -27,8 +27,8 @@ export class Client {
     async showClientById(request, response, next) {
         try {
             const { id } = request.params;
-            const showOneClient = await showClientById(id);
-            response.send(showOneClient);
+            const showOneClient = await showClientById(Number(id));
+            response.status(200).json(showOneClient);
         }
         catch (err) {
             console.log(err);
@@ -63,6 +63,16 @@ export class Client {
             const message = await ClientService.updateClient(body, order, files);
             console.log(message);
             response.status(201).json({ message });
+        }
+        catch (error) {
+            next(error);
+        }
+    }
+    static async deleteClient(request, response, next) {
+        try {
+            const { id } = request.params;
+            await ClientService.deleteClient(id);
+            response.status(200).json("Empresa/Cliente excluído com sucesso!");
         }
         catch (error) {
             next(error);
