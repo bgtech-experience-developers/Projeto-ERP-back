@@ -204,7 +204,7 @@ export class ClientRepository {
     }
   }
 
-  async showClientById(id: any) {
+  static async showClientById(id: any) {
     try {
       return await InstanciaPrisma.GetConnection().client.findUnique({
         where: { id: id },

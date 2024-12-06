@@ -64,6 +64,18 @@ export class ClientService {
             throw error;
         }
     }
+    static async showClientById(id) {
+        try {
+            const showOneClient = await ClientRepository.showClientById(Number(id));
+            if (!showOneClient) {
+                throw new AllError("Usuário não cadastrado/encontrado no sistema", 404);
+            }
+            return showOneClient;
+        }
+        catch (error) {
+            throw error;
+        }
+    }
     static async updateClient(body, order, files) {
         try {
             const client = await ClientRepository.GetuniqueClient(body.cliente.cnpj);

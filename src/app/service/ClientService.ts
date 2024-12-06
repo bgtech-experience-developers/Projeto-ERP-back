@@ -80,6 +80,21 @@ export class ClientService {
     }
   }
 
+  static async showClientById(id: string) {
+    try {
+      const showOneClient = await ClientRepository.showClientById(Number(id));
+      if(!showOneClient) {
+        throw new AllError("Usuário não cadastrado/encontrado no sistema", 404)
+        
+      }
+      return showOneClient
+  
+
+    } catch(error) {
+      throw error
+    }
+  }
+
   static async updateClient(
     body: ClientCreate,
     order: boolean[],

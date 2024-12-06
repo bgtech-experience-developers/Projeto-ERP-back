@@ -173,7 +173,7 @@ export class ClientRepository {
             throw err;
         }
     }
-    async showClientById(id) {
+    static async showClientById(id) {
         try {
             return await InstanciaPrisma.GetConnection().client.findUnique({
                 where: { id: id },
