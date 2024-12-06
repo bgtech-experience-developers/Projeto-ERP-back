@@ -161,7 +161,7 @@ export class ClientRepository {
                     owner_partner: {
                         include: {
                             sector: {
-                                select: { id: true, name: true, email: true, cell_phone: true },
+                                select: { client_id: true, name: true, email: true, cell_phone: true },
                             },
                         },
                     },
