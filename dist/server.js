@@ -10,7 +10,7 @@ const host = "0.0.0.0";
 app.use("/files", express.static("uploads")); // diretório acessível para requisições vindo do cliente, tendo acesso à arquivos hospedado internamente dentro dessa pasta!
 app.use(cors());
 app.use(express.json()); // parte para a deserializaç~~ao das informações
-app.use("/cliente", clientRouter);
+app.use("/clientes", clientRouter);
 app.use("/adm", routerAdm);
 app.listen(port, host, () => {
     console.log("meu servidor está rodando na porta " + port);
