@@ -1,6 +1,4 @@
 import { ClientService } from "../service/ClientService.js";
-import { ClientRepository } from "../repository/clientRepository.js";
-const { showClientById } = new ClientRepository();
 import { AllError } from "../error/AllError.js";
 export class Client {
     static async CreateClient(request, response, next) {
@@ -18,6 +16,7 @@ export class Client {
     async showClients(request, response, next) {
         try {
             const showClient = await ClientService.showClints();
+            console.log(showClient);
             response.send(showClient);
         }
         catch (err) {
@@ -27,12 +26,12 @@ export class Client {
     async showClientById(request, response, next) {
         try {
             const { id } = request.params;
-            const showOneClient = await showClientById(Number(id));
+            const showOneClient = await ClientService.showClientById(id);
             response.status(200).json(showOneClient);
+            return;
         }
         catch (err) {
             console.log(err);
-            response.status(500).json({ message: "erro interno do servidor! :(" });
             next(err);
         }
     }

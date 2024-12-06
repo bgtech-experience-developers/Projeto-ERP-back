@@ -10,25 +10,12 @@ export const clientRouter = express.Router();
 const { CreateClientValidator } = new ClientValidator();
 const { showClients, showClientById } = new Client();
 
-clientRouter.post(
-  "/registro",
-  UploadFile.Upload().array("photos", 5),
-  CreateClientValidator(),
-  Client.CreateClient
-);
-
+clientRouter.post("/registro", UploadFile.Upload().array("photos", 5), CreateClientValidator(), Client.CreateClient);
 clientRouter.get("/", showClients);
 clientRouter.get("/:id", showClientById);
-clientRouter.get("/enderecos/:id", Client.getAllAddress);
-
-clientRouter.patch(
-  "/atualizar-cliente/:id",
-  UploadFile.Upload().array("photos", 5),
-  CreateClientValidator(),
-  Client.updateClient
-);
-
-clientRouter.delete("/remove/:id",Client.deleteClient)
+clientRouter.get("/enderecos/:id", Client.getAllAddress) 
+clientRouter.patch( "/atualizar/:id", UploadFile.Upload().array("photos", 5), CreateClientValidator(), Client.updateClient);
+clientRouter.delete("/remover/:id",Client.deleteClient)
 
 
 clientRouter.use(GlobalError);

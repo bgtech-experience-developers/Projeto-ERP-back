@@ -2,7 +2,6 @@ import { NextFunction, Request, Response } from "express";
 import { ClientService } from "../service/ClientService.js";
 import { Files } from "../middleware/ClientValidator.js";
 import { ClientRepository } from "../repository/clientRepository.js";
-const { showClientById } = new ClientRepository();
 import { number } from "joi";
 import { AllError } from "../error/AllError.js";
 
@@ -43,6 +42,8 @@ export class Client {
   async showClients(request: Request, response: Response, next: NextFunction) {
     try {
       const showClient = await ClientService.showClints();
+      console.log(showClient);
+      
       response.send(showClient);
     } catch (err) {
       next(err);
@@ -56,11 +57,11 @@ export class Client {
   ) {
     try {
       const { id } = request.params;
-      const showOneClient = await showClientById(Number(id));
+      const showOneClient = await ClientService.showClientById(id);
       response.status(200).json(showOneClient);
+      return
     } catch (err) {
       console.log(err);
-      response.status(500).json({ message: "erro interno do servidor! :(" });
       next(err);
     }
   }
@@ -84,13 +85,13 @@ export class Client {
       next(error);
     }
   }
-
   static async updateClient(
     request: Request,
     response: Response,
     next: NextFunction
   ) {
     try {
+
       const files = request.files as Express.Multer.File[];
       const order: boolean[] = request.body.imagens;
       const isActive = request.query.isActive ? false : true;
@@ -108,6 +109,7 @@ export class Client {
       next(error);
     }
   }
+
 
   static async deleteClient(request: Request, response: Response, next: NextFunction) {
 

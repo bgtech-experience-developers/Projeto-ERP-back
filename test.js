@@ -38,6 +38,23 @@ import path from "path";
 //   }
 // }
 // a(arquivos)
+
+
+// const result = await cloud.api.delete_resources(
+//   ["client/erp/softhouse-loo", "client/erp/OKEMOe"],
+//   (err, resul) => {
+//     if (err) {
+//       console.log("o erro foi: ", err);
+//     }
+//     console.log(resul);
+//   }
+// );
+
+// const ab = "c5c2009150c07359f096d342f9c4e.jpg1ec.png";
+// const regex = /(\.png|\.jpg)$/gi;
+
+// const trocar = ab.replace(regex, "");
+// console.log(trocar);
 // import dotnev from "dotenv";
 // dotnev.config();
 // import { v2 as cloud } from "cloudinary";

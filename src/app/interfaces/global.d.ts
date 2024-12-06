@@ -1,9 +1,11 @@
 interface ClientC {
+  id: number;
   corporate_reason: string;
   fantasy_name: string;
   branch_activity: string;
   cnpj: string;
   state_registration: string;
+
   situation: boolean;
   type_contribuition: string;
   created_at: Date;
@@ -46,6 +48,12 @@ interface GenericFields {
   cpf: string;
 }
 
+interface allResources extends ClientC {
+  owner_partner: { sectorId: number }[];
+  commercial_contact: { sectorId: number }[];
+  financinal_contact: { sectorId: number }[];
+  accounting_contact: { sectorId: number }[];
+}
 interface adm {
   id?: number;
   password?: string;

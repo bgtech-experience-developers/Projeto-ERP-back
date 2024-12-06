@@ -1,0 +1,21 @@
+Servidor: http://145.223.27.32:3000/
+
+EndPoints Cliente
+
+ - Show Clients
+http://145.223.27.32:3000/cliente/
+
+ - Register
+http://145.223.27.32:3000/cliente/registro
+
+ - Show Client By Id
+http://145.223.27.32:3000/cliente/:id
+
+ - Get Address By Id 
+http://145.223.27.32:3000/cliente/enderecos/:id
+
+ - Update 
+http://145.223.27.32:3000/cliente/atualizar/:id
+
+ - Delete 
+http://145.223.27.32:3000/cliente/remove/:id

@@ -2,7 +2,13 @@ import { v2 as cloudinary } from "cloudinary";
 import path from "path";
 import fs from "fs";
 import { AllError } from "../error/AllError.js";
+import { number } from "joi";
 
+interface deleted {
+  deleted: {
+    [key: string]: "deleted" | "not found";
+  };
+}
 export const UploadCloudnary = async (files: Express.Multer.File[]) => {
   try {
     const regex = /[\b.png\b.jpg/]/gi;
@@ -24,4 +30,26 @@ export const UploadCloudnary = async (files: Express.Multer.File[]) => {
     throw error;
   }
 };
-export const DeleteResourcesCloud = async () => {};
+export async function DeleteResourcesCloud(
+  public_id: string
+): Promise<{ result: string }>;
+export async function DeleteResourcesCloud(
+  public_id: string[]
+): Promise<deleted>;
+export async function DeleteResourcesCloud(
+  public_id: string | string[]
+): Promise<deleted | { result: string }> {
+  try {
+    if (public_id instanceof Array) {
+      const deleted: deleted = await cloudinary.api.delete_resources(public_id);
+      return deleted;
+    } else {
+      const result: { result: string } = await cloudinary.uploader.destroy(
+        public_id
+      );
+      return result;
+    }
+  } catch (error) {
+    throw error;
+  }
+}
