@@ -9,6 +9,7 @@ export class AdmController {
       response.cookie("refreshToken", refreshToken, {
         httpOnly: true,
         secure: false, 
+        sameSite: 'none',
         maxAge: 24 * 60 * 60 * 7000, 
 
       });

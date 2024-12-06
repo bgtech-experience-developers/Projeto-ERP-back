@@ -40,8 +40,9 @@ export class AdmService {
           const { token, payload } = await JwtToken.getCodeToken(
             payloadAdm as payload,
             "adm",
-            { expiresIn: "15min" }
+            { expiresIn: "20s" }
           );
+          
           const { role } = payload as payload;
           const refreshToken = await JwtToken.RefreshToken<typeof role>(
             payload as payload,

@@ -13,6 +13,7 @@ routerAdm.post(
   AdmValidator.loginValidator(true),
   AdmController.createAdm
 );
+
 routerAdm.get("/refresh-token", async (request, response, next) => {
   try {
     const { logout } = request.query;
@@ -23,6 +24,8 @@ routerAdm.get("/refresh-token", async (request, response, next) => {
     }
 
     // const refreshToken = request.body.newRefreshToken as string
+    console.log('oi');
+    
     const refreshToken = request.cookies.refreshToken as string
     console.log("esse é o token que veio do cookie ", refreshToken); 
     console.log("esse é token aqui é o cookies ",request.cookies)

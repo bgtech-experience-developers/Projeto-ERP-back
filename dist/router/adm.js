@@ -17,6 +17,7 @@ routerAdm.get("/refresh-token", async (request, response, next) => {
             return;
         }
         // const refreshToken = request.body.newRefreshToken as string
+        console.log('oi');
         const refreshToken = request.cookies.refreshToken;
         console.log("esse é o token que veio do cookie ", refreshToken);
         console.log("esse é token aqui é o cookies ", request.cookies);
