@@ -1,5 +1,4 @@
 import { InstanciaPrisma } from "../db/PrismaClient.js";
-import { AllError } from "../error/AllError.js";
 import { ApiPhpUtils } from "../utils/ApiPhp.js";
 export class ClientRepository {
     static connectionDb = InstanciaPrisma.GetConnection(); //gerando uma conexxão
@@ -102,15 +101,29 @@ export class ClientRepository {
     }
     static async GetuniqueClient(cnpj, id) {
         try {
-            console.log('passei');
             const connectionDb = InstanciaPrisma.GetConnection();
             if (cnpj) {
-                return await connectionDb.client.findFirst({ where: { cnpj } });
+                const getuniqueClient = await connectionDb.client.findFirst({
+                    where: { cnpj },
+                });
+                return getuniqueClient;
             }
-            return await connectionDb.client.findUnique({ where: { id } });
+            else {
+                const getUniqueClient = await connectionDb.client.findUnique({
+                    where: { id },
+                    include: {
+                        financinal_contact: { select: { sectorId: true } },
+                        commercial_contact: { select: { sectorId: true } },
+                        accounting_contact: { select: { sectorId: true } },
+                        owner_partner: { select: { sectorId: true } },
+                        image_company: { include: { image: { select: { path: true } } } },
+                    },
+                });
+                return getUniqueClient;
+            }
         }
         catch (error) {
-            throw new AllError("servidor fora do ar");
+            throw error;
         }
     }
     static async GetAllAddress(id) {
@@ -130,7 +143,7 @@ export class ClientRepository {
     static async sector(id) {
         try {
             const connectionDb = InstanciaPrisma.GetConnection();
-            return connectionDb.sector.findFirst({ where: { id } });
+            return connectionDb.sector.findUnique({ where: { id } });
         }
         catch (error) {
             throw error;
@@ -154,6 +167,44 @@ export class ClientRepository {
             throw error;
         }
     }
+    static async getImageAllIds(arrayId) {
+        try {
+            const connectionDb = InstanciaPrisma.GetConnection();
+            const allImagensCommercial = await Promise.all(arrayId.commercial.map(async (id) => {
+                return await connectionDb.commercial_image.findFirst({
+                    where: { commercial_contactId: id },
+                    select: { imageId: true },
+                });
+            }));
+            const allimagensfinanceiro = await Promise.all(arrayId.financeiro.map(async (id) => {
+                return await connectionDb.financial_image.findFirst({
+                    where: { financial_contactId: id },
+                    select: { imageId: true },
+                });
+            }));
+            const allimagensSocio = await Promise.all(arrayId.socio.map(async (id) => {
+                return await connectionDb.owner_partner_image.findFirst({
+                    where: { owner_partnerId: id },
+                    select: { imageId: true },
+                });
+            }));
+            const allimagensCotabil = await Promise.all(arrayId.contabil.map(async (id) => {
+                return await connectionDb.accounting_contact_image.findFirst({
+                    where: { accounting_contactId: id },
+                    select: { imageId: true },
+                });
+            }));
+            return {
+                allimagensCotabil,
+                allimagensfinanceiro,
+                allimagensSocio,
+                allImagensCommercial,
+            };
+        }
+        catch (error) {
+            throw error;
+        }
+    }
     static async showCLients() {
         try {
             const allclients = await InstanciaPrisma.GetConnection().client.findMany({
@@ -161,7 +212,12 @@ export class ClientRepository {
                     owner_partner: {
                         include: {
                             sector: {
-                                select: { client_id: true, name: true, email: true, cell_phone: true },
+                                select: {
+                                    client_id: true,
+                                    name: true,
+                                    email: true,
+                                    cell_phone: true,
+                                },
                             },
                         },
                     },
@@ -176,7 +232,7 @@ export class ClientRepository {
     static async showClientById(id) {
         try {
             return await InstanciaPrisma.GetConnection().client.findUnique({
-                where: { id: id },
+                where: { id },
             });
         }
         catch (err) {
@@ -261,6 +317,18 @@ export class ClientRepository {
             throw error;
         }
     }
+    static async Allimage(id) {
+        try {
+            const connectionDb = InstanciaPrisma.GetConnection();
+            return await connectionDb.imagem.findUnique({
+                where: { id },
+                select: { path: true },
+            });
+        }
+        catch (error) {
+            throw error;
+        }
+    }
     static async getImagee(arrayIdsector) {
         try {
             const result = this.connectionDb.$transaction(async (connection) => {
@@ -319,31 +387,31 @@ export class ClientRepository {
         try {
             return await this.connectionDb.client.delete({
                 where: {
-                    id
-                }
+                    id,
+                },
             });
         }
         catch (error) {
             throw error;
-            22;
         }
     }
     static async getImage(id) {
         try {
             const pathImages = await this.connectionDb.client.findUnique({
                 where: {
-                    id
+                    id,
                 },
                 include: {
                     image_company: {
                         include: {
                             image: {
                                 select: {
-                                    path: true
-                                }
-                            }
-                        }
-                    }, owner_partner: {
+                                    path: true,
+                                },
+                            },
+                        },
+                    },
+                    owner_partner: {
                         include: {
                             sector: {
                                 include: {
@@ -351,15 +419,16 @@ export class ClientRepository {
                                         select: {
                                             image: {
                                                 select: {
-                                                    path: true
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }, commercial_contact: {
+                                                    path: true,
+                                                },
+                                            },
+                                        },
+                                    },
+                                },
+                            },
+                        },
+                    },
+                    commercial_contact: {
                         include: {
                             sector: {
                                 include: {
@@ -367,15 +436,16 @@ export class ClientRepository {
                                         select: {
                                             image: {
                                                 select: {
-                                                    path: true
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }, financinal_contact: {
+                                                    path: true,
+                                                },
+                                            },
+                                        },
+                                    },
+                                },
+                            },
+                        },
+                    },
+                    financinal_contact: {
                         include: {
                             sector: {
                                 include: {
@@ -383,15 +453,16 @@ export class ClientRepository {
                                         select: {
                                             image: {
                                                 select: {
-                                                    path: true
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }, accounting_contact: {
+                                                    path: true,
+                                                },
+                                            },
+                                        },
+                                    },
+                                },
+                            },
+                        },
+                    },
+                    accounting_contact: {
                         include: {
                             sector: {
                                 include: {
@@ -399,16 +470,16 @@ export class ClientRepository {
                                         select: {
                                             image: {
                                                 select: {
-                                                    path: true
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
+                                                    path: true,
+                                                },
+                                            },
+                                        },
+                                    },
+                                },
+                            },
+                        },
+                    },
+                },
             });
             return pathImages;
         }

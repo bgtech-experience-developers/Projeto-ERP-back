@@ -8,6 +8,11 @@ export class ClientValidator {
                 const files = request.files;
                 console.log(files);
                 request.body = JSON.parse(request.body.json);
+                // Retira as Máscaras de Telefone, CPF, CNPJ e CEP.
+                // request.body.telefone = request.body.telefone.replace(/\D/g, "");
+                // request.body.cpf = request.body.cpf.replace(/\D/g, "");
+                // request.body.cnpj = request.body.cnpj.replace(/\D/g, "");
+                // request.body.cep = request.body.cep.replace(/\D/g, "");
                 const allPromises = await JoiValidation.schemaCreateClient(request.body);
                 const err = allPromises.filter((promise) => promise.error ? promise.error : false);
                 err.forEach((err) => console.log(err));
