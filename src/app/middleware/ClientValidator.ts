@@ -18,22 +18,24 @@ export class ClientValidator {
 
         request.body = JSON.parse(request.body.json);
 
-        request.body.telefone = request.body.telefone.replace(/\D/g, "");
-        request.body.cpf = request.body.cpf.replace(/\D/g, "");
-        request.body.cnpj = request.body.cnpj.replace(/\D/g, "");
-        request.body.cep = request.body.cep.replace(/\D/g, "");
+        // request.body.telefone = request.body.telefone.replace(/\D/g, "");
+        // request.body.cpf = request.body.cpf.replace(/\D/g, "");
+        // request.body.cnpj = request.body.cnpj.replace(/\D/g, "");
+        // request.body.cep = request.body.cep.replace(/\D/g, "");
 
         const allPromises = await JoiValidation.schemaCreateClient(
           request.body
         );
         const err = allPromises.filter((promise) =>
-          promise.error ? promise.error : false
+          promise.error ? promise.error.message : false
         );
-        err.forEach((err) => console.log(err));
+        err.forEach((err) => console.log(err.error?.message));
 
         if (err.length != 0) {
           Sharp.removeImagens(files);
-          throw new AllError("alguns campos não são compativeis", 400);
+          const messagem = err[0].error?.message!;
+
+          throw new AllError(messagem, 400);
         }
 
         const allImagens = await Sharp.limpezaSharp(files, next);
