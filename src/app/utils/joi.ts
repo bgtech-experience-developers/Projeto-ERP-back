@@ -30,11 +30,8 @@ export class JoiValidation {
       cell_phone: joi.string().trim(),
       name: joi.string().trim(),
       email: joi.string().email().required(),
-      phone: joi.string().trim(),
-      rg: joi.string().min(9).max(9).messages({
-        "string.max": "o campo rg deve conter no maximo 9 digitos",
-        "string.min": "o campo rg deve conter pelo menos 9 digitos",
-      }),
+      phone: joi.string().trim().optional(),
+      rg: joi.string(),
       photo: joi.string(),
       cpf: joi.string().max(11).min(11).messages({
         "string.max": "o campo cpf deve conter no maximo 11 digitos",
