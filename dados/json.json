@@ -1,15 +1,15 @@
 {
-
+  "imagens": [false, false, false, false, false],
   "cliente": {
     "corporate_reason": "não sei",
     "fantasy_name": "emprsa do elo musca",
-    "cnpj": "91245678912141",
+    "cnpj": "91.245.678/9121-41",
     "state_registration": "123456789",
     "type_contribuition": "fisica",
     "branch_activity": "construção"
   },
   "endereco_empresa": {
-    "cep": "12345678",
+    "cep": "12345-678",
     "street": "rua dos pato",
     "number": "blocoa",
     "complement": "blocob",
@@ -17,7 +17,7 @@
     "neighborhood": "lagoa quadrada"
   },
   "endereco_entrega": {
-    "cep": "12345678",
+    "cep": "12345-678",
     "street": "rua dos pato",
     "number": "blocoa",
     "complement": "blocob",
@@ -29,7 +29,7 @@
     "phone": "859281812912",
     "cell_phone": "10210210",
     "rg": "123456789",
-    "cpf": "12345678919",
+    "cpf": "123.456.789-19",
     "email": "lixeira@gmail.com"
   },
   "comercial": {
@@ -37,7 +37,7 @@
     "phone": "859281812912",
     "cell_phone": "10210210",
     "rg": "123456789",
-    "cpf": "12345678911",
+    "cpf": "123.4567.89-11",
     "email": "emanuel@gmail.com"
   },
   "contabil": {
@@ -45,7 +45,7 @@
     "phone": "859281812912",
     "cell_phone": "10210210",
     "rg": "123456789",
-    "cpf": "12345678912",
+    "cpf": "123.456.789-12",
     "email": "lisboa@gmail.com"
   },
   "socio": {
@@ -53,7 +53,7 @@
     "phone": "859281812912",
     "rg": "123456789",
     "cell_phone": "10210210",
-    "cpf": "12345678913",
+    "cpf": "123.456.789-13",
     "email": "fransisco@gmail.com"
   }
 }

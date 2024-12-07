@@ -35,7 +35,7 @@ export class ClientService {
     static async showClints() {
         try {
             const allClints = await ClientRepository.showCLients();
-            const newArray = allClints.map(({ id, branch_activity, situation, fantasy_name, owner_partner, }) => {
+            const newArray = allClints.map(({ id, branch_activity, situation, fantasy_name, owner_partner }) => {
                 return {
                     id,
                     branch_activity,
@@ -66,11 +66,95 @@ export class ClientService {
     }
     static async showClientById(id) {
         try {
-            const showOneClient = await ClientRepository.showClientById(Number(id));
-            if (!showOneClient) {
-                throw new AllError("Usuário não cadastrado/encontrado no sistema", 404);
+            if (Number(id)) {
+                const idClient = Number(id);
+                const showOneClient = (await ClientRepository.GetuniqueClient(null, idClient));
+                console.log(showOneClient);
+                if (!showOneClient) {
+                    throw new AllError("Usuário não cadastrado/encontrado no sistema", 404);
+                }
+                const allIdsFinancial = showOneClient.financinal_contact.map(({ sectorId }) => {
+                    return sectorId;
+                });
+                const allIdsCommercial = showOneClient.commercial_contact.map(({ sectorId }) => {
+                    return sectorId;
+                });
+                const allIdsOwern = showOneClient.owner_partner.map(({ sectorId }) => {
+                    return sectorId;
+                });
+                const allIdsaccounting_contact = showOneClient.accounting_contact.map(({ sectorId }) => {
+                    return sectorId;
+                });
+                const { allImagensCommercial, allimagensCotabil, allimagensSocio, allimagensfinanceiro, } = await ClientRepository.getImageAllIds({
+                    commercial: [...allIdsCommercial],
+                    contabil: [...allIdsaccounting_contact],
+                    financeiro: [...allIdsFinancial],
+                    socio: [...allIdsOwern],
+                });
+                const pathsCommercial = await Promise.all(allImagensCommercial.map(async (imagem) => {
+                    if (imagem?.imageId) {
+                        return await ClientRepository.Allimage(imagem.imageId);
+                    }
+                    return null;
+                }));
+                console.log("esses são todos os caminhos do comercial ", pathsCommercial);
+                const pathsFinance = await Promise.all(allimagensfinanceiro.map(async (imagem) => {
+                    if (imagem?.imageId) {
+                        return await ClientRepository.Allimage(imagem.imageId);
+                    }
+                }));
+                const pathsOwern = await Promise.all(allimagensSocio.map(async (imagem) => {
+                    if (imagem?.imageId) {
+                        return await ClientRepository.Allimage(imagem.imageId);
+                    }
+                }));
+                const pathsAccouting = await Promise.all(allimagensCotabil.map(async (imagem) => {
+                    if (imagem?.imageId) {
+                        return await ClientRepository.Allimage(imagem.imageId);
+                    }
+                }));
+                const commercialUser = await Promise.all(showOneClient.commercial_contact.map(async ({ sectorId }) => {
+                    return await ClientRepository.sector(sectorId);
+                }));
+                const accountingUser = await Promise.all(showOneClient.accounting_contact.map(async ({ sectorId }) => {
+                    return await ClientRepository.sector(sectorId);
+                }));
+                const ownerUser = await Promise.all(showOneClient.owner_partner.map(async ({ sectorId }) => {
+                    return await ClientRepository.sector(sectorId);
+                }));
+                const financeUser = await Promise.all(showOneClient.financinal_contact.map(async ({ sectorId }) => {
+                    return await ClientRepository.sector(sectorId);
+                }));
+                return {
+                    ...showOneClient,
+                    image_company: showOneClient.image_company[0].image.path,
+                    financinal_contact: financeUser.map((body, index) => {
+                        const image = pathsFinance[index]?.path
+                            ? pathsFinance[index].path
+                            : null;
+                        return { ...body, image };
+                    }),
+                    commercial_contact: commercialUser.map((body, index) => {
+                        const image = pathsCommercial[index]?.path
+                            ? pathsCommercial[index].path
+                            : null;
+                        return { ...body, image };
+                    }),
+                    accounting_contact: accountingUser.map((body, index) => {
+                        const image = pathsAccouting[index]?.path
+                            ? pathsAccouting[index].path
+                            : null;
+                        return { ...body, image };
+                    }),
+                    owner_partner: ownerUser.map((body, index) => {
+                        const image = pathsOwern[index]?.path
+                            ? pathsOwern[index].path
+                            : null;
+                        return { ...body, index };
+                    }),
+                };
             }
-            return showOneClient;
+            throw new AllError("parametro não aceito, envie somente números");
         }
         catch (error) {
             throw error;

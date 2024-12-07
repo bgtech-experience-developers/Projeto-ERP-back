@@ -6,13 +6,24 @@ import { AllError } from "../error/AllError.js";
 import { ApiPhpUtils } from "../utils/ApiPhp.js";
 import { promises } from "form-data";
 import { Sharp } from "../utils/sharp.js";
-
+import { PrismaClient } from "@prisma/client/extension";
+type allTables =
+  | "accounting_contact_image"
+  | "commercial_image"
+  | "owner_partner_image"
+  | "financial_image"
+  | "image_company";
 interface allClientes extends ClientC {}
 interface allClientes extends base_solid_allclient {}
 type imageStorageDb = { path: string | null; id: number }[];
+interface imagensIds {
+  commercial: number[];
+  financeiro: number[];
+  socio: number[];
+  contabil: number[];
+}
 
 export class ClientRepository {
-
   static connectionDb = InstanciaPrisma.GetConnection(); //gerando uma conexxão
 
   static async createCliente(
@@ -40,11 +51,11 @@ export class ClientRepository {
           select: { id: true },
         });
         const delivery = await tsx.address.create({
-          data: { ...endereco_entrega },
+          data: { ...endereco_entrega, clientId: client.id },
           select: { id: true },
         });
         const store = await tsx.address.create({
-          data: { ...endereco_empresa },
+          data: { ...endereco_empresa, clientId: client.id },
           select: { id: true },
         });
         const finance = await tsx.sector.create({
@@ -52,15 +63,15 @@ export class ClientRepository {
           select: { id: true },
         });
         const commercial = await tsx.sector.create({
-          data: { ...comercial, client_id: client.id  },
+          data: { ...comercial, client_id: client.id },
           select: { id: true },
         });
         const accounting = await tsx.sector.create({
-          data: { ...contabil, client_id: client.id  },
+          data: { ...contabil, client_id: client.id },
           select: { id: true },
         });
         const owner = await tsx.sector.create({
-          data: { ...socio, client_id: client.id  },
+          data: { ...socio, client_id: client.id },
           select: { id: true },
         });
         const imagesUsers = await ApiPhpUtils(imagens, "img_profile", files);
@@ -101,7 +112,6 @@ export class ClientRepository {
         await tsx.delivery_address.create({
           data: { adressId: delivery.id, clientId: client.id },
         }),
-
           await tsx.company_address.create({
             data: { adressId: store.id, clientId: client.id },
           }),
@@ -117,7 +127,7 @@ export class ClientRepository {
           await tsx.accounting_contact.create({
             data: { sectorId: accounting.id, clientId: client.id },
           });
-          console.log(Allimagens)
+        console.log(Allimagens);
 
         return { mensagem: "empresa registrada com sucesso nesse novo estilo" };
       });
@@ -128,18 +138,34 @@ export class ClientRepository {
       throw error;
     }
   }
-
-  static async GetuniqueClient<$Interface>(cnpj?: $Interface, id?: number) {
+  static async GetuniqueClient<$Interface>(
+    cnpj?: $Interface,
+    id?: number
+  ): Promise<ClientC | getUnic | null> {
     try {
-      console.log('passei');
-      
       const connectionDb = InstanciaPrisma.GetConnection();
       if (cnpj) {
-        return await connectionDb.client.findFirst({ where: { cnpj } });
+        const getuniqueClient = await connectionDb.client.findFirst({
+          where: { cnpj },
+        });
+        return getuniqueClient;
+      } else {
+        const getUniqueClient: getUnic | null =
+          await connectionDb.client.findUnique({
+            where: { id },
+            include: {
+              financinal_contact: { select: { sectorId: true } },
+              commercial_contact: { select: { sectorId: true } },
+              accounting_contact: { select: { sectorId: true } },
+              owner_partner: { select: { sectorId: true } },
+              image_company: { include: { image: { select: { path: true } } } },
+            },
+          });
+
+        return getUniqueClient;
       }
-      return await connectionDb.client.findUnique({ where: { id } });
     } catch (error) {
-      throw new AllError("servidor fora do ar");
+      throw error;
     }
   }
 
@@ -159,7 +185,7 @@ export class ClientRepository {
   static async sector(id: number) {
     try {
       const connectionDb = InstanciaPrisma.GetConnection();
-      return connectionDb.sector.findFirst({ where: { id } });
+      return connectionDb.sector.findUnique({ where: { id } });
     } catch (error) {
       throw error;
     }
@@ -181,6 +207,51 @@ export class ClientRepository {
       throw error;
     }
   }
+  static async getImageAllIds(arrayId: imagensIds) {
+    try {
+      const connectionDb = InstanciaPrisma.GetConnection();
+      const allImagensCommercial = await Promise.all(
+        arrayId.commercial.map(async (id) => {
+          return await connectionDb.commercial_image.findFirst({
+            where: { commercial_contactId: id },
+            select: { imageId: true },
+          });
+        })
+      );
+      const allimagensfinanceiro = await Promise.all(
+        arrayId.financeiro.map(async (id) => {
+          return await connectionDb.financial_image.findFirst({
+            where: { financial_contactId: id },
+            select: { imageId: true },
+          });
+        })
+      );
+      const allimagensSocio = await Promise.all(
+        arrayId.socio.map(async (id) => {
+          return await connectionDb.owner_partner_image.findFirst({
+            where: { owner_partnerId: id },
+            select: { imageId: true },
+          });
+        })
+      );
+      const allimagensCotabil = await Promise.all(
+        arrayId.contabil.map(async (id) => {
+          return await connectionDb.accounting_contact_image.findFirst({
+            where: { accounting_contactId: id },
+            select: { imageId: true },
+          });
+        })
+      );
+      return {
+        allimagensCotabil,
+        allimagensfinanceiro,
+        allimagensSocio,
+        allImagensCommercial,
+      };
+    } catch (error) {
+      throw error;
+    }
+  }
 
   static async showCLients() {
     try {
@@ -190,24 +261,28 @@ export class ClientRepository {
             owner_partner: {
               include: {
                 sector: {
-                  select: {client_id: true ,name: true, email: true, cell_phone: true },
+                  select: {
+                    client_id: true,
+                    name: true,
+                    email: true,
+                    cell_phone: true,
+                  },
                 },
               },
             },
           },
         });
-        
-      
+
       return allclients;
     } catch (err) {
       throw err;
     }
   }
 
-  static async showClientById(id: any) {
+  static async showClientById(id: number) {
     try {
       return await InstanciaPrisma.GetConnection().client.findUnique({
-        where: { id: id },
+        where: { id },
       });
     } catch (err) {
       throw err;
@@ -305,6 +380,17 @@ export class ClientRepository {
       throw error;
     }
   }
+  static async Allimage(id: number) {
+    try {
+      const connectionDb = InstanciaPrisma.GetConnection();
+      return await connectionDb.imagem.findUnique({
+        where: { id },
+        select: { path: true },
+      });
+    } catch (error) {
+      throw error;
+    }
+  }
 
   static async getImagee(arrayIdsector: number[]) {
     try {
@@ -374,108 +460,104 @@ export class ClientRepository {
     try {
       return await this.connectionDb.client.delete({
         where: {
-          id
-        }
-      })
-    } catch(error) {
-      throw error;22
+          id,
+        },
+      });
+    } catch (error) {
+      throw error;
     }
   }
 
   static async getImage(id: number) {
-  try {
+    try {
+      const pathImages = await this.connectionDb.client.findUnique({
+        where: {
+          id,
+        },
+        include: {
+          image_company: {
+            include: {
+              image: {
+                select: {
+                  path: true,
+                },
+              },
+            },
+          },
+          owner_partner: {
+            include: {
+              sector: {
+                include: {
+                  owner_partner_image: {
+                    select: {
+                      image: {
+                        select: {
+                          path: true,
+                        },
+                      },
+                    },
+                  },
+                },
+              },
+            },
+          },
+          commercial_contact: {
+            include: {
+              sector: {
+                include: {
+                  commercial_image: {
+                    select: {
+                      image: {
+                        select: {
+                          path: true,
+                        },
+                      },
+                    },
+                  },
+                },
+              },
+            },
+          },
+          financinal_contact: {
+            include: {
+              sector: {
+                include: {
+                  financial_image: {
+                    select: {
+                      image: {
+                        select: {
+                          path: true,
+                        },
+                      },
+                    },
+                  },
+                },
+              },
+            },
+          },
+          accounting_contact: {
+            include: {
+              sector: {
+                include: {
+                  accounting_contact_image: {
+                    select: {
+                      image: {
+                        select: {
+                          path: true,
+                        },
+                      },
+                    },
+                  },
+                },
+              },
+            },
+          },
+        },
+      });
 
-    const pathImages = await this.connectionDb.client.findUnique({
-      where: {
-        id
-      },
-      include: {
-        image_company: {
-          include: {
-            image: {
-              select: {
-                path: true
-              }
-            }
-          }
-        }, owner_partner: {
-          include: {
-            sector: {
-              include: {
-                owner_partner_image: {
-                  select: {
-                    image: {
-                      select: {
-                        path: true
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }, commercial_contact: {
-          include: {
-            sector: {
-              include: {
-                commercial_image: {
-                  select: {
-                    image: {
-                      select: {
-                        path: true
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }, financinal_contact: {
-          include: {
-            sector: {
-              include: {
-                financial_image: {
-                  select: {
-                    image: {
-                      select: {
-                        path: true
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }, accounting_contact: {
-          include: {
-            sector: {
-              include: {
-                accounting_contact_image: {
-                  select: {
-                    image: {
-                      select: {
-                        path: true
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    })
-    
-    return pathImages;
-   
-  } catch(error) {
-    throw error
+      return pathImages;
+    } catch (error) {
+      throw error;
+    }
   }
 }
-
-}
-
-
-
-
-

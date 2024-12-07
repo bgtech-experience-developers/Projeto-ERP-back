@@ -11,6 +11,14 @@ interface ClientC {
   created_at: Date;
   update_at: Date;
 }
+interface getUnic extends ClientC {
+  financinal_contact: sectorId;
+  commercial_contact: sectorId;
+  accounting_contact: sectorId;
+  owner_partner: sectorId;
+  image_company: { image: { path: string | null } }[];
+}
+type sectorId = { sectorId: number }[];
 
 interface base_solid_allclient {
   owner_partner: {
@@ -81,6 +89,11 @@ interface admClient extends adm {
 interface upload {
   secure_url: string;
   original_filename: string;
+}
+type imagemId = { imageId: number };
+interface imageId extends GenericFields {
+  accounting_contact_image: imageId;
+  commercial_image: imageId;
 }
 
 interface adminPermission {
