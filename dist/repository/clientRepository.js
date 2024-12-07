@@ -14,11 +14,11 @@ export class ClientRepository {
                     select: { id: true },
                 });
                 const delivery = await tsx.address.create({
-                    data: { ...endereco_entrega },
+                    data: { ...endereco_entrega, clientId: client.id },
                     select: { id: true },
                 });
                 const store = await tsx.address.create({
-                    data: { ...endereco_empresa },
+                    data: { ...endereco_empresa, clientId: client.id },
                     select: { id: true },
                 });
                 const finance = await tsx.sector.create({
