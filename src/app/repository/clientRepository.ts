@@ -159,6 +159,8 @@ export class ClientRepository {
               accounting_contact: { select: { sectorId: true } },
               owner_partner: { select: { sectorId: true } },
               image_company: { include: { image: { select: { path: true } } } },
+              company_address: { include: { adress: true } },
+              delivery_address: { include: { adress: true } },
             },
           });
 

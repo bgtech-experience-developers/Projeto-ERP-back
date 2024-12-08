@@ -177,6 +177,7 @@ export class ClientService {
         );
         return {
           ...showOneClient,
+          
           image_company: showOneClient.image_company[0].image.path,
           financinal_contact: financeUser.map((body, index) => {
             const image = pathsFinance[index]?.path
