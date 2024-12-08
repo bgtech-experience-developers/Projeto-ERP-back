@@ -21,6 +21,7 @@ interface getUnic extends ClientC {
   owner_partner: sectorId;
   image_company: { image: { path: string | null } }[];
   company_address: address[];
+  delivery_address: address[]
 }
 type sectorId = { sectorId: number }[];
 
