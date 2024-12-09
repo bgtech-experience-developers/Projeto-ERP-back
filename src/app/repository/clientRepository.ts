@@ -82,6 +82,7 @@ export class ClientRepository {
             select: { id: true },
           });
         });
+        
 
         const imagensRegister = await Promise.all(Allimagens);
         console.log(imagensRegister);

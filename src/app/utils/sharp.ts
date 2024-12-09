@@ -76,11 +76,10 @@ export class Sharp {
   }
   static allImagens(files: Express.Multer.File[], order: boolean[]) {
     const size = order.length - files.length;
-    let controller = 0;
     return order.map((boolean, index) => {
-      if (boolean && files[controller]) {
-        const url = files[controller].path;
-        controller++;
+      if (boolean && files[index]) {
+        console.log(files[index]);
+        const url = files[index].path;
 
         return url;
       } else {
