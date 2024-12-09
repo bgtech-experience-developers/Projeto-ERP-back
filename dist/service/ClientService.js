@@ -156,6 +156,12 @@ export class ClientService {
                             : null;
                         return { ...body, index };
                     }),
+                    company_address: showOneClient.company_address.map(({ adress }) => {
+                        return adress;
+                    }),
+                    delivery_address: showOneClient.delivery_address.map(({ adress }) => {
+                        return adress;
+                    })
                 };
             }
             throw new AllError("parametro não aceito, envie somente números");
