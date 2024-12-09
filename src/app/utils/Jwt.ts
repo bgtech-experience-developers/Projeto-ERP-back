@@ -3,17 +3,18 @@ import { AdmRepository } from "../repository/AdmRepository.js";
 import { AllError } from "../error/AllError.js";
 import { JwtPayload } from "jsonwebtoken";
 import { extend } from "joi";
+type role = "adm" | "Regular";
 export interface payload extends JwtPayload {
   id: number;
   permission: string[];
   cnpj: string;
-  role: "adm" | "Regular";
+  role: role;
 }
 
-type role = "adm" | "Regular";
 export class JwtToken {
   static async getCodeToken<$Payload extends payload>(
     user: $Payload,
+
     secreteKey: role,
     time: jwt.SignOptions
   ): Promise<{ token: string; payload: jwt.JwtPayload | string }> {
@@ -22,18 +23,21 @@ export class JwtToken {
         secreteKey === "adm"
           ? process.env.ADM_JWT_SECRET
           : process.env.ADM_JWT_REGULAR;
-      console.log(user);
       if (secreteKey === "Regular") {
         const token = jwt.sign({ ...user, role: "Regular" }, secret!, time);
         const { payload } = jwt.verify(token, secret!, { complete: true });
         return { token, payload };
       } else {
-        const token = jwt.sign( {
-          id: user.id,
-          cnpj: user.cnpj,
-          permission: [...user.permission],
-          role: 'adm',
-        }, secret!, time);
+        const token = jwt.sign(
+          {
+            id: user.id,
+            cnpj: user.cnpj,
+            permission: [...user.permission],
+            role: "adm",
+          },
+          secret!,
+          time
+        );
         const { payload } = jwt.verify(token, secret!, { complete: true });
 
         return { token, payload };
@@ -73,6 +77,7 @@ export class JwtToken {
       throw error;
     }
   }
+
   static getTokenApi(
     payload: { app: "node-api" },
     secretKey: "api",

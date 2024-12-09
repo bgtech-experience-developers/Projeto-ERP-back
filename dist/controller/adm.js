@@ -6,8 +6,13 @@ export class AdmController {
             response.cookie("refreshToken", refreshToken, {
                 httpOnly: true,
                 secure: false,
+<<<<<<< HEAD
                 maxAge: 24 * 60 * 60 * 7000,
                 sameSite: "none", // validade do token , equivale a 7 dias
+=======
+                sameSite: 'none',
+                maxAge: 24 * 60 * 60 * 7000,
+>>>>>>> 22e3501fc31f3067ee2e9f9659a55dfb69f098f6
             });
             response.json({ token, refreshToken }).status(200);
         }

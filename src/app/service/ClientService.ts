@@ -177,7 +177,7 @@ export class ClientService {
         );
         return {
           ...showOneClient,
-          
+
           image_company: showOneClient.image_company[0].image.path,
           financinal_contact: financeUser.map((body, index) => {
             const image = pathsFinance[index]?.path
@@ -201,15 +201,14 @@ export class ClientService {
             const image = pathsOwern[index]?.path
               ? pathsOwern[index].path
               : null;
-            return { ...body, index };
+            return { ...body, image };
           }),
-          company_address: showOneClient.company_address.map(({adress}) => {
+          company_address: showOneClient.company_address.map(({ adress }) => {
             return adress;
           }),
-          delivery_address: showOneClient.delivery_address.map(({adress}) => {
+          delivery_address: showOneClient.delivery_address.map(({ adress }) => {
             return adress;
-          })
-          
+          }),
         };
       }
       throw new AllError("parametro não aceito, envie somente números");
