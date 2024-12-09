@@ -26,7 +26,7 @@ routerAdm.get("/refresh-token", async (request, response, next) => {
     const refreshToken = request.cookies.refreshToken as string;
     console.log("esse é ", refreshToken);
     console.log(refreshToken); // esse é o token que eu armazenei durante o login
-    const secretKeyRefresh = process.env.REFRESH_TOKEN;
+    const secretKeyRefresh = process.env.ADM_JWT_SECRET;
 
     if (!secretKeyRefresh || !refreshToken) {
       throw new AllError("não autorizado", 403);
