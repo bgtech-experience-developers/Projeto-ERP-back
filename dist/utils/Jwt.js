@@ -6,7 +6,6 @@ export class JwtToken {
             const secret = secreteKey === "adm"
                 ? process.env.ADM_JWT_SECRET
                 : process.env.ADM_JWT_REGULAR;
-            console.log(user);
             if (secreteKey === "Regular") {
                 const token = jwt.sign({ ...user, role: "Regular" }, secret, time);
                 const { payload } = jwt.verify(token, secret, { complete: true });

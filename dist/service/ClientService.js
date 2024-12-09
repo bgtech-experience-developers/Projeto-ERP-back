@@ -35,7 +35,11 @@ export class ClientService {
     static async showClints() {
         try {
             const allClints = await ClientRepository.showCLients();
+<<<<<<< HEAD
             const newArray = allClints.map(({ id, branch_activity, situation, fantasy_name, owner_partner }) => {
+=======
+            const newArray = allClints.map(({ branch_activity, situation, fantasy_name, owner_partner }) => {
+>>>>>>> 22e3501fc31f3067ee2e9f9659a55dfb69f098f6
                 return {
                     id,
                     branch_activity,
