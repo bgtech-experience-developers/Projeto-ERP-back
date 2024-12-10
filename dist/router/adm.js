@@ -16,20 +16,10 @@ routerAdm.get("/refresh-token", async (request, response, next) => {
             response.status(200).json("usuário deslogado com sucesso");
             return;
         }
-<<<<<<< HEAD
         const refreshToken = request.cookies.refreshToken;
         console.log("esse é ", refreshToken);
         console.log(refreshToken); // esse é o token que eu armazenei durante o login
-        const secretKeyRefresh = process.env.REFRESH_TOKEN;
-=======
-        // const refreshToken = request.body.newRefreshToken as string
-        console.log('oi');
-        const refreshToken = request.cookies.refreshToken;
-        console.log("esse é o token que veio do cookie ", refreshToken);
-        console.log("esse é token aqui é o cookies ", request.cookies);
-        console.log("esse é token aqui é o cookies do headers ", request.headers.cookie); // esse é o token que eu armazenei durante o login
         const secretKeyRefresh = process.env.ADM_JWT_SECRET;
->>>>>>> 22e3501fc31f3067ee2e9f9659a55dfb69f098f6
         if (!secretKeyRefresh || !refreshToken) {
             throw new AllError("não autorizado", 403);
         }
@@ -45,26 +35,18 @@ routerAdm.get("/refresh-token", async (request, response, next) => {
         const user = payload;
         const newRefreshToken = await JwtToken.RefreshToken(user, user.role);
         const accessToken = await JwtToken.getCodeToken(user, user.role, {
-            expiresIn: "15min",
+            expiresIn: "10min",
         });
         response.cookie("refreshToken", refreshToken, {
             httpOnly: true,
-<<<<<<< HEAD
-            maxAge: 24 * 60 * 60 * 7000,
+            maxAge: 24 * 60 * 60 * 7000, /// tempo de duração
             secure: false,
             sameSite: "none",
         });
-        response.json({ acessToken });
-=======
-            maxAge: 24 * 60 * 60 * 7000, /// tempo de duração
-            secure: false,
-            sameSite: 'none'
-        });
-        console.log(accessToken.token);
         response.json({
-            accessToken: accessToken.token, refreshToken: newRefreshToken
+            accessToken: accessToken.token,
+            refreshToken: newRefreshToken,
         });
->>>>>>> 22e3501fc31f3067ee2e9f9659a55dfb69f098f6
     }
     catch (error) {
         next(error);

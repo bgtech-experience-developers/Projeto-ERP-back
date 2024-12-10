@@ -22,9 +22,6 @@ model Client {
   state_registration String               @db.VarChar(9)
   type_contribuition String
   situation          Boolean              @default(true)
-  sector             sector[]
-  imagem             imagem[]
-  address            Address[]
   image_company      image_company[]
   company_address    company_address[]
   delivery_address   delivery_address[]
@@ -40,15 +37,14 @@ model Client {
 }
 
 model sector {
-  id                       Int                        @default(autoincrement())
-  name                     String                     @db.VarChar(100)
-  email                    String                     @db.VarChar(100)
-  phone                    String?                    @db.VarChar(100)
-  cell_phone               String                     @db.VarChar(100)
-  rg                       String                     @db.VarChar(9)
-  cpf                      String                     @db.VarChar(11)
-  client_id                Int
-  Client                   Client                     @relation(fields: [client_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  id         Int     @default(autoincrement())
+  name       String  @db.VarChar(100)
+  email      String  @db.VarChar(100)
+  phone      String? @db.VarChar(100)
+  cell_phone String  @db.VarChar(100)
+  rg         String  @db.VarChar(9)
+  cpf        String  @db.VarChar(11)
+
   financial_contact        financial_contact[]
   owner_partner            owner_partner[]
   commercial_contact       commercial_contact[]
@@ -67,10 +63,7 @@ model sector {
 model imagem {
   id Int @id @default(autoincrement())
 
-  path String?
-
-  client_id                Int
-  Client                   Client                     @relation(fields: [client_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  path                     String?
   image_company            image_company[]
   financial_image          financial_image[]
   commercial_imagem        commercial_image[]
@@ -90,10 +83,9 @@ model Address {
   neighborhood     String             @db.VarChar(100)
   company_address  company_address[]
   delivery_address delivery_address[]
-  clientId         Int
-  client           Client             @relation(fields: [clientId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  created_at       DateTime           @default(now())
-  update_at        DateTime           @default(now())
+
+  created_at DateTime @default(now())
+  update_at  DateTime @default(now())
 }
 
 model company_address {

@@ -51,38 +51,37 @@ export class ClientRepository {
           select: { id: true },
         });
         const delivery = await tsx.address.create({
-          data: { ...endereco_entrega, clientId: client.id },
+          data: { ...endereco_entrega },
           select: { id: true },
         });
         const store = await tsx.address.create({
-          data: { ...endereco_empresa, clientId: client.id },
+          data: { ...endereco_empresa },
           select: { id: true },
         });
         const finance = await tsx.sector.create({
-          data: { ...financeiro, client_id: client.id },
+          data: { ...financeiro },
           select: { id: true },
         });
         const commercial = await tsx.sector.create({
-          data: { ...comercial, client_id: client.id },
+          data: { ...comercial },
           select: { id: true },
         });
         const accounting = await tsx.sector.create({
-          data: { ...contabil, client_id: client.id },
+          data: { ...contabil },
           select: { id: true },
         });
         const owner = await tsx.sector.create({
-          data: { ...socio, client_id: client.id },
+          data: { ...socio },
           select: { id: true },
         });
         const imagesUsers = await ApiPhpUtils(imagens, "img_profile", files);
         const Allimagens = imagesUsers.map(async (imagem) => {
           console.log(imagem);
           return await tsx.imagem.create({
-            data: { path: imagem ? imagem : null, client_id: client.id },
+            data: { path: imagem ? imagem : null },
             select: { id: true },
           });
         });
-        
 
         const imagensRegister = await Promise.all(Allimagens);
         console.log(imagensRegister);
@@ -161,7 +160,9 @@ export class ClientRepository {
               owner_partner: { select: { sectorId: true } },
               image_company: { include: { image: { select: { path: true } } } },
               company_address: { include: { adress: true } },
-              delivery_address: { include: { adress: true } },
+              delivery_address: {
+                include: { adress: true },
+              },
             },
           });
 
@@ -178,7 +179,8 @@ export class ClientRepository {
       return await connectionDb.client.findMany({
         where: { id },
         include: {
-          company_address: { select: { client: { select: { cnpj: true } } } },
+          company_address: { select: { adressId: true } },
+          delivery_address: { select: { adressId: true } },
         },
       });
     } catch (error) {
@@ -265,7 +267,6 @@ export class ClientRepository {
               include: {
                 sector: {
                   select: {
-                    client_id: true,
                     name: true,
                     email: true,
                     cell_phone: true,
@@ -459,12 +460,45 @@ export class ClientRepository {
     }
   }
 
-  static async deleteClient(id: number) {
+  static async deleteClient(
+    idClient: number,
+    idsSector: number[],
+    idsImagem: number[],
+    idsAddress: number[],
+    company_id: number
+  ) {
     try {
-      return await this.connectionDb.client.delete({
-        where: {
-          id,
-        },
+      const result = this.connectionDb.$transaction(async (tsx) => {
+        console.log("todos os ids da imagem ", idsImagem);
+        await tsx.client.delete({ where: { id: idClient } });
+        await tsx.imagem.delete({ where: { id: company_id } });
+        await tsx.sector.deleteMany({
+          where: {
+            id: {
+              in: idsSector.map((id) => {
+                return id;
+              }),
+            },
+          },
+        });
+        await tsx.address.deleteMany({
+          where: {
+            id: {
+              in: idsAddress.map((id) => {
+                return id;
+              }),
+            },
+          },
+        });
+        await tsx.imagem.deleteMany({
+          where: {
+            id: {
+              in: idsImagem.map((id) => {
+                return id;
+              }),
+            },
+          },
+        });
       });
     } catch (error) {
       throw error;
@@ -483,6 +517,7 @@ export class ClientRepository {
               image: {
                 select: {
                   path: true,
+                  id: true,
                 },
               },
             },
@@ -496,6 +531,7 @@ export class ClientRepository {
                       image: {
                         select: {
                           path: true,
+                          id: true,
                         },
                       },
                     },
@@ -513,6 +549,7 @@ export class ClientRepository {
                       image: {
                         select: {
                           path: true,
+                          id: true,
                         },
                       },
                     },
@@ -530,6 +567,7 @@ export class ClientRepository {
                       image: {
                         select: {
                           path: true,
+                          id: true,
                         },
                       },
                     },
@@ -547,6 +585,7 @@ export class ClientRepository {
                       image: {
                         select: {
                           path: true,
+                          id: true,
                         },
                       },
                     },
