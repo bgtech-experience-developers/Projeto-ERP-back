@@ -123,7 +123,7 @@ model Product {
 
 model Product_Supplier_pf {
   price String @db.VarChar(40)
-  freight String @db.VarChar(40) // Definir qual o propósito desse campo, se é calcular o price final.
+  purchase_tax String @db.VarChar(40) // Definir qual o propósito desse campo, se é calcular o price final.
   delivery_time String @db.VarChar(50)
   id_product Int
   id_supplier_pf Int
