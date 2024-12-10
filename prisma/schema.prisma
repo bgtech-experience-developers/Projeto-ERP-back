@@ -24,9 +24,6 @@ model Client {
   state_registration String               @db.VarChar(9)
   type_contribuition String
   situation          Boolean              @default(true)
-  sector             sector[]
-  imagem             imagem[]
-  address            Address[]
   image_company      image_company[]
   company_address    company_address[]
   delivery_address   delivery_address[]
@@ -42,15 +39,14 @@ model Client {
 }
 
 model sector {
-  id                       Int                        @default(autoincrement())
-  name                     String                     @db.VarChar(100)
-  email                    String                     @db.VarChar(100)
-  phone                    String?                    @db.VarChar(100)
-  cell_phone               String                     @db.VarChar(100)
-  rg                       String                     @db.VarChar(9)
-  cpf                      String                     @db.VarChar(11)
-  client_id                Int
-  Client                   Client                     @relation(fields: [client_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  id         Int     @default(autoincrement())
+  name       String  @db.VarChar(100)
+  email      String  @db.VarChar(100)
+  phone      String? @db.VarChar(100)
+  cell_phone String  @db.VarChar(100)
+  rg         String  @db.VarChar(9)
+  cpf        String  @db.VarChar(11)
+
   financial_contact        financial_contact[]
   owner_partner            owner_partner[]
   commercial_contact       commercial_contact[]
@@ -68,16 +64,13 @@ model sector {
 
 model imagem {
   id Int @id @default(autoincrement())
-
-  path String?
-
-  client_id                Int
-  Client                   Client                     @relation(fields: [client_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  path                     String?
   image_company            image_company[]
   financial_image          financial_image[]
   commercial_imagem        commercial_image[]
   owner_partner            owner_partner_image[]
   accounting_contact_image accounting_contact_image[]
+  supplier_pf              Supplier_pf_Image[]           
   created_at               DateTime                   @default(now())
   update_at                DateTime                   @default(now())
 }
@@ -90,13 +83,13 @@ model Address {
   complement       String             @db.VarChar(100)
   city             String             @db.VarChar(100)
   neighborhood     String             @db.VarChar(100)
+
   company_address  company_address[]
   delivery_address delivery_address[]
   address_supplier_pf Supplier_pf_Address[]
-  clientId         Int
-  client           Client             @relation(fields: [clientId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  created_at       DateTime           @default(now())
-  update_at        DateTime           @default(now())
+  
+  created_at DateTime @default(now())
+  update_at  DateTime @default(now())
 }
 
 model Supplier_pf{
@@ -110,6 +103,19 @@ model Supplier_pf{
   birth_date DateTime 
   product_supplier_pf Product_Supplier_pf[]
   address_supplier_pf Supplier_pf_Address[]
+  created_at               DateTime                   @default(now())
+  update_at                DateTime                   @default(now())
+}
+
+model Supplier_pf_Image {
+  id Int @id @default(autoincrement())
+  id_supplier_pf Int
+  id_image Int
+    
+  created_at DateTime @default(now())
+  update_at  DateTime @default(now())
+  
+  supplier_pf imagem @relation(fields: [id_supplier_pf], references: [id])
 }
 
 model Product {
@@ -118,6 +124,8 @@ model Product {
   internal_code String @db.VarChar(20)
   stock Int 
   product_supplier_pf Product_Supplier_pf[]
+  created_at               DateTime                   @default(now())
+  update_at                DateTime                   @default(now())
 
 }
 
@@ -127,8 +135,13 @@ model Product_Supplier_pf {
   delivery_time String @db.VarChar(50)
   id_product Int
   id_supplier_pf Int
+  
+  created_at               DateTime                   @default(now())
+  update_at                DateTime                   @default(now())
+
   supplier_pf  Supplier_pf @relation(fields: [id_supplier_pf], references: [id])
   product Product @relation(fields: [id_product], references: [id])
+
   @@id([id_product, id_supplier_pf])
 }
 
@@ -136,6 +149,10 @@ model Supplier_pf_Address {
   id Int @id @default(autoincrement())
   id_supplier_pf Int
   id_address Int
+
+  created_at               DateTime                   @default(now())
+  update_at                DateTime                   @default(now())
+
   supplier_pf Supplier_pf @relation(fields: [id_supplier_pf], references: [id])
   address Address @relation(fields: [id_address], references: [id])
 }
