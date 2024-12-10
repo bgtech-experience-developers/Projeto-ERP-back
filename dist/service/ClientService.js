@@ -35,11 +35,7 @@ export class ClientService {
     static async showClints() {
         try {
             const allClints = await ClientRepository.showCLients();
-<<<<<<< HEAD
             const newArray = allClints.map(({ id, branch_activity, situation, fantasy_name, owner_partner }) => {
-=======
-            const newArray = allClints.map(({ branch_activity, situation, fantasy_name, owner_partner }) => {
->>>>>>> 22e3501fc31f3067ee2e9f9659a55dfb69f098f6
                 return {
                     id,
                     branch_activity,
@@ -154,14 +150,14 @@ export class ClientService {
                         const image = pathsOwern[index]?.path
                             ? pathsOwern[index].path
                             : null;
-                        return { ...body, index };
+                        return { ...body, image };
                     }),
                     company_address: showOneClient.company_address.map(({ adress }) => {
                         return adress;
                     }),
                     delivery_address: showOneClient.delivery_address.map(({ adress }) => {
                         return adress;
-                    })
+                    }),
                 };
             }
             throw new AllError("parametro não aceito, envie somente números");
@@ -209,13 +205,47 @@ export class ClientService {
         try {
             const paths = [];
             if (Number(param) && param) {
-                const company = await ClientRepository.GetuniqueClient(undefined, Number(param));
+                const company = (await ClientRepository.GetuniqueClient(undefined, Number(param)));
                 // console.log(company);1
                 if (!company) {
                     throw new AllError("Cliente/Empresa não cadastrada no sistema!", 404);
                 }
+                const allids = await ClientRepository.GetAllAddress(company.id);
+                const add = [
+                    "company_address",
+                    "delivery_address",
+                ];
+                const allIdsAddress = [];
+                let controleArray = 0;
+                allids.forEach((props, index) => {
+                    console.log(props);
+                    if (add["0"] in props && add["1"] in props) {
+                        console.log("ola mundo");
+                        const value = props[add["0"]][index].adressId;
+                        const value2 = props[add["1"]][index].adressId;
+                        allIdsAddress[controleArray] = value;
+                        allIdsAddress[controleArray + 1] = value2;
+                    }
+                    controleArray += 2;
+                    console.log(allIdsAddress);
+                });
                 const pathImages = await ClientRepository.getImage(Number(param));
-                // console.log(pathImages);
+                const props = [
+                    "accounting_contact",
+                    "financinal_contact",
+                    "commercial_contact",
+                    "owner_partner",
+                ];
+                const imagem = "owner_partner_image";
+                const allIdsSector = [];
+                for (let i = 0; i < props.length; i++) {
+                    if (pathImages && pathImages[props[i]] instanceof Array) {
+                        const [accouting, financial, commercial, owner_partner] = props;
+                        allIdsSector.push(pathImages[props[i]][0].sectorId);
+                    }
+                }
+                company.company_address[0].adress;
+                company.delivery_address.map((value, index) => { });
                 paths.push(pathImages?.image_company[0].image.path);
                 paths.push(pathImages?.owner_partner[0].sector.owner_partner_image[0].image.path);
                 paths.push(pathImages?.commercial_contact[0].sector.commercial_image[0].image
@@ -228,11 +258,26 @@ export class ClientService {
                     const paths = path?.replace("https://bgtech.com.br/erp/assets/", "");
                     return paths ? paths : null;
                 });
-                console.log(newPath);
                 deleteApiPhp(newPath);
                 const idSector = await ClientRepository.idSector(company.id);
-                const deleteClient = await ClientRepository.deleteClient(Number(param));
-                console.log(deleteClient);
+                const allIdsImagem = pathImages?.owner_partner.map(({ sector }, index) => {
+                    return sector.owner_partner_image[index].image.id;
+                });
+                const allidsImagemCommercial = pathImages?.commercial_contact.map(({ sector }, index) => {
+                    return sector.commercial_image[index].image.id;
+                });
+                const allidsFinance = pathImages?.financinal_contact.map(({ sector }, index) => {
+                    return sector.financial_image[index].image.id;
+                });
+                const allIdsaccounting_contact = pathImages?.accounting_contact.map(({ sector }, index) => {
+                    return sector.accounting_contact_image[index].image.id;
+                });
+                const deleteClient = await ClientRepository.deleteClient(Number(param), allIdsSector, [
+                    ...allIdsaccounting_contact,
+                    ...allidsFinance,
+                    ...allidsImagemCommercial,
+                    ...allIdsImagem,
+                ], allIdsAddress, pathImages?.image_company[0].imageId);
                 return deleteClient;
             }
             throw new AllError("Argumentos inválidos, tipo inesperado.");
