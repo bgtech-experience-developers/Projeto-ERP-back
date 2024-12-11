@@ -122,6 +122,7 @@ interface Address {
   neighborhood: string;
   created_at: Date;
   update_at: Date;
+  state: string
 }
 
 type AllImagens = (string | null)[];

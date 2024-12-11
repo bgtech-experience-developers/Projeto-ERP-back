@@ -42,7 +42,7 @@ model sector {
   email      String  @db.VarChar(100)
   phone      String? @db.VarChar(100)
   cell_phone String  @db.VarChar(100)
-  rg         String  @db.VarChar(9)
+  rg         String
   cpf        String  @db.VarChar(11)
 
   financial_contact        financial_contact[]
@@ -81,6 +81,7 @@ model Address {
   complement       String             @db.VarChar(100)
   city             String             @db.VarChar(100)
   neighborhood     String             @db.VarChar(100)
+  state            String
   company_address  company_address[]
   delivery_address delivery_address[]
 
