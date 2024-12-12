@@ -22,6 +22,7 @@ export const authentication = (
         throw new AllError("não autorizado", 403);
       }
       request.body.user = payload;
+      console.log(payload);
     });
     next();
   } catch (error) {
