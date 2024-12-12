@@ -2,7 +2,6 @@ import { JwtToken } from "../utils/Jwt.js";
 import axios from "axios";
 import FormData from "form-data";
 import fs from "fs";
-import { Sharp } from "../utils/sharp.js";
 export const ApiPhp = async (filepath) => {
     try {
         const formdata = new FormData();
@@ -22,8 +21,6 @@ export const ApiPhp = async (filepath) => {
             },
         });
         const data = response.data;
-        const { mensagem, error } = await Sharp.removeImagens(filepath.files);
-        console.log(mensagem);
         return data;
     }
     catch (error) {
@@ -45,8 +42,8 @@ export const deleteUpload = async (arrayImagens) => {
     return data;
 };
 export const deleteApiPhp = async (filePath) => {
-    const token = JwtToken.getTokenApi({ app: 'node-api' }, "api", {
-        expiresIn: "5m"
+    const token = JwtToken.getTokenApi({ app: "node-api" }, "api", {
+        expiresIn: "5m",
     });
     // const formData = new FormData();
     // formData. append('action', filePath.action);
@@ -58,11 +55,11 @@ export const deleteApiPhp = async (filePath) => {
     // })
     const response = await axios.delete("https://bgtech.com.br/erp/assets/assets-handler.php", {
         headers: {
-            "Content-Type": 'application/json',
+            "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
             // ...formData.getHeaders()
         },
-        data: { paths: filePath }
+        data: { paths: filePath },
     });
     const data = response.data;
     console.log(data);
