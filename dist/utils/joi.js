@@ -36,7 +36,7 @@ export class JoiValidation {
             complement: joi.string().trim(),
             city: joi.string().trim(),
             neighborhood: joi.string().trim(),
-            state: joi.string(),
+            state: joi.string().trim(),
         });
         return Promise.all([
             schemaCreateClient.validate(cliente),

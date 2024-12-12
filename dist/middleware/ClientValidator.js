@@ -8,7 +8,6 @@ export class ClientValidator {
                 const files = request.files;
                 console.log(files);
                 request.body = JSON.parse(request.body.json);
-                request.body;
                 // request.body.telefone = request.body.telefone.replace(/\D/g, "");
                 // request.body.cpf = request.body.cpf.replace(/\D/g, "");
                 request.body.cliente.cnpj = request.body.cliente.cnpj.replace(/\D/g, "");
@@ -33,6 +32,7 @@ export class ClientValidator {
                 const err = allPromises.filter((promise) => promise.error ? promise.error.message : false);
                 err.forEach((err) => console.log(err.error?.message));
                 if (err.length != 0) {
+                    console.log(request.body);
                     Sharp.removeImagens(files);
                     const messagem = err[0].error?.message;
                     throw new AllError(messagem, 400);

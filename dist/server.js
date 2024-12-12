@@ -4,6 +4,7 @@ import { clientRouter } from "./router/Client.js";
 import cors from "cors";
 import { routerAdm } from "./router/adm.js";
 import cookieParse from "cookie-parser";
+import supplierPf from "./router/SupplierPf.js";
 dotnev.config();
 const app = express();
 const port = Number(process.env.PORT);
@@ -17,6 +18,7 @@ app.use(cookieParse());
 app.use(express.json()); // parte para a deserializaç~~ao das informações
 app.use("/clientes", clientRouter);
 app.use("/adm", routerAdm);
+app.use("/suppliers", supplierPf);
 app.listen(port, host, () => {
     console.log("meu servidor está rodando na porta " + port);
 });

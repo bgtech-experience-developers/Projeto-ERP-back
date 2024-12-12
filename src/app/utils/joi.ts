@@ -31,7 +31,6 @@ export class JoiValidation {
       name: joi.string().trim(),
       email: joi.string().email().required(),
       phone: joi.string().trim().allow(""),
-
       rg: joi.string(),
       cpf: joi.string().max(11).min(11).messages({
         "string.max": "o campo cpf deve conter no maximo 11 digitos",
@@ -48,7 +47,7 @@ export class JoiValidation {
       complement: joi.string().trim(),
       city: joi.string().trim(),
       neighborhood: joi.string().trim(),
-      state: joi.string(),
+      state: joi.string().trim(),
     });
     return Promise.all([
       schemaCreateClient.validate(cliente),
