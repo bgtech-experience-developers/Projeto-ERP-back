@@ -42,7 +42,7 @@ model sector {
   email      String  @db.VarChar(100)
   phone      String? @db.VarChar(100)
   cell_phone String  @db.VarChar(100)
-  rg         String  @db.VarChar(9)
+  rg         String
   cpf        String  @db.VarChar(11)
 
   financial_contact        financial_contact[]
@@ -85,6 +85,8 @@ model Address {
   company_address     company_address[]
   delivery_address    delivery_address[]
   address_supplier_pf Supplier_pf_Address[]
+
+ 
 
   created_at DateTime @default(now())
   update_at  DateTime @default(now())
