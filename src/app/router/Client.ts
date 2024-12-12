@@ -25,6 +25,7 @@ clientRouter.get("/:id", showClientById);
 clientRouter.get("/enderecos/:id", Client.getAllAddress);
 clientRouter.patch(
   "/atualizar/:id",
+  
   authentication,
   hasPermission("atualizar"),
   UploadFile.Upload().array("photos", 5),
@@ -34,7 +35,7 @@ clientRouter.patch(
 clientRouter.delete(
   "/remover/:id",
   authentication,
-  hasPermission("remover"),
+  hasPermission("deletar"),
   Client.deleteClient
 );
 

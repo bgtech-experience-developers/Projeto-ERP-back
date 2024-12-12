@@ -30,7 +30,7 @@ export class JoiValidation {
       cell_phone: joi.string().trim(),
       name: joi.string().trim(),
       email: joi.string().email().required(),
-      phone: joi.string().trim().optional(),
+      phone: joi.string().trim().allow(""),
 
       rg: joi.string(),
       cpf: joi.string().max(11).min(11).messages({
