@@ -16,6 +16,7 @@ export const authentication = (request, response, next) => {
                 throw new AllError("não autorizado", 403);
             }
             request.body.user = payload;
+            console.log(payload);
         });
         next();
     }
