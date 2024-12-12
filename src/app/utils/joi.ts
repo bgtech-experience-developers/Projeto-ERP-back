@@ -29,7 +29,7 @@ export class JoiValidation {
     const SchemaCreateSector = joi.object<$Interface, false, $Interface>({
       cell_phone: joi.string().trim(),
       name: joi.string().trim(),
-      email: joi.string().email().required(),
+      email: joi.string().email().required,
       phone: joi.string().trim(),
       rg: joi.string(),
       cpf: joi.string().max(11).min(11).messages({
