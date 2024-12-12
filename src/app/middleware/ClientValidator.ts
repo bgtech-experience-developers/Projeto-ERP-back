@@ -17,7 +17,7 @@ export class ClientValidator {
         console.log(files);
 
         request.body = JSON.parse(request.body.json);
-        request.body;
+
         // request.body.telefone = request.body.telefone.replace(/\D/g, "");
         // request.body.cpf = request.body.cpf.replace(/\D/g, "");
         request.body.cliente.cnpj = request.body.cliente.cnpj.replace(
