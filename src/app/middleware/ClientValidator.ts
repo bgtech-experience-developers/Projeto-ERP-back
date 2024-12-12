@@ -57,6 +57,7 @@ export class ClientValidator {
         err.forEach((err) => console.log(err.error?.message));
 
         if (err.length != 0) {
+          console.log(request.body);
           Sharp.removeImagens(files);
           const messagem = err[0].error?.message!;
 
