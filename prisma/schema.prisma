@@ -101,7 +101,7 @@ model Supplier_pf {
   birth_date          DateTime
   product_supplier_pf Product_Supplier_pf[]
   address_supplier_pf Supplier_pf_Address[]
-  supller_imagem      Supplier_pf_Image[]
+  supplier_imagem     Supplier_pf_Image[]
   created_at          DateTime              @default(now())
   update_at           DateTime              @default(now())
 }
