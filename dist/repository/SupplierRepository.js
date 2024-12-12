@@ -25,4 +25,38 @@ export class SupplierRepository {
             throw error;
         }
     }
+    static async getById(id) {
+        try {
+            const supplier = await this.connectionDb.supplier_pf.findUnique({
+                where: {
+                    id
+                },
+                include: {
+                    product_supplier_pf: {
+                        include: {
+                            product: true
+                        }
+                    },
+                    address_supplier_pf: {
+                        include: {
+                            address: true
+                        }
+                    },
+                    supplier_imagem: {
+                        include: {
+                            supplier_pf_image: {
+                                select: {
+                                    path: true
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+            return [supplier];
+        }
+        catch (error) {
+            throw error;
+        }
+    }
 }
