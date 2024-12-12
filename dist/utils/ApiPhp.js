@@ -1,5 +1,6 @@
 import { AllError } from "../error/AllError.js";
 import { ApiPhp } from "../middleware/ApiPhp.js";
+import { Sharp } from "./sharp.js";
 export const ApiPhpUtils = async (imagems, typeFolder, files) => {
     try {
         const filesPath = imagems.filter((path) => {
@@ -21,6 +22,8 @@ export const ApiPhpUtils = async (imagems, typeFolder, files) => {
                 throw new AllError(allPaths.message, 403);
             }
         }
+        const { mensagem, error } = await Sharp.removeImagens(files);
+        console.log(mensagem);
         return imagems;
     }
     catch (error) {

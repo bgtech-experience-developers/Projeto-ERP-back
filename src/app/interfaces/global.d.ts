@@ -127,36 +127,32 @@ interface Address {
   neighborhood: string;
   created_at: Date;
   update_at: Date;
-  state: string
+  state: string | null;
 }
 
 type AllImagens = (string | null)[];
 
-
 interface Supplier_pf {
-  supplier_name: string
-  supplier_code: string
-  email: string
-  phone: string
-  rg: string
-  cpf: string
-  birth_date: Date
-  product_supplier_pf?: Product_Supplier_pf
-  address_supplier_pf?: Address
-
+  supplier_name: string;
+  supplier_code: string;
+  email: string;
+  phone: string;
+  rg: string;
+  cpf: string;
+  birth_date: Date;
+  product_supplier_pf?: Product_Supplier_pf;
+  address_supplier_pf?: Address;
 }
 
 interface AllSupplier_pf extends Supplier_pf {
-  id: number
-  product: string[]
-  created_at: Date
-  update_at: Date
+  id: number;
+  product: string[];
+  created_at: Date;
+  update_at: Date;
 }
 
 interface Product_Supplier_pf {
-  price: string
-  purchase_tax: string
-  delivery_time: string
+  price: string;
+  purchase_tax: string;
+  delivery_time: string;
 }
-
-
