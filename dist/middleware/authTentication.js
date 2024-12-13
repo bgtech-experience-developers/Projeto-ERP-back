@@ -13,9 +13,10 @@ export const authentication = (request, response, next) => {
         }
         jwt.verify(token, secret, (err, payload) => {
             if (err) {
-                throw new AllError("não autorizado");
+                throw new AllError("não autorizado", 403);
             }
             request.body.user = payload;
+            console.log(payload);
         });
         next();
     }

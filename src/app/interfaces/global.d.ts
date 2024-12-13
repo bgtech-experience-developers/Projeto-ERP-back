@@ -11,9 +11,11 @@ interface ClientC {
   created_at: Date;
   update_at: Date;
 }
+
 interface address {
   adress: Address;
 }
+
 interface getUnic extends ClientC {
   financinal_contact: sectorId;
   commercial_contact: sectorId;
@@ -21,8 +23,9 @@ interface getUnic extends ClientC {
   owner_partner: sectorId;
   image_company: { image: { path: string | null } }[];
   company_address: address[];
-  delivery_address: address[]
+  delivery_address: address[];
 }
+
 type sectorId = { sectorId: number }[];
 
 interface base_solid_allclient {
@@ -38,6 +41,7 @@ interface base_solid_allclient {
     sectorId: number;
   }[];
 }
+
 interface bodyCreateClient {
   financeiro: GenericFields;
   contabil: GenericFields;
@@ -47,6 +51,7 @@ interface bodyCreateClient {
   endereco_entrega: Address;
   cliente: ClientC;
 }
+
 interface integral extends GenericFields {}
 interface integral extends ClientC {}
 interface integral extends Address {}
@@ -119,10 +124,35 @@ interface Address {
   number: string;
   complement: string;
   city: string;
-  clientId: number;
   neighborhood: string;
+  created_at: Date;
+  update_at: Date;
+  state: string | null;
+}
+
+type AllImagens = (string | null)[];
+
+interface Supplier_pf {
+  supplier_name: string;
+  supplier_code: string;
+  email: string;
+  phone: string;
+  rg: string;
+  cpf: string;
+  birth_date: Date;
+  product_supplier_pf?: Product_Supplier_pf;
+  address_supplier_pf?: Address;
+}
+
+interface AllSupplier_pf extends Supplier_pf {
+  id: number;
+  product: string[];
   created_at: Date;
   update_at: Date;
 }
 
-type AllImagens = (string | null)[];
+interface Product_Supplier_pf {
+  price: string;
+  purchase_tax: string;
+  delivery_time: string;
+}

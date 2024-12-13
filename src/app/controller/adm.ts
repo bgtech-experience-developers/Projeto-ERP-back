@@ -10,7 +10,7 @@ export class AdmController {
         httpOnly: true,
         secure: false,
         maxAge: 24 * 60 * 60 * 7000,
-        sameSite: "none", // validade do token , equivale a 7 dias
+        sameSite: "none", 
       });
       response.json({ token, refreshToken }).status(200);
     } catch (error) {

@@ -19,7 +19,7 @@ export class ClientValidator {
         console.log(files);
 
         request.body = JSON.parse(request.body.json);
-        request.body;
+
         // request.body.telefone = request.body.telefone.replace(/\D/g, "");
         // request.body.cpf = request.body.cpf.replace(/\D/g, "");
         request.body.cliente.cnpj = request.body.cliente.cnpj.replace(
@@ -59,6 +59,7 @@ export class ClientValidator {
         err.forEach((err) => console.log(err.error?.message));
 
         if (err.length != 0) {
+          console.log(request.body);
           Sharp.removeImagens(files);
           const messagem = err[0].error?.message!;
 

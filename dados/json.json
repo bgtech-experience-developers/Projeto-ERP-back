@@ -14,7 +14,8 @@
     "number": "blocoa",
     "complement": "blocob",
     "city": "fortaleza",
-    "neighborhood": "lagoa quadrada"
+    "neighborhood": "lagoa quadrada",
+    "state": "bahia"
   },
   "endereco_entrega": {
     "cep": "12345-678",
@@ -22,7 +23,8 @@
     "number": "blocoa",
     "complement": "blocob",
     "city": "fortaleza",
-    "neighborhood": "lagoa quadrada"
+    "neighborhood": "lagoa quadrada",
+    "state": "bahia"
   },
   "financeiro": {
     "name": "lucio",

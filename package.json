@@ -9,12 +9,17 @@
     "preServer": "npm run build",
     "server": " concurrently \"nodemon ./dist/server.js\"   \"tsc -w\" "
   },
+  "prisma": {
+    "seed": "node ./dist/seed.js"
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "@faker-js/faker": "^9.3.0",
     "@prisma/client": "^5.20.0",
+    "@types/cookie-parser": "^1.4.8",
     "@types/cors": "^2.8.17",
     "@types/jest": "^29.5.14",
     "@types/jsonwebtoken": "^9.0.7",
@@ -23,6 +28,8 @@
     "bcrypt": "^5.1.1",
     "cloudinary": "^2.5.1",
     "concurrently": "^9.1.0",
+    "cookie-parse": "^0.4.0",
+    "cookie-parser": "^1.4.7",
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",
     "express": "^4.21.0",
@@ -41,7 +48,10 @@
     "@types/express": "^5.0.0",
     "@types/joi": "^17.2.2",
     "@types/multer": "^1.4.12",
+    "@types/node": "^22.10.2",
     "nodemon": "^3.1.7",
-    "prisma": "^5.21.0"
+    "prisma": "^5.21.0",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.7.2"
   }
 }

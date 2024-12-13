@@ -42,6 +42,7 @@ export class AdmService {
             "adm",
             { expiresIn: "15min" }
           );
+
           const { role } = payload as payload;
           const refreshToken = await JwtToken.RefreshToken<typeof role>(
             payload as payload,

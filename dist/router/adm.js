@@ -19,12 +19,13 @@ routerAdm.get("/refresh-token", async (request, response, next) => {
         const refreshToken = request.cookies.refreshToken;
         console.log("esse é ", refreshToken);
         console.log(refreshToken); // esse é o token que eu armazenei durante o login
-        const secretKeyRefresh = process.env.REFRESH_TOKEN;
+        const secretKeyRefresh = process.env.ADM_JWT_SECRET;
         if (!secretKeyRefresh || !refreshToken) {
             throw new AllError("não autorizado", 403);
         }
         jwt.verify(refreshToken, secretKeyRefresh, (err, decoded) => {
             if (err) {
+                console.log(err);
                 throw new AllError("token expirado", 403);
             }
         });
@@ -32,18 +33,20 @@ routerAdm.get("/refresh-token", async (request, response, next) => {
             complete: true,
         });
         const user = payload;
-        const newRereshToken = JwtToken.RefreshToken(user, user.role);
-        console.log("esse é o novo refresh token ", newRereshToken);
-        const acessToken = JwtToken.getCodeToken(user, user.role, {
-            expiresIn: "15min",
+        const newRefreshToken = await JwtToken.RefreshToken(user, user.role);
+        const accessToken = await JwtToken.getCodeToken(user, user.role, {
+            expiresIn: "10min",
         });
         response.cookie("refreshToken", refreshToken, {
             httpOnly: true,
-            maxAge: 24 * 60 * 60 * 7000,
+            maxAge: 24 * 60 * 60 * 7000, /// tempo de duração
             secure: false,
             sameSite: "none",
         });
-        response.json({ acessToken });
+        response.json({
+            accessToken: accessToken.token,
+            refreshToken: newRefreshToken,
+        });
     }
     catch (error) {
         next(error);
