@@ -1,16 +1,17 @@
 interface ClientC {
   id: number;
   corporate_reason: string;
-  fantasy_name: string;
-  branch_activity: string;
+  fantasy_name: valueClient;
+  branch_activity: valueClient;
   cnpj: string;
-  state_registration: string;
+  state_registration: valueClient;
 
   situation: boolean;
-  type_contribuition: string;
+  type_contribuition: valueClient;
   created_at: Date;
   update_at: Date;
 }
+type valueClient = string | null;
 
 interface address {
   adress: Address;
@@ -31,9 +32,9 @@ type sectorId = { sectorId: number }[];
 interface base_solid_allclient {
   owner_partner: {
     sector: {
-      name: string;
-      email: string;
-      cell_phone: string;
+      name: valueClient;
+      email: valueClient;
+      cell_phone: valueClient;
     };
     created_at: Date;
     update_at: Date;
@@ -119,15 +120,15 @@ interface adminPermission {
 }
 
 interface Address {
-  cep: string;
-  street: string;
-  number: string;
-  complement: string;
-  city: string;
-  neighborhood: string;
+  cep: valueClient;
+  street: valueClient;
+  number: valueClient;
+  complement: valueClient;
+  city: valueClient;
+  neighborhood: valueClient;
   created_at: Date;
   update_at: Date;
-  state: string | null;
+  state: valueClient;
 }
 
 type AllImagens = (string | null)[];

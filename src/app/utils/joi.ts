@@ -11,43 +11,54 @@ export class JoiValidation {
     financeiro,
   }: bodyCreateClient) {
     const schemaCreateClient = joi.object<$Interface, false, $Interface>({
-      branch_activity: joi.string().trim(),
+      branch_activity: joi.string().trim().allow(""),
       cnpj: joi.string().trim().min(14).max(14).required().messages({
         "string.max": "o campo cnjp deve conter no maximo 14 digitos",
         "string.min": "o compo cnjp deve conter no minimo 14 digitos",
       }),
-      state_registration: joi.string().trim().min(9).max(9).messages({
-        "string.max":
-          "o campo inscrição estadual deve conter no maximo 9 digitos",
-        "string.min":
-          "o compo inscrição estadual deve conter no minimo 9 digitos",
-      }),
-      type_contribuition: joi.string().trim().required(),
-      fantasy_name: joi.string().trim(),
+      state_registration: joi
+        .string()
+        .trim()
+        .min(9)
+        .max(9)
+        .messages({
+          "string.max":
+            "o campo inscrição estadual deve conter no maximo 9 digitos",
+          "string.min":
+            "o compo inscrição estadual deve conter no minimo 9 digitos",
+        })
+        .allow(""),
+      type_contribuition: joi.string().trim().allow(""),
+      fantasy_name: joi.string().trim().allow(""),
       corporate_reason: joi.string().trim(),
     });
     const SchemaCreateSector = joi.object<$Interface, false, $Interface>({
-      cell_phone: joi.string().trim(),
-      name: joi.string().trim(),
-      email: joi.string().email().required(),
+      cell_phone: joi.string().trim().allow(""),
+      name: joi.string().trim().allow(""),
+      email: joi.string().email().allow(""),
       phone: joi.string().trim().allow(""),
-      rg: joi.string(),
-      cpf: joi.string().max(11).min(11).messages({
-        "string.max": "o campo cpf deve conter no maximo 11 digitos",
-        "string.min": "o campo cpf deve conter pelo menos 11 digitos",
-      }),
+      rg: joi.string().allow(""),
+      cpf: joi
+        .string()
+        .max(11)
+        .min(11)
+        .messages({
+          "string.max": "o campo cpf deve conter no maximo 11 digitos",
+          "string.min": "o campo cpf deve conter pelo menos 11 digitos",
+        })
+        .allow(""),
     });
     const SchemaAddress = joi.object<$Interface, false, $Interface>({
       cep: joi.string().min(8).max(8).trim().messages({
         "string.max": "o campo cep deve conter no maximo 8 digitos",
         "string.min": "o campo cep deve conter pelo menos 8 digitos",
       }),
-      street: joi.string().trim(),
-      number: joi.string().trim(),
-      complement: joi.string().trim(),
-      city: joi.string().trim(),
-      neighborhood: joi.string().trim(),
-      state: joi.string().trim(),
+      street: joi.string().trim().allow(""),
+      number: joi.string().trim().allow(""),
+      complement: joi.string().trim().allow(""),
+      city: joi.string().trim().allow(""),
+      neighborhood: joi.string().trim().allow(""),
+      state: joi.string().trim().allow(""),
     });
     return Promise.all([
       schemaCreateClient.validate(cliente),
