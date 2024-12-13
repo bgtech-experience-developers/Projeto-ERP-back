@@ -15,7 +15,7 @@ export class ClientValidator {
       try {
         console.log(request.body.json);
         console.log(request.body)
-        return;
+
         const files = request.files as Express.Multer.File[];
         console.log(files);
 
