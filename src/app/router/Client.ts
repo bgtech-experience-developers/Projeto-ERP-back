@@ -14,28 +14,22 @@ const { showClients, showClientById } = new Client();
 
 clientRouter.post(
   "/registro",
-  authentication,
-  hasPermission("criar"),
+ 
   UploadFile.Upload().array("photos", 5),
   CreateClientValidator(),
   Client.CreateClient
 );
-clientRouter.get("/", authentication, hasPermission("ler"), showClients);
+clientRouter.get("/",  showClients);
 clientRouter.get("/:id", showClientById);
 clientRouter.get("/enderecos/:id", Client.getAllAddress);
 clientRouter.patch(
   "/atualizar/:id",
-  
-  authentication,
-  hasPermission("atualizar"),
   UploadFile.Upload().array("photos", 5),
   CreateClientValidator(),
   Client.updateClient
 );
 clientRouter.delete(
   "/remover/:id",
-  authentication,
-  hasPermission("deletar"),
   Client.deleteClient
 );
 
