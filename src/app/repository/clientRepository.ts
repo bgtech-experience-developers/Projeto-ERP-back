@@ -602,4 +602,66 @@ export class ClientRepository {
       throw error;
     }
   }
+  static async filterClient({
+    branch_activity,
+    fantasy_name,
+    email,
+    name,
+    phone,
+  }: filtragem) {
+    try {
+      const query = `SELECT 
+      Client.*,
+      owner_partner.*, 
+      sector.name,
+      sector.email,
+      sector.cell_phone 
+      FROM 
+        Client
+      LEFT JOIN sector s ON owner_partner.sectorId = s.id
+      WHERE
+        (Client.branch_activity =${branch_activity.contains} OR Client.fantasy_name =${fantasy_name.contains})
+        OR
+        (sector.email =${email.contains} OR sector.name =${name.contains} OR sector.phone = ${phone.contains}) `;
+      this.connectionDb.owner_partner;
+
+      const resultk = await this.connectionDb.$queryRaw` SELECT 
+        Client.*,
+        FROM 
+          Client 
+        LEFT JOIN sector s ON owner_partner.sectorId = s.id
+
+        WHERE
+          (Client.branch_activity =${branch_activity.contains} OR Client.fantasy_name =${fantasy_name.contains})
+          OR
+          (sector.email =${email.contains} OR sector.name =${name.contains} OR sector.phone = ${phone.contains})`;
+      console.log(resultk);
+      // const result = await this.connectionDb.client.findMany({
+      //   where: {
+      //     OR: [
+      //       { branch_activity },
+      //       { fantasy_name },
+      //       { owner_partner: { every: { sector: { email, name, phone } } } },
+      //     ],
+      //   },
+      //   include: {
+      //     owner_partner: {
+      //       include: {
+      //         sector: {
+      //           select: {
+      //             name: true,
+      //             email: true,
+      //             cell_phone: true,
+      //           },
+      //         },
+      //       },
+      //     },
+      //   },
+      // });
+      // console.log(result);
+      return "deu bom";
+    } catch (error) {
+      throw error;
+    }
+  }
 }

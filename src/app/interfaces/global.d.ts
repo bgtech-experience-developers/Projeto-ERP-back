@@ -117,7 +117,17 @@ interface adminPermission {
     ];
   };
 }
-
+interface queryWhere {
+  contains: string;
+  mode?: "insensitive";
+}
+interface filtragem {
+  branch_activity: queryWhere;
+  fantasy_name: queryWhere;
+  email: queryWhere;
+  phone: queryWhere;
+  name: queryWhere;
+}
 interface Address {
   cep: string;
   street: string;
