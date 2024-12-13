@@ -1,4 +1,4 @@
-import { NextFunction, Response, Request } from "express";
+  import { NextFunction, Response, Request } from "express";
 import jwt, { verify } from "jsonwebtoken";
 import { AllError } from "../error/AllError.js";
 
@@ -22,6 +22,7 @@ export const authentication = (
         throw new AllError("não autorizado", 403);
       }
       request.body.user = payload;
+      console.log(payload);
     });
     next();
   } catch (error) {
