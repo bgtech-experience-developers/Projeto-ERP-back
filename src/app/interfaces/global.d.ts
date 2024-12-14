@@ -8,9 +8,12 @@ interface ClientC {
 
   situation: boolean;
   type_contribuition: ValueCLient;
+
+
   created_at: Date;
   update_at: Date;
 }
+type valueClient = string | null;
 
 interface address {
   adress: Address;
@@ -35,6 +38,7 @@ interface base_solid_allclient {
       name: ValueCLient;
       email: ValueCLient;
       cell_phone: ValueCLient;
+
     };
     created_at: Date;
     update_at: Date;
@@ -139,6 +143,7 @@ interface Address {
   created_at: Date;
   update_at: Date;
   state: ValueCLient;
+
 }
 
 type AllImagens = (string | null)[];

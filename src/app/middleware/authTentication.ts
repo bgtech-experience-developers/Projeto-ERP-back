@@ -1,4 +1,4 @@
-import { NextFunction, Response, Request } from "express";
+  import { NextFunction, Response, Request } from "express";
 import jwt, { verify } from "jsonwebtoken";
 import { AllError } from "../error/AllError.js";
 
