@@ -1,13 +1,13 @@
 interface ClientC {
   id: number;
   corporate_reason: string;
-  fantasy_name: string;
-  branch_activity: string;
+  fantasy_name: ValueCLient;
+  branch_activity: ValueCLient;
   cnpj: string;
-  state_registration: string;
+  state_registration: ValueCLient;
 
   situation: boolean;
-  type_contribuition: string;
+  type_contribuition: ValueCLient;
   created_at: Date;
   update_at: Date;
 }
@@ -15,6 +15,7 @@ interface ClientC {
 interface address {
   adress: Address;
 }
+type ValueCLient = string | null;
 
 interface getUnic extends ClientC {
   financinal_contact: sectorId;
@@ -31,9 +32,9 @@ type sectorId = { sectorId: number }[];
 interface base_solid_allclient {
   owner_partner: {
     sector: {
-      name: string;
-      email: string;
-      cell_phone: string;
+      name: ValueCLient;
+      email: ValueCLient;
+      cell_phone: ValueCLient;
     };
     created_at: Date;
     update_at: Date;
@@ -57,13 +58,12 @@ interface integral extends ClientC {}
 interface integral extends Address {}
 
 interface GenericFields {
-  name: string;
-  email: string;
-  phone?: string;
-  cell_phone: string;
-  rg: string;
-  photo?: string | null;
-  cpf: string;
+  name: ValueCLient;
+  email: ValueCLient;
+  cell_phone: ValueCLient;
+  rg: ValueCLient;
+
+  cpf: ValueCLient;
 }
 
 interface allResources extends ClientC {
@@ -127,17 +127,18 @@ interface filtragem {
   email: queryWhere;
   phone: queryWhere;
   name: queryWhere;
+  situation: number;
 }
 interface Address {
-  cep: string;
-  street: string;
-  number: string;
-  complement: string;
-  city: string;
-  neighborhood: string;
+  cep: ValueCLient;
+  street: ValueCLient;
+  number: ValueCLient;
+  complement: ValueCLient;
+  city: ValueCLient;
+  neighborhood: ValueCLient;
   created_at: Date;
   update_at: Date;
-  state: string | null;
+  state: ValueCLient;
 }
 
 type AllImagens = (string | null)[];

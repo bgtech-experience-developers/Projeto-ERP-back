@@ -14,8 +14,6 @@ const { showClients, showClientById } = new Client();
 
 clientRouter.post(
   "/registro",
-  authentication,
-  hasPermission("criar"),
   UploadFile.Upload().array("photos", 5),
   CreateClientValidator(),
   Client.CreateClient
@@ -27,8 +25,6 @@ clientRouter.get("/enderecos/:id", Client.getAllAddress);
 clientRouter.patch(
   "/atualizar/:id",
 
-  authentication,
-  hasPermission("atualizar"),
   UploadFile.Upload().array("photos", 5),
   CreateClientValidator(),
   Client.updateClient

@@ -608,58 +608,15 @@ export class ClientRepository {
     email,
     name,
     phone,
+    situation,
   }: filtragem) {
     try {
-      const query = `SELECT 
-      Client.*,
-      owner_partner.*, 
-      sector.name,
-      sector.email,
-      sector.cell_phone 
-      FROM 
-        Client
-      LEFT JOIN sector s ON owner_partner.sectorId = s.id
-      WHERE
-        (Client.branch_activity =${branch_activity.contains} OR Client.fantasy_name =${fantasy_name.contains})
-        OR
-        (sector.email =${email.contains} OR sector.name =${name.contains} OR sector.phone = ${phone.contains}) `;
-      this.connectionDb.owner_partner;
+      const result = await this.connectionDb
+        .$queryRaw` SELECT erp.Client.* FROM erp.Client WHERE (erp.Client.branch_activity LIKE ${branch_activity.contains} OR erp.Client.fantasy_name LIKE ${fantasy_name.contains} OR (erp.Client.id) NOT IN (SELECT t1.clientId FROM erp.owner_partner AS t1 LEFT JOIN erp.sector AS j2 ON 
+(j2.id) = (t1.sectorId) LEFT JOIN erp.sector AS j3 ON (j3.id) = (t1.sectorId) LEFT JOIN erp.sector AS j4 ON (j4.id) = (t1.sectorId) WHERE ((NOT ((j2.email LIKE ${email.contains} AND (j2.id IS NOT NULL)) OR (j3.name LIKE ${name.contains} AND (j3.id IS NOT NULL)) OR (j4.cell_phone LIKE ${phone.contains} AND (j4.id IS NOT NULL)))) AND t1.clientId IS NOT NULL))) AND erp.Client.situation LIKE ${situation} `;
 
-      const resultk = await this.connectionDb.$queryRaw` SELECT 
-        Client.*,
-        FROM 
-          Client 
-        LEFT JOIN sector s ON owner_partner.sectorId = s.id
-
-        WHERE
-          (Client.branch_activity =${branch_activity.contains} OR Client.fantasy_name =${fantasy_name.contains})
-          OR
-          (sector.email =${email.contains} OR sector.name =${name.contains} OR sector.phone = ${phone.contains})`;
-      console.log(resultk);
-      // const result = await this.connectionDb.client.findMany({
-      //   where: {
-      //     OR: [
-      //       { branch_activity },
-      //       { fantasy_name },
-      //       { owner_partner: { every: { sector: { email, name, phone } } } },
-      //     ],
-      //   },
-      //   include: {
-      //     owner_partner: {
-      //       include: {
-      //         sector: {
-      //           select: {
-      //             name: true,
-      //             email: true,
-      //             cell_phone: true,
-      //           },
-      //         },
-      //       },
-      //     },
-      //   },
-      // });
-      // console.log(result);
-      return "deu bom";
+      console.log(result);
+      return result;
     } catch (error) {
       throw error;
     }

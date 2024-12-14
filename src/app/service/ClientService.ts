@@ -399,7 +399,7 @@ export class ClientService {
   }
   static async filterCLient(status: boolean, value: string) {
     try {
-      const queryFilter = await filterquery(value);
+      const queryFilter = await filterquery(value, status);
       const clients = await ClientRepository.filterClient(queryFilter);
       return clients;
     } catch (error) {
