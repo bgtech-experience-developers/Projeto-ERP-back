@@ -111,6 +111,7 @@ async function main() {
                                 complement: faker.location.secondaryAddress(),
                                 city: faker.location.city(),
                                 neighborhood: faker.location.county(),
+                                state: faker.location.state()
                             },
                         },
                     },

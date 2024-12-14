@@ -1,5 +1,6 @@
 import { date } from "joi";
 import multer from "multer";
+
 export class UploadFile {
   static Upload(): multer.Multer {
     const storage = multer.diskStorage({
