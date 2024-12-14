@@ -14,11 +14,10 @@ export interface ClientCreate {
   comercial: GenericFields;
   contabil: GenericFields;
   situation: boolean;
-  [key: string]:unknown;
+  [key: string]: unknown;
 }
 
 export class Client {
-
   static async CreateClient(
     request: Request,
     response: Response,
@@ -42,8 +41,10 @@ export class Client {
   async showClients(request: Request, response: Response, next: NextFunction) {
     try {
       const showClient = await ClientService.showClints();
+      const { page, pageSized, value } = request.query;
+
       console.log(showClient);
-      
+
       response.send(showClient);
     } catch (err) {
       next(err);
@@ -59,7 +60,7 @@ export class Client {
       const { id } = request.params;
       const showOneClient = await ClientService.showClientById(id);
       response.status(200).json(showOneClient);
-      return
+      return;
     } catch (err) {
       console.log(err);
       next(err);
@@ -91,7 +92,6 @@ export class Client {
     next: NextFunction
   ) {
     try {
-
       const files = request.files as Express.Multer.File[];
       const order: boolean[] = request.body.imagens;
       const isActive = request.query.isActive ? false : true;
@@ -110,19 +110,45 @@ export class Client {
     }
   }
 
-
-  static async deleteClient(request: Request, response: Response, next: NextFunction) {
-
+  static async deleteClient(
+    request: Request,
+    response: Response,
+    next: NextFunction
+  ) {
     try {
-  
-      const {id} = request.params;
-  
+      const { id } = request.params;
+
       await ClientService.deleteClient(id);
       response.status(200).json("Empresa/Cliente excluído com sucesso!");
-  
-    } catch(error) {
-      next(error)
+    } catch (error) {
+      next(error);
+    }
+  }
+  static async showClientsFilter(
+    request: Request,
+    response: Response,
+    next: NextFunction
+  ) {
+    try {
+      console.log("eu cheguei aqui");
+      const query = request.query;
+      if (
+        query &&
+        "status" in query &&
+        "value" in query &&
+        typeof query.value === "string"
+      ) {
+        const status = query.status === "true" ? true : false;
+        const value = query.value;
+        const result = await ClientService.filterCLient(status, value);
+        response.status(200).json(result);
+      } else {
+        throw new AllError(
+          "a query string deve conter os campos de value e status"
+        );
+      }
+    } catch (error) {
+      next(error);
     }
   }
 }
-

@@ -602,4 +602,23 @@ export class ClientRepository {
       throw error;
     }
   }
+  static async filterClient({
+    branch_activity,
+    fantasy_name,
+    email,
+    name,
+    phone,
+    situation,
+  }: filtragem) {
+    try {
+      const result = await this.connectionDb
+        .$queryRaw` SELECT erp.Client.* FROM erp.Client WHERE (erp.Client.branch_activity LIKE ${branch_activity.contains} OR erp.Client.fantasy_name LIKE ${fantasy_name.contains} OR (erp.Client.id) NOT IN (SELECT t1.clientId FROM erp.owner_partner AS t1 LEFT JOIN erp.sector AS j2 ON 
+(j2.id) = (t1.sectorId) LEFT JOIN erp.sector AS j3 ON (j3.id) = (t1.sectorId) LEFT JOIN erp.sector AS j4 ON (j4.id) = (t1.sectorId) WHERE ((NOT ((j2.email LIKE ${email.contains} AND (j2.id IS NOT NULL)) OR (j3.name LIKE ${name.contains} AND (j3.id IS NOT NULL)) OR (j4.cell_phone LIKE ${phone.contains} AND (j4.id IS NOT NULL)))) AND t1.clientId IS NOT NULL))) AND erp.Client.situation LIKE ${situation} `;
+
+      console.log(result);
+      return result;
+    } catch (error) {
+      throw error;
+    }
+  }
 }

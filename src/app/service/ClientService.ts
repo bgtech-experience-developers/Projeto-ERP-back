@@ -7,6 +7,7 @@ import { Sharp } from "../utils/sharp.js";
 import { ApiPhp, deleteApiPhp, deleteUpload } from "../middleware/ApiPhp.js";
 import { ApiPhpUtils } from "../utils/ApiPhp.js";
 import { all } from "axios";
+import { filterquery } from "../utils/filterClient.js";
 interface keys {
   financinal_contact: string;
   accounting_contact: string;
@@ -392,6 +393,15 @@ export class ClientService {
       }
 
       throw new AllError("Argumentos inválidos, tipo inesperado.");
+    } catch (error) {
+      throw error;
+    }
+  }
+  static async filterCLient(status: boolean, value: string) {
+    try {
+      const queryFilter = await filterquery(value, status);
+      const clients = await ClientRepository.filterClient(queryFilter);
+      return clients;
     } catch (error) {
       throw error;
     }
