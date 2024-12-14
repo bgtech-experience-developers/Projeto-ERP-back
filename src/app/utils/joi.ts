@@ -49,10 +49,16 @@ export class JoiValidation {
         .allow(""),
     });
     const SchemaAddress = joi.object<$Interface, false, $Interface>({
-      cep: joi.string().min(8).max(8).trim().messages({
-        "string.max": "o campo cep deve conter no maximo 8 digitos",
-        "string.min": "o campo cep deve conter pelo menos 8 digitos",
-      }),
+      cep: joi
+        .string()
+        .min(8)
+        .max(8)
+        .trim()
+        .messages({
+          "string.max": "o campo cep deve conter no maximo 8 digitos",
+          "string.min": "o campo cep deve conter pelo menos 8 digitos",
+        })
+        .allow(""),
       street: joi.string().trim().allow(""),
       number: joi.string().trim().allow(""),
       complement: joi.string().trim().allow(""),
