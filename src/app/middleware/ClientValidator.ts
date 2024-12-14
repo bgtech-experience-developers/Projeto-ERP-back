@@ -13,8 +13,9 @@ export class ClientValidator {
   CreateClientValidator<$Interface>() {
     return async (request: Request, response: Response, next: NextFunction) => {
       try {
-        console.log(request);
-        
+        console.log(request.body.json);
+        console.log(request.body)
+
         const files = request.files as Express.Multer.File[];
         console.log(files);
 
