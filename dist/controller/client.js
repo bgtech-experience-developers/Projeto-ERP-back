@@ -16,6 +16,7 @@ export class Client {
     async showClients(request, response, next) {
         try {
             const showClient = await ClientService.showClints();
+            const { page, pageSized, value } = request.query;
             console.log(showClient);
             response.send(showClient);
         }
@@ -72,6 +73,27 @@ export class Client {
             const { id } = request.params;
             await ClientService.deleteClient(id);
             response.status(200).json("Empresa/Cliente excluído com sucesso!");
+        }
+        catch (error) {
+            next(error);
+        }
+    }
+    static async showClientsFilter(request, response, next) {
+        try {
+            console.log("eu cheguei aqui");
+            const query = request.query;
+            if (query &&
+                "status" in query &&
+                "value" in query &&
+                typeof query.value === "string") {
+                const status = query.status === "true" ? true : false;
+                const value = query.value;
+                const result = await ClientService.filterCLient(status, value);
+                response.status(200).json(result);
+            }
+            else {
+                throw new AllError("a query string deve conter os campos de value e status");
+            }
         }
         catch (error) {
             next(error);
