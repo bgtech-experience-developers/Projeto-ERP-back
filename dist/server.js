@@ -18,7 +18,7 @@ app.use(cookieParse());
 app.use(express.json()); // parte para a deserializaç~~ao das informações
 app.use("/clientes", clientRouter);
 app.use("/adm", routerAdm);
-app.use("/suppliers", supplierPf);
+app.use("/fornecedor", supplierPf);
 app.listen(port, host, () => {
     console.log("meu servidor está rodando na porta " + port);
 });
