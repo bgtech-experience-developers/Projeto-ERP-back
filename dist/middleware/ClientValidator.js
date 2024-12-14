@@ -5,7 +5,8 @@ export class ClientValidator {
     CreateClientValidator() {
         return async (request, response, next) => {
             try {
-                console.log(request);
+                console.log(request.body.json);
+                console.log(request.body);
                 const files = request.files;
                 console.log(files);
                 request.body = JSON.parse(request.body.json);
