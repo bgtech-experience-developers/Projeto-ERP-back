@@ -9,7 +9,6 @@ interface ClientC {
   situation: boolean;
   type_contribuition: ValueCLient;
 
-
   created_at: Date;
   update_at: Date;
 }
@@ -38,7 +37,6 @@ interface base_solid_allclient {
       name: ValueCLient;
       email: ValueCLient;
       cell_phone: ValueCLient;
-
     };
     created_at: Date;
     update_at: Date;
@@ -66,7 +64,7 @@ interface GenericFields {
   email: ValueCLient;
   cell_phone: ValueCLient;
   rg: ValueCLient;
-
+  phone: valueClient;
   cpf: ValueCLient;
 }
 
@@ -143,7 +141,6 @@ interface Address {
   created_at: Date;
   update_at: Date;
   state: ValueCLient;
-
 }
 
 type AllImagens = (string | null)[];
