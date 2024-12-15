@@ -15,10 +15,21 @@ export class Client {
     }
     async showClients(request, response, next) {
         try {
-            const showClient = await ClientService.showClints();
-            const { page, pageSized, value } = request.query;
-            console.log(showClient);
-            response.send(showClient);
+            const query = request.query;
+            if (query && "status" in query && "limit" in query && "page" in query) {
+                const status = query.status === "true" ? true : false;
+                const queryPage = Number(query.page) ? Number(query.page) : 0;
+                const page = queryPage > 0 ? queryPage * 10 : 0;
+                console.log(page);
+                const limit = Number(query.limit) ? Number(query.limit) : 5;
+                console.log(limit);
+                const showClient = await ClientService.showClints(limit, page, status);
+                console.log(showClient);
+                response.send(showClient);
+            }
+            else {
+                throw new AllError("os parametros page, limit e status são obbrigatorios");
+            }
         }
         catch (err) {
             next(err);
@@ -92,7 +103,7 @@ export class Client {
                 response.status(200).json(result);
             }
             else {
-                throw new AllError("a query string deve conter os campos de value e status");
+                throw new AllError("a query string deve conter os campos de value,status,pageSized e page são obrigatórios");
             }
         }
         catch (error) {

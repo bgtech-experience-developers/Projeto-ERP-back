@@ -12,6 +12,5 @@ clientRouter.get("/filtragem", Client.showClientsFilter);
 clientRouter.get("/:id", showClientById);
 clientRouter.get("/enderecos/:id", Client.getAllAddress);
 clientRouter.patch("/atualizar/:id", UploadFile.Upload().array("photos", 5), CreateClientValidator(), Client.updateClient);
-clientRouter.delete("/remover/:id", authentication, hasPermission("deletar"), Client.deleteClient);
-
+clientRouter.delete("/remover/:id", Client.deleteClient);
 clientRouter.use(GlobalError);

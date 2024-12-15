@@ -50,9 +50,9 @@ export class ClientService {
     }
   }
 
-  static async showClints() {
+  static async showClints(limit: number, page: number, status: boolean) {
     try {
-      const allClints = await ClientRepository.showCLients();
+      const allClints = await ClientRepository.showCLients(limit, page, status);
 
       const newArray = allClints.map(
         ({ id, branch_activity, situation, fantasy_name, owner_partner }) => {

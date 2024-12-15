@@ -33,9 +33,9 @@ export class ClientService {
             throw error;
         }
     }
-    static async showClints() {
+    static async showClints(limit, page, status) {
         try {
-            const allClints = await ClientRepository.showCLients();
+            const allClints = await ClientRepository.showCLients(limit, page, status);
             const newArray = allClints.map(({ id, branch_activity, situation, fantasy_name, owner_partner }) => {
                 return {
                     id,
