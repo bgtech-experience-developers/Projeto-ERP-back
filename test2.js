@@ -29,17 +29,7 @@
 // );
 // console.log(response.data);
 
-import { log } from "console";
+const cnpj = "35.338.247/0001-05"
 
-const a = undefined
-if(Number(a)) {
-  console.log('é valido');
-}
-else {
-  if(Number(a)) {
-    console.log("nan é um null ou undefined");
-    
-  }
-  console.log(Number(a));
-  
-}
+const newCnpj = cnpj.replace(/\D/g, "")
+console.log(newCnpj);

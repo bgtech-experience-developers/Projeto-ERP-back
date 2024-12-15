@@ -1,15 +1,9 @@
 import joi from "joi";
 import { login } from "../middleware/admValidator.js";
 export class JoiValidation {
-  static async schemaCreateClient<$Interface extends integral>({
-    contabil,
-    comercial,
-    socio,
-    endereco_empresa,
-    endereco_entrega,
-    cliente,
-    financeiro,
-  }: bodyCreateClient) {
+
+  static async schemaCreateClient<$Interface extends integral>({contabil,comercial,socio,endereco_empresa,endereco_entrega,cliente,financeiro,}: bodyCreateClient) {
+
     const schemaCreateClient = joi.object<$Interface, false, $Interface>({
       branch_activity: joi.string().trim().allow(""),
       cnpj: joi.string().trim().min(14).max(14).required().messages({
@@ -76,7 +70,8 @@ export class JoiValidation {
       SchemaAddress.validate(endereco_entrega),
     ]);
   }
-  static async schemaLogin(body: login) {
+
+    static async schemaLogin(body: login) {
     try {
       const schemalogin = joi.object<login, true, login>({
         cnpj: joi.string().max(14).min(14).trim().required().messages({
@@ -92,4 +87,51 @@ export class JoiValidation {
       throw error;
     }
   }
+
+  static async schemaCreateSupplierPf({supplier, product, address}: BodySupplierPf ): Promise<BodySupplierPf> {
+    const schemaSupplier = joi.object<Supplier_pf, false, Supplier_pf>({
+      supplier_name: joi.string().trim().required(),
+      supplier_code: joi.string().trim().allow(""),
+      email: joi.string().trim().allow(""),
+      phone: joi.string().trim().allow(""),
+      rg: joi.string().trim().allow(""),
+      cpf: joi.string().trim().required().min(11).max(11).messages({
+        "string.max":
+        "O campo cpf deve conter no máximo 11 digitos",
+        "string.min":
+        "O campo cpf deve conter no mínimo 11 digitos"
+      }),
+      birth_date: joi.string().trim("").allow("")
+    })
+
+    const schemaProduct = joi.object<Product_Supplier_pf, false, Product_Supplier_pf>({
+      price: joi.string().trim().allow(""),
+      delivery_time: joi.string().trim().allow(""),
+      purchase_tax: joi.string().trim().allow(""),
+    })
+
+    const schemaAddress = joi.object<Address, false, Address>({
+      cep: joi.string().trim().allow(""),
+      street: joi.string().trim().allow(""),
+      number: joi.string().trim().allow(""),
+      complement: joi.string().trim().allow(""),
+      city: joi.string().trim().allow(""),
+      neighborhood: joi.string().trim().allow(""),
+      state: joi.string().trim().allow(""),
+    })
+
+    const {value: newSupplier} = schemaSupplier.validate(supplier)
+    const {value: newProduct} = schemaProduct.validate(product)
+    const {value: newAddress} = schemaAddress.validate(address)
+
+    return {
+      supplier: newSupplier,
+      address: newAddress,
+      product: newProduct
+    }
+      
+
+    
+  }
+  
 }

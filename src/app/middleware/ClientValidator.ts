@@ -23,14 +23,11 @@ export class ClientValidator {
 
         // request.body.telefone = request.body.telefone.replace(/\D/g, "");
         // request.body.cpf = request.body.cpf.replace(/\D/g, "");
-        request.body.cliente.cnpj = request.body.cliente.cnpj.replace(
-          /\D/g,
-          ""
-        );
+        request.body.cliente.cnpj = request.body.cliente.cnpj.replace( /\D/g, "");
         request.body.endereco_empresa.cep =
-          request.body.endereco_empresa.cep.replace(/\D/g, "");
+        request.body.endereco_empresa.cep.replace(/\D/g, "");
         request.body.endereco_entrega.cep =
-          request.body.endereco_entrega.cep.replace(/\D/g, ""); // request.body.cep = request.body.cep.replac\D/g, ""
+        request.body.endereco_entrega.cep.replace(/\D/g, ""); // request.body.cep = request.body.cep.replac\D/g, ""
         request.body.endereco_entrega.cep.replace(/\D/g, "");
         const arraySector: [string, string, string, string] = [
           "financeiro",

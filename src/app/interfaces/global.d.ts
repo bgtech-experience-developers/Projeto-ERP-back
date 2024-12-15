@@ -120,7 +120,7 @@ interface adminPermission {
 }
 
 interface Address {
-  cep: valueClient;
+  cep?:valueClient;
   street: valueClient;
   number: valueClient;
   complement: valueClient;
@@ -140,10 +140,12 @@ interface Supplier_pf {
   phone: string;
   rg: string;
   cpf: string;
+  cell_phone?: string
   birth_date: Date;
   product_supplier_pf?: Product_Supplier_pf;
   address_supplier_pf?: Address;
 }
+
 
 interface AllSupplier_pf extends Supplier_pf {
   id: number;
@@ -151,6 +153,15 @@ interface AllSupplier_pf extends Supplier_pf {
   created_at: Date;
   update_at: Date;
 }
+
+// interface SupplierSchema extends Supplier_pf{}
+interface BodySupplierPf {
+  json?:string,
+  supplier: Supplier_pf
+  product: Product_Supplier_pf
+  address: Address
+}
+
 
 interface Product_Supplier_pf {
   price: string;
