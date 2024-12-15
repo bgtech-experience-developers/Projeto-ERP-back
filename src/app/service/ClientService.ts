@@ -71,9 +71,14 @@ export class ClientService {
                 return sector.email;
               }),
             ],
-            telefone: [
+            cell_phone: [
               ...owner_partner.map(({ sector }) => {
                 return sector.cell_phone;
+              }),
+            ],
+            phone: [
+              ...owner_partner.map(({ sector }) => {
+                return sector.phone;
               }),
             ],
           };

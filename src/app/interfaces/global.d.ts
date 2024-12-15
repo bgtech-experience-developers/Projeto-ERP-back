@@ -37,6 +37,7 @@ interface base_solid_allclient {
       name: ValueCLient;
       email: ValueCLient;
       cell_phone: ValueCLient;
+      phone: valueClient;
     };
     created_at: Date;
     update_at: Date;

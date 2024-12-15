@@ -271,6 +271,7 @@ export class ClientRepository {
                     name: true,
                     email: true,
                     cell_phone: true,
+                    phone: true,
                   },
                 },
               },
