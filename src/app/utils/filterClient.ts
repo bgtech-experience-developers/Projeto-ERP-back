@@ -6,6 +6,7 @@ export const filterquery = async (
 ): Promise<filtragem> => {
   const instanciaFilter = new TypeFilter(value);
   try {
+    console.log("ola eu sou o status", status);
     if (instanciaFilter.filterCompany()) {
       return {
         branch_activity: { contains: `%${value}%`, mode: "insensitive" },

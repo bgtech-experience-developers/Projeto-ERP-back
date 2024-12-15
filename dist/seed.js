@@ -184,6 +184,20 @@ async function client() {
                         },
                     },
                 },
+                delivery_address: {
+                    create: {
+                        adress: {
+                            create: {
+                                cep: faker.location.zipCode("########"),
+                                street: faker.location.street(),
+                                number: faker.string.numeric(3),
+                                complement: faker.location.secondaryAddress(),
+                                city: faker.location.city(),
+                                neighborhood: faker.location.county(),
+                            },
+                        },
+                    },
+                },
                 financinal_contact: {
                     create: {
                         sector: {

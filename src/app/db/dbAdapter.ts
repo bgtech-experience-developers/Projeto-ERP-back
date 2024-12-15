@@ -15,13 +15,25 @@ export class SQLAdapter {
   }
   async executeQuery(query: string) {
     const queryRaw = this.adapterQuery(query);
-    return await this.dbClient.$queryRaw`${queryRaw}`;
+    console.log("a query é", queryRaw);
+    const query1 = "";
+    const result = await this.dbClient.$executeRawUnsafe(query1);
+    console.log(result);
+    return;
   }
   adapterQuery(query: string) {
-    if (query === "postgres") {
-      return query.replace(/(LOWER\((.*?))\)/, (match, p1) => `LOWER(${p1})`);
-    } else if (query === "mysql") {
-      return query.replace(/(LOWER\((.*?))\)/, (match, p1) => `LOWER(${p1})`);
+    if (query === "postgress") {
+      return query.replace(/LIKE\((.*?)\)/, (match, p1) => {
+        console.log("ola eu sou o match", match);
+        console.log("ola eu sou o p", p1);
+        return `ILIKE (${p1})`;
+      });
+    } else if (this.dbType === "mysql") {
+      return query.replace(/LIKE\((.*?)\)/g, (match, p1) => {
+        console.log("ola eu sou o match", match);
+        console.log("ola eu sou o mf", p1);
+        return `LIKE ${p1}`;
+      });
     }
     return query;
   }

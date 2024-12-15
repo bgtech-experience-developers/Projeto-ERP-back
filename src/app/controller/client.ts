@@ -40,12 +40,24 @@ export class Client {
 
   async showClients(request: Request, response: Response, next: NextFunction) {
     try {
-      const showClient = await ClientService.showClints();
-      const { page, pageSized, value } = request.query;
+      const query = request.query;
+      if (query && "status" in query && "limit" in query && "page" in query) {
+        const status = query.status === "true" ? true : false;
 
-      console.log(showClient);
+        const queryPage = Number(query.page) ? Number(query.page) : 0;
+        const page = queryPage > 0 ? queryPage * 10 : 0;
+        console.log(page);
+        const limit = Number(query.limit) ? Number(query.limit) : 5;
+        console.log(limit);
 
-      response.send(showClient);
+        const showClient = await ClientService.showClints(limit, page, status);
+        console.log(showClient);
+        response.send(showClient);
+      } else {
+        throw new AllError(
+          "os parametros page, limit e status são obbrigatorios"
+        );
+      }
     } catch (err) {
       next(err);
     }
@@ -140,11 +152,12 @@ export class Client {
       ) {
         const status = query.status === "true" ? true : false;
         const value = query.value;
+
         const result = await ClientService.filterCLient(status, value);
         response.status(200).json(result);
       } else {
         throw new AllError(
-          "a query string deve conter os campos de value e status"
+          "a query string deve conter os campos de value,status,pageSized e page são obrigatórios"
         );
       }
     } catch (error) {
