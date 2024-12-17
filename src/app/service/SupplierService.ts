@@ -1,5 +1,8 @@
+import { log } from "node:console";
 import { AllError } from "../error/AllError.js";
 import { SupplierRepository } from "../repository/SupplierRepository.js";
+import { ApiPhpUtils } from "../utils/ApiPhp.js";
+import { Sharp } from "../utils/sharp.js";
 
 export class SupplierService {
     // : Promise<AllSupplier_pf[] | null>
@@ -27,11 +30,6 @@ export class SupplierService {
                 const supplier = resultQuery.map(({...resultQuery}) => {
                     return {
                         ...resultQuery,
-                        product_supplier_pf: [
-                            ...resultQuery.product_supplier_pf.map(({product}) => {
-                                return {product}
-                            })
-                        ],
                         address_supplier_pf: [
                             ...resultQuery.address_supplier_pf.map(({address}) => {
                                 return {address}
@@ -52,6 +50,32 @@ export class SupplierService {
              
         } catch (error) {
             throw error
+        }
+    }
+
+    static async setSupplier(body: BodySupplierPf, image: Express.Multer.File) {
+        try {
+            const supplier = await SupplierRepository.getByCpf(body.supplier.cpf);
+            console.log(supplier);
+            
+            if(supplier) {
+                throw new AllError("Usuário já cadastrado no sistema!", 409);
+            }
+
+            if(image) {
+        
+                const file: string = image.path;
+                const apiPhp = await ApiPhpUtils([file], "img_profile", [image] )            
+                console.log(apiPhp[0])
+                await SupplierRepository.setSupplier(body, apiPhp[0])
+                return
+                
+            }
+
+            return await SupplierRepository.setSupplier(body, null);
+
+        } catch(error) {
+            throw error;
         }
     }
 }

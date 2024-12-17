@@ -7,13 +7,12 @@ interface uploadRemove {}
 interface returnApiPhp {
   url: string;
 }
-export const ApiPhp = async (filepath: {
-  filePath: (string | null)[];
-  typeFolder: "img_product" | "img_profile";
-  files: Express.Multer.File[];
+export const ApiPhp = async (filepath: { filePath: (string | null)[]; typeFolder: "img_product" | "img_profile"; files: Express.Multer.File[];
 }): Promise<returnApiPhp[] | { message: string }> => {
   try {
     const formdata = new FormData();
+    console.log(filepath.filePath);
+    
     filepath.filePath.forEach((file, index) => {
       if (file) {
         formdata.append(`image ${index}`, fs.createReadStream(file));

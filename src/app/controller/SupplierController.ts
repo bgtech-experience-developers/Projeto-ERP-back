@@ -1,6 +1,7 @@
 import { NextFunction } from "express";
 import { SupplierService } from "../service/SupplierService.js";
 import { Request, Response } from "express";
+import { log } from "node:console";
 
 export class SupplierController {
     // <AllSupplier_pf[] | null>
@@ -26,5 +27,17 @@ export class SupplierController {
         } catch(error) {
             next(error)
         }     
+    }
+
+    static async setSupplier(request: Request, response: Response, next: NextFunction) {
+        try {
+            const image = request.file as Express.Multer.File
+            await SupplierService.setSupplier(request.body, image)
+            response.status(201).json("Usuário cadastrado com sucesso")
+            return
+        }  catch(error) {
+            next(error);
+        }
+
     }
 }

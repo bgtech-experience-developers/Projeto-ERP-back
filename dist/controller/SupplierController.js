@@ -22,4 +22,15 @@ export class SupplierController {
             next(error);
         }
     }
+    static async setSupplier(request, response, next) {
+        try {
+            const image = request.file;
+            await SupplierService.setSupplier(request.body, image);
+            response.status(201).json("Usuário cadastrado com sucesso");
+            return;
+        }
+        catch (error) {
+            next(error);
+        }
+    }
 }
