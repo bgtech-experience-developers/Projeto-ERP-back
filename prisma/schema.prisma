@@ -63,6 +63,7 @@ model imagem {
   owner_partner            owner_partner_image[]
   accounting_contact_image accounting_contact_image[]
   supplier_pf              Supplier_pf_Image[]
+  supplier_pj              Supplier_pj[]
   created_at               DateTime                   @default(now())
   update_at                DateTime                   @default(now())
 }
@@ -80,6 +81,7 @@ model Address {
   company_address     company_address[]
   delivery_address    delivery_address[]
   address_supplier_pf Supplier_pf_Address[]
+  supplier            Supplier_pj[]
 
   created_at DateTime @default(now())
   update_at  DateTime @default(now())
@@ -149,6 +151,28 @@ model Supplier_pf_Address {
   address     Address     @relation(fields: [id_address], references: [id])
 }
 
+model Supplier_pj {
+  id                     Int      @id @default(autoincrement())
+  id_imagem              Int
+  id_address             Int
+  imagem                 imagem   @relation(fields: [id_imagem], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  address                Address  @relation(fields: [id_address], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  corporate_reason       String
+  email                  String?
+  phone                  String?
+  fantasy_name           String?
+  cnpj                   String   @unique @db.VarChar(14)
+  answerable             String?
+  state_registration     String?
+  type_contribuition     String?
+  municipal_registration String?
+  suframa_registration   String?
+  status                 Boolean  @default(true)
+  created_at             DateTime @default(now())
+  update_at              DateTime @default(now())
+}
+
+// model Supplier_pj_Product{}
 // Contruir a tabela de Produtos Generica
 
 model company_address {
