@@ -12,12 +12,12 @@ interface ClientC {
   created_at: Date;
   update_at: Date;
 }
-type valueClient = string | null;
+// type valueClient = string | null;
 
 interface address {
   adress: Address;
 }
-type ValueCLient = string | null;
+type ValueCLient = string | null | undefined;
 
 interface getUnic extends ClientC {
   financinal_contact: sectorId;
@@ -37,7 +37,7 @@ interface base_solid_allclient {
       name: ValueCLient;
       email: ValueCLient;
       cell_phone: ValueCLient;
-      phone: valueClient;
+      phone: ValueCLient;
     };
     created_at: Date;
     update_at: Date;
@@ -65,7 +65,7 @@ interface GenericFields {
   email: ValueCLient;
   cell_phone: ValueCLient;
   rg: ValueCLient;
-  phone: valueClient;
+  phone: ValueCLient;
   cpf: ValueCLient;
 }
 
