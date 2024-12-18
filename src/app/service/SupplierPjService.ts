@@ -9,6 +9,14 @@ import {
 } from "../repository/SupplierPjRepository.js";
 import { ApiPhpUtils } from "../utils/ApiPhp.js";
 import { Sharp } from "../utils/sharp.js";
+import { Field } from "multer";
+type filterContanis = { contanis: string };
+export interface filterSupplier {
+  phone: filterContanis;
+  email: filterContanis;
+  corporate_reason: filterContanis;
+  answerable: filterContanis;
+}
 
 export class SuppplierPjService {
   static async setSupplier(supplierInfo: SupplierPj, profileImage: imageFile) {
@@ -90,6 +98,7 @@ export class SuppplierPjService {
   }
   static async removeByIdSupplier(id: number) {
     try {
+      console.log(id);
       const existingRegister = await SupplierPjRespository.findSupplierById(id);
       if (!existingRegister) {
         throw new AllError("fornecedor não encontrado no sistema", 400);
@@ -109,7 +118,7 @@ export class SuppplierPjService {
     supplierInfo: SupplierPj,
     profileImage: imageFile,
     SupplierId: number
-  ) {
+  ): Promise<string> {
     try {
       console.log(SupplierId);
       const existingRegister = await SupplierPjRespository.findSupplierById(
@@ -149,5 +158,55 @@ export class SuppplierPjService {
     } catch (error) {
       throw error;
     }
+  }
+  static async filterSupplier(
+    page: number,
+    limit: number,
+    status: string | null,
+    value: string
+  ) {
+    try {
+      const filterCondition = this.FilterContains(value, [
+        "answerable",
+        "corporate_reason",
+        "email",
+        "phone",
+      ]);
+      return status
+        ? await SupplierPjRespository.filterSupplierByStatus(
+            filterCondition,
+            status,
+            page,
+            limit
+          )
+        : await SupplierPjRespository.filterSupplier(
+            filterCondition,
+            page,
+            limit
+          );
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  private static FilterContains(
+    value: string,
+    fields: [
+      keyof filterSupplier,
+      keyof filterSupplier,
+      keyof filterSupplier,
+      keyof filterSupplier
+    ]
+  ) {
+    const filter: filterSupplier = {
+      answerable: { contanis: "" },
+      corporate_reason: { contanis: "" },
+      email: { contanis: "" },
+      phone: { contanis: "" },
+    };
+    fields.forEach((field, index) => {
+      filter[field] = { contanis: value };
+    });
+    return filter;
   }
 }

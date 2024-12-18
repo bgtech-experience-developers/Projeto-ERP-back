@@ -12,8 +12,59 @@ export class SupplierPjRespository {
     static async findSupplierById(id) {
         try {
             const [registerSupplier] = (await this.connection
-                .$queryRaw `SELECT s.*, a.*,i.*,p.id_address FROM Supplier_pj s LEFT JOIN erp.imagem AS i ON s.id_imagem = i.id LEFT JOIN erp.Supplier_pj_address AS p ON p.id_supplier = s.id LEFT JOIN erp.Address AS a ON p.id_address = a.id WHERE s.id = ${id}  `);
+                .$queryRaw `SELECT s.*, a.*,i.*,p.id_address FROM Supplier_pj s LEFT JOIN erp.imagem AS i ON s.id_imagem = i.id LEFT JOIN erp.Supplier_pj_address AS p ON p.id_supplier = s.id LEFT JOIN erp.Address AS a ON p.id_address = a.id WHERE s.id = ${id}`);
             return registerSupplier;
+        }
+        catch (error) {
+            throw error;
+        }
+    }
+    static async filterSupplier({ email, phone, corporate_reason, answerable }, page, limit) {
+        try {
+            return await this.connection.supplier_pj.findMany({
+                where: {
+                    OR: [
+                        { email: email.contanis },
+                        { phone: phone.contanis },
+                        { corporate_reason: corporate_reason.contanis },
+                        { answerable: answerable.contanis },
+                    ],
+                },
+                select: {
+                    email: true,
+                    phone: true,
+                    corporate_reason: true,
+                    answerable: true,
+                },
+                skip: page,
+                take: limit,
+            });
+        }
+        catch (error) {
+            throw error;
+        }
+    }
+    static async filterSupplierByStatus({ email, phone, corporate_reason, answerable }, status, page, limit) {
+        try {
+            return await this.connection.supplier_pj.findMany({
+                where: {
+                    OR: [
+                        { email: email.contanis },
+                        { phone: phone.contanis },
+                        { corporate_reason: corporate_reason.contanis },
+                        { answerable: answerable.contanis },
+                    ],
+                    AND: { status: status === "true" ? true : false },
+                },
+                select: {
+                    email: true,
+                    phone: true,
+                    corporate_reason: true,
+                    answerable: true,
+                },
+                skip: page,
+                take: limit,
+            });
         }
         catch (error) {
             throw error;

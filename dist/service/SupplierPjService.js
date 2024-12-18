@@ -76,6 +76,7 @@ export class SuppplierPjService {
     }
     static async removeByIdSupplier(id) {
         try {
+            console.log(id);
             const existingRegister = await SupplierPjRespository.findSupplierById(id);
             if (!existingRegister) {
                 throw new AllError("fornecedor não encontrado no sistema", 400);
@@ -114,5 +115,33 @@ export class SuppplierPjService {
         catch (error) {
             throw error;
         }
+    }
+    static async filterSupplier(page, limit, status, value) {
+        try {
+            const filterCondition = this.FilterContains(value, [
+                "answerable",
+                "corporate_reason",
+                "email",
+                "phone",
+            ]);
+            return status
+                ? await SupplierPjRespository.filterSupplierByStatus(filterCondition, status, page, limit)
+                : await SupplierPjRespository.filterSupplier(filterCondition, page, limit);
+        }
+        catch (error) {
+            throw error;
+        }
+    }
+    static FilterContains(value, fields) {
+        const filter = {
+            answerable: { contanis: "" },
+            corporate_reason: { contanis: "" },
+            email: { contanis: "" },
+            phone: { contanis: "" },
+        };
+        fields.forEach((field, index) => {
+            filter[field] = { contanis: value };
+        });
+        return filter;
     }
 }
