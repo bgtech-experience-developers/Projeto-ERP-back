@@ -81,10 +81,19 @@ model Address {
   company_address     company_address[]
   delivery_address    delivery_address[]
   address_supplier_pf Supplier_pf_Address[]
-  supplier            Supplier_pj[]
 
-  created_at DateTime @default(now())
-  update_at  DateTime @default(now())
+  Supplier_pj_address Supplier_pj_address[]
+  created_at          DateTime              @default(now())
+  update_at           DateTime              @default(now())
+}
+
+model Supplier_pj_address {
+  id_address  Int
+  id_supplier Int
+  supplier    Supplier_pj @relation(fields: [id_supplier], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  address     Address     @relation(fields: [id_address], references: [id], onDelete: Cascade, onUpdate: Cascade)
+
+  @@id([id_address, id_supplier])
 }
 
 model Supplier_pf {
@@ -152,24 +161,23 @@ model Supplier_pf_Address {
 }
 
 model Supplier_pj {
-  id                     Int      @id @default(autoincrement())
+  id                     Int                   @id @default(autoincrement())
   id_imagem              Int
-  id_address             Int
-  imagem                 imagem   @relation(fields: [id_imagem], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  address                Address  @relation(fields: [id_address], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  imagem                 imagem                @relation(fields: [id_imagem], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  supplier_pj_address    Supplier_pj_address[]
   corporate_reason       String
   email                  String?
   phone                  String?
   fantasy_name           String?
-  cnpj                   String   @unique @db.VarChar(14)
+  cnpj                   String                @unique @db.VarChar(14)
   answerable             String?
   state_registration     String?
   type_contribuition     String?
   municipal_registration String?
   suframa_registration   String?
-  status                 Boolean  @default(true)
-  created_at             DateTime @default(now())
-  update_at              DateTime @default(now())
+  status                 Boolean               @default(true)
+  created_at             DateTime              @default(now())
+  update_at              DateTime              @default(now())
 }
 
 // model Supplier_pj_Product{}

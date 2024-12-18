@@ -1,5 +1,6 @@
 import { AllError } from "../error/AllError.js";
-import { SupplierPjRespository } from "../repository/SupplierPjRepository.js";
+import { deleteUpload } from "../middleware/ApiPhp.js";
+import { SupplierPjRespository, } from "../repository/SupplierPjRepository.js";
 import { ApiPhpUtils } from "../utils/ApiPhp.js";
 import { Sharp } from "../utils/sharp.js";
 export class SuppplierPjService {
@@ -29,15 +30,23 @@ export class SuppplierPjService {
             console.error("erro interno do servidor");
         }
     }
-    static async getAll(limit, page, status, queryStatus = 1) {
+    static async getByIdSupplier(id) {
         try {
-            if (status) {
-                queryStatus = status === "true" ? 1 : 0;
+            const existingSupplier = await SupplierPjRespository.findSupplierById(id);
+            if (!existingSupplier) {
+                throw new AllError("registro não encontrado no sistema", 400);
             }
-            else {
-                queryStatus = null;
-            }
-            return await SupplierPjRespository.getAll(queryStatus, page, limit);
+            return existingSupplier;
+        }
+        catch (error) {
+            throw error;
+        }
+    }
+    static async getAll(limit, page, status) {
+        try {
+            return status
+                ? await this.getSuppliersByStatus(status, page, limit)
+                : await SupplierPjRespository.getAll(page, limit);
         }
         catch (error) {
             throw error;
@@ -45,5 +54,65 @@ export class SuppplierPjService {
     }
     static async callhandleExistingImage(image) {
         this.handleExistingImage(image);
+    }
+    static async getSuppliersByStatus(Status, pageSized, limit) {
+        try {
+            const filterStatus = Status === "true" ? 1 : 0;
+            return await SupplierPjRespository.getSuppliersByStatus(filterStatus, pageSized, limit);
+        }
+        catch (error) {
+            throw error;
+        }
+    }
+    static async removeUpload(path) {
+        try {
+            path = path.replace("https://bgtech.com.br/erp/assets/", "");
+            const data = await deleteUpload([path]);
+            console.log(data);
+        }
+        catch (error) {
+            throw error;
+        }
+    }
+    static async removeByIdSupplier(id) {
+        try {
+            const existingRegister = await SupplierPjRespository.findSupplierById(id);
+            if (!existingRegister) {
+                throw new AllError("fornecedor não encontrado no sistema", 400);
+            }
+            const message = await SupplierPjRespository.removeSupplierByAddressAndImage(existingRegister.id_address, existingRegister.id_imagem);
+            existingRegister.path ? this.removeUpload(existingRegister.path) : "";
+            return message;
+        }
+        catch (error) {
+            throw error;
+        }
+    }
+    static async updateSupplier(supplierInfo, profileImage, SupplierId) {
+        try {
+            console.log(SupplierId);
+            const existingRegister = await SupplierPjRespository.findSupplierById(SupplierId);
+            if (!existingRegister) {
+                this.handleExistingImage(profileImage);
+                throw new AllError("não foi possível atualizar o fornecedor pois não consta no sistema");
+            }
+            const profileImageUpload = profileImage
+                ? await this.handleSupplierImageUpload(profileImage, existingRegister.path)
+                : existingRegister.path;
+            // existingRegister.path  ? this.removeUpload(existingRegister.path) : ''
+            return await SupplierPjRespository.updateByIdSupplier(supplierInfo, profileImageUpload, SupplierId, existingRegister.id_address, existingRegister.id_imagem);
+        }
+        catch (error) {
+            throw error;
+        }
+    }
+    static async handleSupplierImageUpload(files, path) {
+        try {
+            path ? this.removeUpload(path) : "";
+            return await ApiPhpUtils([files.path], "img_profile", [files]);
+        }
+        catch (error) {
+            throw error;
+        }
     }
 }

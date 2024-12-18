@@ -1,4 +1,4 @@
-import { all } from "axios";
+import { all, responseEncoding } from "axios";
 import { NextFunction, Response, Request } from "express";
 import { AllError } from "../error/AllError.js";
 import { Session } from "inspector/promises";
@@ -49,6 +49,22 @@ export class SupplierPjValidator {
         }
         throw new AllError("camops inválidos");
       }
+      next();
+    } catch (error) {
+      next(error);
+    }
+  }
+  static async getByIdSupplier(
+    request: Request,
+    response: Response,
+    next: NextFunction
+  ) {
+    try {
+      const id = request.params.id;
+      if (!Number(id)) {
+        throw new AllError(`formato não esperado, esperado um numero`);
+      }
+      request.body.id = Number(id);
       next();
     } catch (error) {
       next(error);

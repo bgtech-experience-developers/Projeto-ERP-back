@@ -31,4 +31,17 @@ export class SupplierPjValidator {
             next(error);
         }
     }
+    static async getByIdSupplier(request, response, next) {
+        try {
+            const id = request.params.id;
+            if (!Number(id)) {
+                throw new AllError(`formato não esperado, esperado um numero`);
+            }
+            request.body.id = Number(id);
+            next();
+        }
+        catch (error) {
+            next(error);
+        }
+    }
 }

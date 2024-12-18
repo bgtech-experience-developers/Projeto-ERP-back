@@ -5,6 +5,7 @@ import { SupplierPjValidator } from "../middleware/SupplierPjValidator.js";
 import { GlobalError } from "../middleware/GlobalError.js";
 import { SupplierControllerPj } from "../controller/SupplierControllerPj.js";
 export const supplierPjRouter = Router();
+supplierPjRouter.get("/", SupplierControllerPj.viewSupplier);
 supplierPjRouter.post(
   "/registro",
   UploadFile.Upload().single("photo"),
@@ -12,11 +13,21 @@ supplierPjRouter.post(
   SupplierControllerPj.setSupplier
 );
 supplierPjRouter.patch(
-  "/atualizar",
+  "/atualizar/:id",
   UploadFile.Upload().single("photo"),
-  SupplierPjValidator.setSupplierPj
+  SupplierPjValidator.setSupplierPj,
+  SupplierPjValidator.getByIdSupplier,
+  SupplierControllerPj.updateSupplier
 );
 supplierPjRouter.get("/filtrar");
-supplierPjRouter.get("/:id");
-supplierPjRouter.get("/");
+supplierPjRouter.get(
+  "/:id",
+  SupplierPjValidator.getByIdSupplier,
+  SupplierControllerPj.getByIdSupplier
+);
+supplierPjRouter.delete(
+  "/remover/:id",
+  SupplierPjValidator.getByIdSupplier,
+  SupplierControllerPj.removeByIdSupplier
+);
 supplierPjRouter.use(GlobalError);
