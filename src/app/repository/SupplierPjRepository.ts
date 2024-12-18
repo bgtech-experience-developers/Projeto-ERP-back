@@ -2,6 +2,8 @@ import { PrismaClient } from "@prisma/client";
 import { InstanciaPrisma } from "../db/PrismaClient.js";
 import { SupplierPj } from "../middleware/SupplierPjValidator.js";
 import { imageFile } from "../controller/SupplierControllerPj.js";
+import { filterSupplier } from "../service/SupplierPjService.js";
+import e from "express";
 export type SupplierFildsString = string | null;
 export type SupplierFildsNumber = number | null;
 export interface findSupplierById {
@@ -40,9 +42,67 @@ export class SupplierPjRespository {
   static async findSupplierById(id: number) {
     try {
       const [registerSupplier] = (await this.connection
-        .$queryRaw`SELECT s.*, a.*,i.*,p.id_address FROM Supplier_pj s LEFT JOIN erp.imagem AS i ON s.id_imagem = i.id LEFT JOIN erp.Supplier_pj_address AS p ON p.id_supplier = s.id LEFT JOIN erp.Address AS a ON p.id_address = a.id WHERE s.id = ${id}  `) as findSupplierById[];
+        .$queryRaw`SELECT s.*, a.*,i.*,p.id_address FROM Supplier_pj s LEFT JOIN erp.imagem AS i ON s.id_imagem = i.id LEFT JOIN erp.Supplier_pj_address AS p ON p.id_supplier = s.id LEFT JOIN erp.Address AS a ON p.id_address = a.id WHERE s.id = ${id}`) as findSupplierById[];
 
       return registerSupplier;
+    } catch (error) {
+      throw error;
+    }
+  }
+  static async filterSupplier(
+    { email, phone, corporate_reason, answerable }: filterSupplier,
+    page: number,
+    limit: number
+  ) {
+    try {
+      return await this.connection.supplier_pj.findMany({
+        where: {
+          OR: [
+            { email: email.contanis },
+            { phone: phone.contanis },
+            { corporate_reason: corporate_reason.contanis },
+            { answerable: answerable.contanis },
+          ],
+        },
+        select: {
+          email: true,
+          phone: true,
+          corporate_reason: true,
+          answerable: true,
+        },
+        skip: page,
+        take: limit,
+      });
+    } catch (error) {
+      throw error;
+    }
+  }
+  static async filterSupplierByStatus(
+    { email, phone, corporate_reason, answerable }: filterSupplier,
+    status: string | null,
+    page: number,
+    limit: number
+  ) {
+    try {
+      return await this.connection.supplier_pj.findMany({
+        where: {
+          OR: [
+            { email: email.contanis },
+            { phone: phone.contanis },
+            { corporate_reason: corporate_reason.contanis },
+            { answerable: answerable.contanis },
+          ],
+          AND: { status: status === "true" ? true : false },
+        },
+        select: {
+          email: true,
+          phone: true,
+          corporate_reason: true,
+          answerable: true,
+        },
+        skip: page,
+        take: limit,
+      });
     } catch (error) {
       throw error;
     }
