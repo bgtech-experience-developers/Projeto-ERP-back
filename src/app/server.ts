@@ -8,6 +8,7 @@ import { number } from "joi";
 import cookieParse from "cookie-parser";
 import Supplier_pf from "./router/SupplierPf.js";
 import supplierPf from "./router/SupplierPf.js";
+import { supplierPjRouter } from "./router/supplierPj.js";
 
 dotnev.config();
 const app = express();
@@ -25,7 +26,9 @@ app.use(cookieParse());
 app.use(express.json()); // parte para a deserializaç~~ao das informações
 app.use("/clientes", clientRouter);
 app.use("/adm", routerAdm);
-app.use("/fornecedor", supplierPf)
+app.use("/fornecedor/fisico", supplierPf);
+app.use("/fornecedor/juridico", supplierPjRouter);
+
 app.listen(port, host, () => {
   console.log("meu servidor está rodando na porta " + port);
 });
