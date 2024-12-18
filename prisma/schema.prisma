@@ -105,11 +105,24 @@ model Supplier_pf_Image {
   // id                Int         @id @default(autoincrement())
   id_supplier_pf    Int
   id_image          Int
-  supplier_pf       Supplier_pf @relation(fields: [id_supplier_pf], references: [id])
-  supplier_pf_image imagem      @relation(fields: [id_image], references: [id])
+  supplier_pf       Supplier_pf @relation(fields: [id_supplier_pf], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  supplier_pf_image imagem      @relation(fields: [id_image], references: [id], onDelete: Cascade, onUpdate: Cascade)
   created_at        DateTime    @default(now())
   update_at         DateTime    @default(now())
   @@id([id_image, id_supplier_pf])
+}
+
+
+model Supplier_pf_Address {
+  id             Int @id @default(autoincrement())
+  id_supplier_pf Int
+  id_address     Int
+
+  created_at DateTime @default(now())
+  update_at  DateTime @default(now())
+
+  supplier_pf Supplier_pf @relation(fields: [id_supplier_pf], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  address     Address     @relation(fields: [id_address], references: [id], onDelete: Cascade, onUpdate: Cascade)
 }
 
 // model Product {
@@ -140,19 +153,7 @@ model Supplier_pf_Image {
 //   @@id([id_supplier_pf])
 // }
 
-model Supplier_pf_Address {
-  id             Int @id @default(autoincrement())
-  id_supplier_pf Int
-  id_address     Int
 
-  created_at DateTime @default(now())
-  update_at  DateTime @default(now())
-
-  supplier_pf Supplier_pf @relation(fields: [id_supplier_pf], references: [id])
-  address     Address     @relation(fields: [id_address], references: [id])
-}
-
-// Contruir a tabela de Produtos Generica
 
 model company_address {
   id         Int      @id @default(autoincrement())

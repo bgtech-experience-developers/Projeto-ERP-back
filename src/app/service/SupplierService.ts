@@ -3,6 +3,7 @@ import { AllError } from "../error/AllError.js";
 import { SupplierRepository } from "../repository/SupplierRepository.js";
 import { ApiPhpUtils } from "../utils/ApiPhp.js";
 import { Sharp } from "../utils/sharp.js";
+import { deleteApiPhp } from "../middleware/ApiPhp.js";
 
 export class SupplierService {
     // : Promise<AllSupplier_pf[] | null>
@@ -78,4 +79,40 @@ export class SupplierService {
             throw error;
         }
     }
+
+    static async deleteSupplier(id: number | string) {
+        try {
+            console.log(id);
+            
+            if(Number(id)) {
+                const [supplier] = await SupplierRepository.getById(Number(id));
+                if(!supplier) {                    
+                    throw new AllError("Usuário não encontrado no sistema!", 404)
+                    
+                }
+    
+                const path = await SupplierRepository.getImage(Number(id));
+                const newPath = path?.replace("https://bgtech.com.br/erp/assets/", "")
+                console.log(newPath);
+                if(newPath) {
+                     await deleteApiPhp([newPath])
+    
+                }
+    
+                await SupplierRepository.deleteSupplier(Number(id));
+                return
+            }
+
+            throw new AllError("Parametros inválidos!", 400)
+
+          
+            
+        } catch(error) {
+            throw error;  
+        }
+    }
 }
+
+
+
+

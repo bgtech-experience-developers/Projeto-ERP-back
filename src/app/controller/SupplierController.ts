@@ -33,11 +33,21 @@ export class SupplierController {
         try {
             const image = request.file as Express.Multer.File
             await SupplierService.setSupplier(request.body, image)
-            response.status(201).json("Usuário cadastrado com sucesso")
+            response.status(201).json("Fornecedor cadastrado com sucesso")
             return
         }  catch(error) {
             next(error);
         }
 
+    }
+
+    static async deleteSupplier(request: Request<{id: string}>, response: Response, next: NextFunction) {
+        try {
+            await SupplierService.deleteSupplier(request.params.id);
+            response.status(200).json("Fornecedor excluído com sucesso!");
+            return
+        } catch(error) {
+            next(error);
+        }
     }
 }

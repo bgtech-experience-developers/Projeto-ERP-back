@@ -132,4 +132,38 @@ export class SupplierRepository {
 
         }
     }
+
+    static async deleteSupplier(id: number) {
+        try {
+            return this.connectionDb.supplier_pf.delete({
+                where: {
+                    id
+                }
+            })
+        }   catch(error) {
+                throw error;
+        }
+    }
+
+    static async getImage(id_supplier_pf: number) {
+        try {
+            const path = await this.connectionDb.supplier_pf_Image.findFirst({
+                where: {
+                    id_supplier_pf
+                },
+                select: {
+                    supplier_pf_image: {
+                        select: {
+                            path: true
+                        }
+                    }
+                }
+            })
+            return path?.supplier_pf_image?.path || null;
+
+            
+        }   catch(error) {
+            throw error;
+        }
+    }
 }

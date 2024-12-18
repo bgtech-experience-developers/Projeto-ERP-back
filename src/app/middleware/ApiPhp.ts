@@ -59,7 +59,7 @@ export const deleteUpload = async (arrayImagens: (string | null)[]) => {
   return data;
 };
 
-export const deleteApiPhp = async (filePath: (string | null)[]) => {
+export const  deleteApiPhp = async (filePath: (string | null)[]) => {        
   const token = JwtToken.getTokenApi({ app: "node-api" }, "api", {
     expiresIn: "5m",
   });

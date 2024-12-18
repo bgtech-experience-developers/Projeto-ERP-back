@@ -26,7 +26,17 @@ export class SupplierController {
         try {
             const image = request.file;
             await SupplierService.setSupplier(request.body, image);
-            response.status(201).json("Usuário cadastrado com sucesso");
+            response.status(201).json("Fornecedor cadastrado com sucesso");
+            return;
+        }
+        catch (error) {
+            next(error);
+        }
+    }
+    static async deleteSupplier(request, response, next) {
+        try {
+            await SupplierService.deleteSupplier(request.params.id);
+            response.status(200).json("Fornecedor excluído com sucesso!");
             return;
         }
         catch (error) {

@@ -6,4 +6,5 @@ supplierPf.get("/", SupplierController.getAll);
 supplierPf.get("/fisico", SupplierController.getAll);
 supplierPf.get("/:id", SupplierController.getById);
 supplierPf.post("/arquivo", SupplierPfMiddleware.uploadFileSingle, SupplierPfMiddleware.handleFile, SupplierController.setSupplier);
+supplierPf.delete("/:id", SupplierController.deleteSupplier);
 export default supplierPf;
