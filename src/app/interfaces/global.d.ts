@@ -17,7 +17,7 @@ interface ClientC {
 interface address {
   adress: Address;
 }
-type ValueCLient = string | null | undefined;
+type ValueCLient = string | null;
 
 interface getUnic extends ClientC {
   financinal_contact: sectorId;
@@ -133,12 +133,6 @@ interface filtragem {
   situation: number;
 }
 interface Address {
-  cep?:valueClient;
-  street: valueClient;
-  number: valueClient;
-  complement: valueClient;
-  city: valueClient;
-  neighborhood: valueClient;
   cep: ValueCLient;
   street: ValueCLient;
   number: ValueCLient;
@@ -165,12 +159,12 @@ interface Supplier_pf {
 }
 
 
-interface AllSupplier_pf extends Supplier_pf {
-  id: number;
-  product: string[];
-  created_at: Date;
-  update_at: Date;
-}
+// interface AllSupplier_pf extends Supplier_pf {
+//   id: number;
+//   product?: string[];
+//   created_at?: Date;
+//   update_at?: Date;
+// }
 
 // interface SupplierSchema extends Supplier_pf{}
 interface BodySupplierPf {

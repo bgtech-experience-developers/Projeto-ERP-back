@@ -8,7 +8,6 @@ import { SupplierService } from "../service/SupplierService.js";
 const supplierPf = express.Router();
 
 supplierPf.get("/", SupplierController.getAll);
-supplierPf.get("/fisico", SupplierController.getAll);
 supplierPf.get("/:id", SupplierController.getById)
 supplierPf.post("/", SupplierPfMiddleware.uploadFileSingle, SupplierPfMiddleware.handleFile, SupplierController.setSupplier)
 supplierPf.delete("/:id", SupplierController.deleteSupplier)

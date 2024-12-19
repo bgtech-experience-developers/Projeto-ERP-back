@@ -166,4 +166,24 @@ export class SupplierRepository {
             throw error;
         }
     }
+
+    
+    // static async updateSupplier(id: number,{supplier, address}: BodySupplierPf, image: string | null) {
+    //     try {
+    //         await this.connectionDb.supplier_pf.update({
+    //             where: {
+    //                 id: id
+    //             },
+    //             data: {
+    //                 ...supplier,
+    //                 address_supplier_pf: {
+    //                     upsert
+    //                 }
+    //             }
+    //         })
+            
+    //     }  catch(error) {   
+    //         throw error;
+    //     }
+    // }
 }

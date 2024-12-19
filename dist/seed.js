@@ -87,20 +87,6 @@ async function main() {
                         },
                     },
                 },
-                product_supplier_pf: {
-                    create: {
-                        product: {
-                            create: {
-                                name: faker.commerce.productName(),
-                                internal_code: faker.string.numeric(3), // Substitui faker.random.numeric
-                                stock: faker.number.int({ min: 1, max: 100 }), // Substitui faker.datatype.number
-                            },
-                        },
-                        price: faker.commerce.price({ min: 100, max: 1000, dec: 2 }), // Substitui parâmetros manuais
-                        delivery_time: `${faker.number.int({ min: 1, max: 10 })} dias`,
-                        purchase_tax: `${faker.number.int({ min: 1, max: 20 })}%`,
-                    },
-                },
                 address_supplier_pf: {
                     create: {
                         address: {

@@ -30,7 +30,7 @@ export class SupplierPjValidator {
     try {
       const body: SupplierPj = JSON.parse(request.body.json);
       body.pj.cnpj = body.pj.cnpj.replace(/\D/g, "");
-      body.address.cep = body.address.cep?.replace(/\D/g, "");
+      body.address.cep = body.address.cep?.replace(/\D/g, "")!;
       body.pj.phone = body.pj.phone.replace(/\D/g, "");
       request.body = body;
       request.body.image = request.file ? request.file : null;
