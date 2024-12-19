@@ -1,0 +1,56 @@
+{
+  "supplier": {
+    "supplier_name": "Fornecedor ABC",
+    "supplier_code": "SUP12345",
+    "email": "contato@fornecedorabc.com",
+    "phone": "11-3333-4444",
+    "rg": "1234567",
+    "cpf": "12345678901",
+    "birth_date": "1980-05-12"
+  },
+  "product": {
+    "price": "150.50",
+    "delivery_time": "15 dias",
+    "purchase_tax": "10%"
+  },
+  "address": {
+    "cep": "01010-000",
+    "street": "Rua Exemplo",
+    "number": "123",
+    "complement": "Sala 2",
+    "city": "São Paulo",
+    "neighborhood": "Centro",
+    "state": "SP"
+  }
+}
+
+// =================
+
+{
+  "supplier": {
+    "supplier_name": "Fornecedor ABC",
+    "supplier_code": "SUP12345",
+    "email": "contato@fornecedorabc.com",
+    "phone": "11-3333-4444",
+    "cell_phone": "11-99999-8888",
+    "rg": "1234567",
+    "cpf": "12345678901",
+    "birth_date": "1980-05-12"
+  },
+  "product": {
+    "id_product": "1",
+    "name": "Produto Exemplo",
+    "price": "150.50",
+    "delivery_time": "15 dias",
+    "purchase_tax": "10%"
+  },
+  "address": {
+    "cep": "01010-000",
+    "street": "Rua Exemplo",
+    "number": "123",
+    "complement": "Sala 2",
+    "city": "São Paulo",
+    "neighborhood": "Centro",
+    "state": "SP"
+  }
+}

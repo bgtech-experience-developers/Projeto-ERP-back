@@ -22,8 +22,7 @@ export const ApiPhpUtils = async (imagems, typeFolder, files) => {
                 throw new AllError(allPaths.message, 403);
             }
         }
-        const { mensagem, error } = await Sharp.removeImagens(files);
-        console.log(mensagem);
+        files ? await Sharp.removeImagens(files) : "";
         return imagems;
     }
     catch (error) {

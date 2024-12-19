@@ -7,13 +7,12 @@ interface uploadRemove {}
 interface returnApiPhp {
   url: string;
 }
-export const ApiPhp = async (filepath: {
-  filePath: (string | null)[];
-  typeFolder: "img_product" | "img_profile";
-  files: Express.Multer.File[];
+export const ApiPhp = async (filepath: { filePath: (string | null)[]; typeFolder: "img_product" | "img_profile"; files: Express.Multer.File[];
 }): Promise<returnApiPhp[] | { message: string }> => {
   try {
     const formdata = new FormData();
+    console.log(filepath.filePath);
+    
     filepath.filePath.forEach((file, index) => {
       if (file) {
         formdata.append(`image ${index}`, fs.createReadStream(file));
@@ -60,7 +59,7 @@ export const deleteUpload = async (arrayImagens: (string | null)[]) => {
   return data;
 };
 
-export const deleteApiPhp = async (filePath: (string | null)[]) => {
+export const  deleteApiPhp = async (filePath: (string | null)[]) => {        
   const token = JwtToken.getTokenApi({ app: "node-api" }, "api", {
     expiresIn: "5m",
   });
