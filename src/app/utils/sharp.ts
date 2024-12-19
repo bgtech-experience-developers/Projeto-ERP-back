@@ -46,6 +46,7 @@ export class Sharp {
 
     return Promise.all(messagmns);
   }
+
   static async removeImagens(files: Express.Multer.File[]) {
     try {
       let mensagem: { mensagem: string; error: boolean } = {
@@ -74,6 +75,7 @@ export class Sharp {
       throw error;
     }
   }
+
   static allImagens(files: Express.Multer.File[], order: boolean[]) {
     const size = order.length - files.length;
     return order.map((boolean, index) => {
@@ -87,4 +89,6 @@ export class Sharp {
       }
     });
   }
+
+
 }

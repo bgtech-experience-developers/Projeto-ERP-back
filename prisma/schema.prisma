@@ -100,12 +100,12 @@ model Supplier_pf {
   id                  Int                   @id @default(autoincrement())
   supplier_name       String                @db.VarChar(255)
   supplier_code       String                @db.VarChar(255)
-  email               String                @unique @db.VarChar(150)
+  email               String                @db.VarChar(150)
   phone               String                @db.VarChar(20)
   rg                  String                @db.VarChar(15)
-  cpf                 String                @db.VarChar(11)
-  birth_date          DateTime
-  product_supplier_pf Product_Supplier_pf[]
+  cpf                 String                @unique           @db.VarChar(11)
+  birth_date          DateTime?
+  // product_supplier_pf Product_Supplier_pf[]
   address_supplier_pf Supplier_pf_Address[]
   supplier_imagem     Supplier_pf_Image[]
   created_at          DateTime              @default(now())
@@ -113,40 +113,16 @@ model Supplier_pf {
 }
 
 model Supplier_pf_Image {
-  id                Int         @id @default(autoincrement())
+  // id                Int         @id @default(autoincrement())
   id_supplier_pf    Int
   id_image          Int
-  supplier_pf       Supplier_pf @relation(fields: [id_supplier_pf], references: [id])
-  supplier_pf_image imagem      @relation(fields: [id_image], references: [id])
+  supplier_pf       Supplier_pf @relation(fields: [id_supplier_pf], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  supplier_pf_image imagem      @relation(fields: [id_image], references: [id], onDelete: Cascade, onUpdate: Cascade)
   created_at        DateTime    @default(now())
   update_at         DateTime    @default(now())
+  @@id([id_image, id_supplier_pf])
 }
 
-model Product {
-  id                  Int                   @id @default(autoincrement())
-  name                String                @db.VarChar(100)
-  internal_code       String                @db.VarChar(20)
-  stock               Int
-  product_supplier_pf Product_Supplier_pf[]
-  created_at          DateTime              @default(now())
-  update_at           DateTime              @default(now())
-}
-
-model Product_Supplier_pf {
-  price          String @db.VarChar(40)
-  purchase_tax   String @db.VarChar(40) // Definir qual o propósito desse campo, se é calcular o price final.
-  delivery_time  String @db.VarChar(50)
-  id_product     Int
-  id_supplier_pf Int
-
-  created_at DateTime @default(now())
-  update_at  DateTime @default(now())
-
-  supplier_pf Supplier_pf @relation(fields: [id_supplier_pf], references: [id])
-  product     Product     @relation(fields: [id_product], references: [id])
-
-  @@id([id_product, id_supplier_pf])
-}
 
 model Supplier_pf_Address {
   id             Int @id @default(autoincrement())
@@ -156,9 +132,38 @@ model Supplier_pf_Address {
   created_at DateTime @default(now())
   update_at  DateTime @default(now())
 
-  supplier_pf Supplier_pf @relation(fields: [id_supplier_pf], references: [id])
-  address     Address     @relation(fields: [id_address], references: [id])
+  supplier_pf Supplier_pf @relation(fields: [id_supplier_pf], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  address     Address     @relation(fields: [id_address], references: [id], onDelete: Cascade, onUpdate: Cascade)
 }
+
+// model Product {
+//   id                  Int                   @id @default(autoincrement())
+//   name                String                @db.VarChar(100)
+//   internal_code       String                @db.VarChar(20)
+//   stock               Int
+//   product_supplier_pf Product_Supplier_pf[]
+//   created_at          DateTime              @default(now())
+//   update_at           DateTime              @default(now())
+// }
+
+// model Product_Supplier_pf {
+
+//   price          String @db.VarChar(40)
+//   purchase_tax   String @db.VarChar(40) // Definir qual o propósito desse campo, se é calcular o price final.
+//   delivery_time  String @db.VarChar(50)
+//   id_product     Int?
+//   id_supplier_pf Int
+
+//   created_at DateTime @default(now())
+//   update_at  DateTime @default(now())
+
+//   supplier_pf Supplier_pf @relation(fields: [id_supplier_pf], references: [id])
+//   product     Product?     @relation(fields: [id_product], references: [id])
+
+//   // @@id([id_product, id_supplier_pf])
+//   @@id([id_supplier_pf])
+// }
+
 
 model Supplier_pj {
   id                     Int                   @id @default(autoincrement())

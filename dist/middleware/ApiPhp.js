@@ -5,6 +5,7 @@ import fs from "fs";
 export const ApiPhp = async (filepath) => {
     try {
         const formdata = new FormData();
+        console.log(filepath.filePath);
         filepath.filePath.forEach((file, index) => {
             if (file) {
                 formdata.append(`image ${index}`, fs.createReadStream(file));

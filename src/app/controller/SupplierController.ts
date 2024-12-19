@@ -1,6 +1,7 @@
 import { NextFunction } from "express";
 import { SupplierService } from "../service/SupplierService.js";
 import { Request, Response } from "express";
+import { log } from "node:console";
 
 export class SupplierController {
     // <AllSupplier_pf[] | null>
@@ -26,5 +27,27 @@ export class SupplierController {
         } catch(error) {
             next(error)
         }     
+    }
+
+    static async setSupplier(request: Request, response: Response, next: NextFunction) {
+        try {
+            const image = request.file as Express.Multer.File
+            await SupplierService.setSupplier(request.body, image)
+            response.status(201).json("Fornecedor cadastrado com sucesso")
+            return
+        }  catch(error) {
+            next(error);
+        }
+
+    }
+
+    static async deleteSupplier(request: Request<{id: string}>, response: Response, next: NextFunction) {
+        try {
+            await SupplierService.deleteSupplier(request.params.id);
+            response.status(200).json("Fornecedor excluído com sucesso!");
+            return
+        } catch(error) {
+            next(error);
+        }
     }
 }

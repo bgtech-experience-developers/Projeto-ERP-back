@@ -1,4 +1,5 @@
 import joi from "joi";
+import { AllError } from "../error/AllError.js";
 export class JoiValidation {
     static async schemaCreateClient({ contabil, comercial, socio, endereco_empresa, endereco_entrega, cliente, financeiro, }) {
         const schemaCreateClient = joi.object({
@@ -80,5 +81,47 @@ export class JoiValidation {
             console.log(error);
             throw error;
         }
+    }
+    static async schemaCreateSupplierPf({ supplier, address }) {
+        const schemaSupplier = joi.object({
+            supplier_name: joi.string().trim().required(),
+            supplier_code: joi.string().trim().allow(""),
+            email: joi.string().trim().allow(""),
+            phone: joi.string().trim().allow(""),
+            // cell_phone: joi.string().trim().allow(""),
+            rg: joi.string().trim().allow(""),
+            cpf: joi.string().trim().required().min(11).max(11).messages({
+                "string.max": "O campo cpf deve conter no máximo 11 digitos",
+                "string.min": "O campo cpf deve conter no mínimo 11 digitos"
+            }),
+            birth_date: joi.string().trim().allow("")
+        });
+        // const schemaProduct = joi.object<Product_Supplier_pf>({
+        //   // name: joi.string().trim().allow(""),    
+        //   price: joi.string().trim().allow(""),
+        //   delivery_time: joi.string().trim().allow(""),
+        //   purchase_tax: joi.string().trim().allow(""),
+        // })
+        const schemaAddress = joi.object({
+            cep: joi.string().trim().allow(""),
+            street: joi.string().trim().allow(""),
+            number: joi.string().trim().allow(""),
+            complement: joi.string().trim().allow(""),
+            city: joi.string().trim().allow(""),
+            neighborhood: joi.string().trim().allow(""),
+            state: joi.string().trim().allow(""),
+        });
+        const { value: newSupplier, error: errorSupplier } = schemaSupplier.validate(supplier);
+        // const {value: newProduct, error: errorProduct} = schemaProduct.validate(product)
+        const { value: newAddress, error: errorAddress } = schemaAddress.validate(address);
+        if (errorSupplier || errorAddress) {
+            const error = errorSupplier?.message || errorAddress?.message;
+            throw new AllError((error ? error : ""));
+        }
+        return {
+            supplier: newSupplier,
+            address: newAddress,
+            // product: newProduct
+        };
     }
 }

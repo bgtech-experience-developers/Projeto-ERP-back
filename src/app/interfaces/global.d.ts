@@ -133,6 +133,12 @@ interface filtragem {
   situation: number;
 }
 interface Address {
+  cep?:valueClient;
+  street: valueClient;
+  number: valueClient;
+  complement: valueClient;
+  city: valueClient;
+  neighborhood: valueClient;
   cep: ValueCLient;
   street: ValueCLient;
   number: ValueCLient;
@@ -153,10 +159,11 @@ interface Supplier_pf {
   phone: string;
   rg: string;
   cpf: string;
-  birth_date: Date;
+  birth_date: string;
   product_supplier_pf?: Product_Supplier_pf;
   address_supplier_pf?: Address;
 }
+
 
 interface AllSupplier_pf extends Supplier_pf {
   id: number;
@@ -165,7 +172,18 @@ interface AllSupplier_pf extends Supplier_pf {
   update_at: Date;
 }
 
+// interface SupplierSchema extends Supplier_pf{}
+interface BodySupplierPf {
+  json?:string,
+  supplier: Supplier_pf
+  // product: Product_Supplier_pf
+  address: Address
+}
+
+
 interface Product_Supplier_pf {
+  id_product?: string;
+  name?: string;
   price: string;
   purchase_tax: string;
   delivery_time: string;
