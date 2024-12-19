@@ -14,11 +14,10 @@ export interface ClientCreate {
   comercial: GenericFields;
   contabil: GenericFields;
   situation: boolean;
-  [key: string]:unknown;
+  [key: string]: unknown;
 }
 
 export class Client {
-
   static async CreateClient(
     request: Request,
     response: Response,
@@ -41,10 +40,24 @@ export class Client {
 
   async showClients(request: Request, response: Response, next: NextFunction) {
     try {
-      const showClient = await ClientService.showClints();
-      console.log(showClient);
-      
-      response.send(showClient);
+      const query = request.query;
+      if (query && "status" in query && "limit" in query && "page" in query) {
+        const status = query.status === "true" ? true : false;
+
+        const queryPage = Number(query.page) ? Number(query.page) : 0;
+        const page = queryPage > 0 ? queryPage * 10 : 0;
+        console.log(page);
+        const limit = Number(query.limit) ? Number(query.limit) : 5;
+        console.log(limit);
+
+        const showClient = await ClientService.showClints(limit, page, status);
+        console.log(showClient);
+        response.send(showClient);
+      } else {
+        throw new AllError(
+          "os parametros page, limit e status são obbrigatorios"
+        );
+      }
     } catch (err) {
       next(err);
     }
@@ -59,7 +72,7 @@ export class Client {
       const { id } = request.params;
       const showOneClient = await ClientService.showClientById(id);
       response.status(200).json(showOneClient);
-      return
+      return;
     } catch (err) {
       console.log(err);
       next(err);
@@ -91,7 +104,6 @@ export class Client {
     next: NextFunction
   ) {
     try {
-
       const files = request.files as Express.Multer.File[];
       const order: boolean[] = request.body.imagens;
       const isActive = request.query.isActive ? false : true;
@@ -110,19 +122,46 @@ export class Client {
     }
   }
 
-
-  static async deleteClient(request: Request, response: Response, next: NextFunction) {
-
+  static async deleteClient(
+    request: Request,
+    response: Response,
+    next: NextFunction
+  ) {
     try {
-  
-      const {id} = request.params;
-  
+      const { id } = request.params;
+
       await ClientService.deleteClient(id);
       response.status(200).json("Empresa/Cliente excluído com sucesso!");
-  
-    } catch(error) {
-      next(error)
+    } catch (error) {
+      next(error);
+    }
+  }
+  static async showClientsFilter(
+    request: Request,
+    response: Response,
+    next: NextFunction
+  ) {
+    try {
+      console.log("eu cheguei aqui");
+      const query = request.query;
+      if (
+        query &&
+        "status" in query &&
+        "value" in query &&
+        typeof query.value === "string"
+      ) {
+        const status = query.status === "true" ? true : false;
+        const value = query.value;
+
+        const result = await ClientService.filterCLient(status, value);
+        response.status(200).json(result);
+      } else {
+        throw new AllError(
+          "a query string deve conter os campos de value,status,pageSized e page são obrigatórios"
+        );
+      }
+    } catch (error) {
+      next(error);
     }
   }
 }
-

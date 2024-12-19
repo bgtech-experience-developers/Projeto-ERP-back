@@ -7,6 +7,7 @@ import { Sharp } from "../utils/sharp.js";
 import { ApiPhp, deleteApiPhp, deleteUpload } from "../middleware/ApiPhp.js";
 import { ApiPhpUtils } from "../utils/ApiPhp.js";
 import { all } from "axios";
+import { filterquery } from "../utils/filterClient.js";
 interface keys {
   financinal_contact: string;
   accounting_contact: string;
@@ -49,9 +50,9 @@ export class ClientService {
     }
   }
 
-  static async showClints() {
+  static async showClints(limit: number, page: number, status: boolean) {
     try {
-      const allClints = await ClientRepository.showCLients();
+      const allClints = await ClientRepository.showCLients(limit, page, status);
 
       const newArray = allClints.map(
         ({ id, branch_activity, situation, fantasy_name, owner_partner }) => {
@@ -70,9 +71,14 @@ export class ClientService {
                 return sector.email;
               }),
             ],
-            telefone: [
+            cell_phone: [
               ...owner_partner.map(({ sector }) => {
                 return sector.cell_phone;
+              }),
+            ],
+            phone: [
+              ...owner_partner.map(({ sector }) => {
+                return sector.phone;
               }),
             ],
           };
@@ -392,6 +398,15 @@ export class ClientService {
       }
 
       throw new AllError("Argumentos inválidos, tipo inesperado.");
+    } catch (error) {
+      throw error;
+    }
+  }
+  static async filterCLient(status: boolean, value: string) {
+    try {
+      const queryFilter = await filterquery(value, status);
+      const clients = await ClientRepository.filterClient(queryFilter);
+      return clients;
     } catch (error) {
       throw error;
     }

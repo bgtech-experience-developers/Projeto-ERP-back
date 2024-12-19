@@ -1,21 +1,23 @@
 interface ClientC {
   id: number;
   corporate_reason: string;
-  fantasy_name: valueClient;
-  branch_activity: valueClient;
+  fantasy_name: ValueCLient;
+  branch_activity: ValueCLient;
   cnpj: string;
-  state_registration: valueClient;
+  state_registration: ValueCLient;
 
   situation: boolean;
-  type_contribuition: valueClient;
+  type_contribuition: ValueCLient;
+
   created_at: Date;
   update_at: Date;
 }
-type valueClient = string | null;
+// type valueClient = string | null;
 
 interface address {
   adress: Address;
 }
+type ValueCLient = string | null | undefined;
 
 interface getUnic extends ClientC {
   financinal_contact: sectorId;
@@ -32,9 +34,10 @@ type sectorId = { sectorId: number }[];
 interface base_solid_allclient {
   owner_partner: {
     sector: {
-      name: valueClient;
-      email: valueClient;
-      cell_phone: valueClient;
+      name: ValueCLient;
+      email: ValueCLient;
+      cell_phone: ValueCLient;
+      phone: ValueCLient;
     };
     created_at: Date;
     update_at: Date;
@@ -58,13 +61,12 @@ interface integral extends ClientC {}
 interface integral extends Address {}
 
 interface GenericFields {
-  name: string;
-  email: string;
-  phone?: string;
-  cell_phone: string;
-  rg: string;
-  photo?: string | null;
-  cpf: string;
+  name: ValueCLient;
+  email: ValueCLient;
+  cell_phone: ValueCLient;
+  rg: ValueCLient;
+  phone: ValueCLient;
+  cpf: ValueCLient;
 }
 
 interface allResources extends ClientC {
@@ -118,7 +120,18 @@ interface adminPermission {
     ];
   };
 }
-
+interface queryWhere {
+  contains: string;
+  mode?: "insensitive";
+}
+interface filtragem {
+  branch_activity: queryWhere;
+  fantasy_name: queryWhere;
+  email: queryWhere;
+  phone: queryWhere;
+  name: queryWhere;
+  situation: number;
+}
 interface Address {
   cep?:valueClient;
   street: valueClient;
@@ -126,9 +139,15 @@ interface Address {
   complement: valueClient;
   city: valueClient;
   neighborhood: valueClient;
+  cep: ValueCLient;
+  street: ValueCLient;
+  number: ValueCLient;
+  complement: ValueCLient;
+  city: ValueCLient;
+  neighborhood: ValueCLient;
   created_at: Date;
   update_at: Date;
-  state: valueClient;
+  state: ValueCLient;
 }
 
 type AllImagens = (string | null)[];

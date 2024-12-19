@@ -2,6 +2,7 @@ import { AllError } from "../error/AllError.js";
 import { ClientRepository } from "../repository/clientRepository.js";
 import { Sharp } from "../utils/sharp.js";
 import { deleteApiPhp, deleteUpload } from "../middleware/ApiPhp.js";
+import { filterquery } from "../utils/filterClient.js";
 export class ClientService {
     static async CreateClientService(body, image, order) {
         try {
@@ -32,9 +33,9 @@ export class ClientService {
             throw error;
         }
     }
-    static async showClints() {
+    static async showClints(limit, page, status) {
         try {
-            const allClints = await ClientRepository.showCLients();
+            const allClints = await ClientRepository.showCLients(limit, page, status);
             const newArray = allClints.map(({ id, branch_activity, situation, fantasy_name, owner_partner }) => {
                 return {
                     id,
@@ -51,9 +52,14 @@ export class ClientService {
                             return sector.email;
                         }),
                     ],
-                    telefone: [
+                    cell_phone: [
                         ...owner_partner.map(({ sector }) => {
                             return sector.cell_phone;
+                        }),
+                    ],
+                    phone: [
+                        ...owner_partner.map(({ sector }) => {
+                            return sector.phone;
                         }),
                     ],
                 };
@@ -281,6 +287,16 @@ export class ClientService {
                 return deleteClient;
             }
             throw new AllError("Argumentos inválidos, tipo inesperado.");
+        }
+        catch (error) {
+            throw error;
+        }
+    }
+    static async filterCLient(status, value) {
+        try {
+            const queryFilter = await filterquery(value, status);
+            const clients = await ClientRepository.filterClient(queryFilter);
+            return clients;
         }
         catch (error) {
             throw error;
