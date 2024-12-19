@@ -56,6 +56,14 @@ CREATE TABLE `Address` (
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
+CREATE TABLE `Supplier_pj_address` (
+    `id_address` INTEGER NOT NULL,
+    `id_supplier` INTEGER NOT NULL,
+
+    PRIMARY KEY (`id_address`, `id_supplier`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
 CREATE TABLE `Supplier_pf` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `supplier_name` VARCHAR(255) NOT NULL,
@@ -64,48 +72,22 @@ CREATE TABLE `Supplier_pf` (
     `phone` VARCHAR(20) NOT NULL,
     `rg` VARCHAR(15) NOT NULL,
     `cpf` VARCHAR(11) NOT NULL,
-    `birth_date` DATETIME(3) NOT NULL,
+    `birth_date` DATETIME(3) NULL,
     `created_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `update_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
 
-    UNIQUE INDEX `Supplier_pf_email_key`(`email`),
+    UNIQUE INDEX `Supplier_pf_cpf_key`(`cpf`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
 CREATE TABLE `Supplier_pf_Image` (
-    `id` INTEGER NOT NULL AUTO_INCREMENT,
     `id_supplier_pf` INTEGER NOT NULL,
     `id_image` INTEGER NOT NULL,
     `created_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `update_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
 
-    PRIMARY KEY (`id`)
-) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-
--- CreateTable
-CREATE TABLE `Product` (
-    `id` INTEGER NOT NULL AUTO_INCREMENT,
-    `name` VARCHAR(100) NOT NULL,
-    `internal_code` VARCHAR(20) NOT NULL,
-    `stock` INTEGER NOT NULL,
-    `created_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
-    `update_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
-
-    PRIMARY KEY (`id`)
-) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-
--- CreateTable
-CREATE TABLE `Product_Supplier_pf` (
-    `price` VARCHAR(40) NOT NULL,
-    `purchase_tax` VARCHAR(40) NOT NULL,
-    `delivery_time` VARCHAR(50) NOT NULL,
-    `id_product` INTEGER NOT NULL,
-    `id_supplier_pf` INTEGER NOT NULL,
-    `created_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
-    `update_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
-
-    PRIMARY KEY (`id_product`, `id_supplier_pf`)
+    PRIMARY KEY (`id_image`, `id_supplier_pf`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
@@ -116,6 +98,28 @@ CREATE TABLE `Supplier_pf_Address` (
     `created_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `update_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
 
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
+CREATE TABLE `Supplier_pj` (
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `id_imagem` INTEGER NOT NULL,
+    `corporate_reason` VARCHAR(191) NOT NULL,
+    `email` VARCHAR(191) NULL,
+    `phone` VARCHAR(191) NULL,
+    `fantasy_name` VARCHAR(191) NULL,
+    `cnpj` VARCHAR(14) NOT NULL,
+    `answerable` VARCHAR(191) NULL,
+    `state_registration` VARCHAR(191) NULL,
+    `type_contribuition` VARCHAR(191) NULL,
+    `municipal_registration` VARCHAR(191) NULL,
+    `suframa_registration` VARCHAR(191) NULL,
+    `status` BOOLEAN NOT NULL DEFAULT true,
+    `created_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+    `update_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+
+    UNIQUE INDEX `Supplier_pj_cnpj_key`(`cnpj`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
@@ -264,22 +268,25 @@ CREATE TABLE `RoleAdm` (
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- AddForeignKey
-ALTER TABLE `Supplier_pf_Image` ADD CONSTRAINT `Supplier_pf_Image_id_supplier_pf_fkey` FOREIGN KEY (`id_supplier_pf`) REFERENCES `Supplier_pf`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE `Supplier_pj_address` ADD CONSTRAINT `Supplier_pj_address_id_supplier_fkey` FOREIGN KEY (`id_supplier`) REFERENCES `Supplier_pj`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `Supplier_pf_Image` ADD CONSTRAINT `Supplier_pf_Image_id_image_fkey` FOREIGN KEY (`id_image`) REFERENCES `imagem`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE `Supplier_pj_address` ADD CONSTRAINT `Supplier_pj_address_id_address_fkey` FOREIGN KEY (`id_address`) REFERENCES `Address`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `Product_Supplier_pf` ADD CONSTRAINT `Product_Supplier_pf_id_supplier_pf_fkey` FOREIGN KEY (`id_supplier_pf`) REFERENCES `Supplier_pf`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE `Supplier_pf_Image` ADD CONSTRAINT `Supplier_pf_Image_id_supplier_pf_fkey` FOREIGN KEY (`id_supplier_pf`) REFERENCES `Supplier_pf`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `Product_Supplier_pf` ADD CONSTRAINT `Product_Supplier_pf_id_product_fkey` FOREIGN KEY (`id_product`) REFERENCES `Product`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE `Supplier_pf_Image` ADD CONSTRAINT `Supplier_pf_Image_id_image_fkey` FOREIGN KEY (`id_image`) REFERENCES `imagem`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `Supplier_pf_Address` ADD CONSTRAINT `Supplier_pf_Address_id_supplier_pf_fkey` FOREIGN KEY (`id_supplier_pf`) REFERENCES `Supplier_pf`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE `Supplier_pf_Address` ADD CONSTRAINT `Supplier_pf_Address_id_supplier_pf_fkey` FOREIGN KEY (`id_supplier_pf`) REFERENCES `Supplier_pf`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `Supplier_pf_Address` ADD CONSTRAINT `Supplier_pf_Address_id_address_fkey` FOREIGN KEY (`id_address`) REFERENCES `Address`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE `Supplier_pf_Address` ADD CONSTRAINT `Supplier_pf_Address_id_address_fkey` FOREIGN KEY (`id_address`) REFERENCES `Address`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `Supplier_pj` ADD CONSTRAINT `Supplier_pj_id_imagem_fkey` FOREIGN KEY (`id_imagem`) REFERENCES `imagem`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE `company_address` ADD CONSTRAINT `company_address_clientId_fkey` FOREIGN KEY (`clientId`) REFERENCES `Client`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
