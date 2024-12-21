@@ -16,8 +16,8 @@ export class Client {
     async showClients(request, response, next) {
         try {
             const query = request.query;
-            if (query && "status" in query && "limit" in query && "page" in query) {
-                const status = query.status === "true" ? true : false;
+            if (query && "limit" in query && "page" in query) {
+                const status = typeof query.status === "string" ? query.status : null; //omitsse
                 const queryPage = Number(query.page) ? Number(query.page) : 0;
                 const page = queryPage > 0 ? queryPage * 10 : 0;
                 console.log(page);
@@ -93,13 +93,9 @@ export class Client {
         try {
             console.log("eu cheguei aqui");
             const query = request.query;
-            if (query &&
-                "status" in query &&
-                "value" in query &&
-                typeof query.value === "string") {
-                const status = query.status === "true" ? true : false;
+            if (query && "value" in query && typeof query.value === "string") {
                 const value = query.value;
-                const result = await ClientService.filterCLient(status, value);
+                const result = await ClientService.filterCLient(value);
                 response.status(200).json(result);
             }
             else {
