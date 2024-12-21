@@ -37,7 +37,9 @@ export class SupplierRepository {
                     //     }
                     // },
                     address_supplier_pf: {
-                        include: {
+                        select: {
+                            // O campo do json irá mudar
+                            id_address: true,
                             address: true
                         }
                     },
@@ -167,23 +169,96 @@ export class SupplierRepository {
         }
     }
 
-    
-    // static async updateSupplier(id: number,{supplier, address}: BodySupplierPf, image: string | null) {
-    //     try {
-    //         await this.connectionDb.supplier_pf.update({
-    //             where: {
-    //                 id: id
-    //             },
-    //             data: {
-    //                 ...supplier,
-    //                 address_supplier_pf: {
-    //                     upsert
-    //                 }
-    //             }
-    //         })
+
+    static async updateSupplier(id: number, idAddress: number,idImage: number, {supplier, address}: BodySupplierPf, image: string | null) {
+        try {
+            // await this.connectionDb.supplier_pf.update({
+            //     where: {
+            //         id: id
+            //     },
+            //     data: {
+            //         ...supplier,
+            //         address_supplier_pf: {
+            //             update: {
+            //                 where: {
+            //                     id_supplier_pf: id, id_address: id
+            //                 },
+            //                 data: {
+            //                     address: {
+            //                         update: {
+            //                             where: {
+            //                                 address_supplier_pf: id
+            //                             },
+            //                             data: {
+            //                                 ...address
+            //                             }
+            //                         }
+            //                     }
+            //                 }
+            //             }
+            //         }
+            //     }
+            // })
+
+            // [
+            //     this.connectionDb.supplier_pf.update({
+            //         where: {
+            //             id
+            //         }, 
+            //         data: {
+            //             ...supplier                   
+            //         }
+            //     }) 
+            // ]
+            console.log({supplier});
             
-    //     }  catch(error) {   
-    //         throw error;
-    //     }
-    // }
+            await this.connectionDb.$transaction(async (conn) => {
+                await conn.supplier_pf.update({
+                    where: {
+                        id,
+                    },
+                    data: {
+                        ...supplier
+                    }
+                });
+
+                await conn.supplier_pf_Address.update({
+                    where: {
+                        id_address_id_supplier_pf: {
+                            id_address: idAddress,
+                            id_supplier_pf: id
+                        }
+                    }, 
+                    data: {
+                        address: {
+                            update: {
+                                ...address
+                            }
+                        }
+                    }
+                })
+
+                await conn.supplier_pf_Image.update({
+                    where: {
+                        id_image_id_supplier_pf: {
+                            id_image: idImage,
+                            id_supplier_pf:id
+                        }
+                    },
+                    data: {
+                        supplier_pf_image: {
+                            update: {
+                                path: image
+                            }
+                        }
+                    }
+                })
+                
+                
+            })
+            
+        }  catch(error) {   
+            throw error;
+        }
+    }
 }

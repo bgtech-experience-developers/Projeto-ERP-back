@@ -43,4 +43,15 @@ export class SupplierController {
             next(error);
         }
     }
+    static async updateSupplier(request, response, next) {
+        try {
+            const image = request.file;
+            await SupplierService.updateSupplier(request.body, image, request.params.id);
+            response.status(200).json("Fornecedor Atualizado com sucesso!");
+            return;
+        }
+        catch (error) {
+            next(error);
+        }
+    }
 }

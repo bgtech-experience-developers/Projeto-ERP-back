@@ -10,5 +10,6 @@ const supplierPf = express.Router();
 supplierPf.get("/", SupplierController.getAll);
 supplierPf.get("/:id", SupplierController.getById)
 supplierPf.post("/", SupplierPfMiddleware.uploadFileSingle, SupplierPfMiddleware.handleFile, SupplierController.setSupplier)
+supplierPf.patch("/:id", SupplierPfMiddleware.uploadFileSingle, SupplierPfMiddleware.handleFile, SupplierController.updateSupplier)
 supplierPf.delete("/:id", SupplierController.deleteSupplier)
 export default supplierPf;

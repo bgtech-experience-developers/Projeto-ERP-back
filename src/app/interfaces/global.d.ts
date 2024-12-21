@@ -139,9 +139,9 @@ interface Address {
   complement: ValueCLient;
   city: ValueCLient;
   neighborhood: ValueCLient;
-  created_at: Date;
-  update_at: Date;
   state: ValueCLient;
+  created_at: Date ;
+  update_at: Date;
 }
 
 type AllImagens = (string | null)[];
@@ -154,8 +154,8 @@ interface Supplier_pf {
   rg: string;
   cpf: string;
   birth_date: string;
-  product_supplier_pf?: Product_Supplier_pf;
-  address_supplier_pf?: Address;
+  // product_supplier_pf?: Product_Supplier_pf;
+  // address_supplier_pf?: Address;
 }
 
 

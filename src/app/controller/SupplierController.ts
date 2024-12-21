@@ -50,4 +50,16 @@ export class SupplierController {
             next(error);
         }
     }
+
+    static async updateSupplier(request: Request<{id: string}>, response: Response, next: NextFunction) {
+        try {
+            const image = request.file as Express.Multer.File;   
+            await SupplierService.updateSupplier(request.body, image, request.params.id);
+            response.status(200).json("Fornecedor Atualizado com sucesso!");
+            return
+        } catch(error) {
+            next(error);
+        }
+
+    }
 }

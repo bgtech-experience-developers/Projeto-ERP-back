@@ -89,7 +89,7 @@ model Address {
 
 model Supplier_pj_address {
   id_address  Int
-  id_supplier Int
+  id_supplier Int 
   supplier    Supplier_pj @relation(fields: [id_supplier], references: [id], onDelete: Cascade, onUpdate: Cascade)
   address     Address     @relation(fields: [id_address], references: [id], onDelete: Cascade, onUpdate: Cascade)
 
@@ -125,8 +125,7 @@ model Supplier_pf_Image {
 
 
 model Supplier_pf_Address {
-  id             Int @id @default(autoincrement())
-  id_supplier_pf Int
+  id_supplier_pf Int 
   id_address     Int
 
   created_at DateTime @default(now())
@@ -134,6 +133,7 @@ model Supplier_pf_Address {
 
   supplier_pf Supplier_pf @relation(fields: [id_supplier_pf], references: [id], onDelete: Cascade, onUpdate: Cascade)
   address     Address     @relation(fields: [id_address], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  @@id([id_address, id_supplier_pf])
 }
 
 // model Product {

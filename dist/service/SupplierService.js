@@ -21,6 +21,10 @@ export class SupplierService {
         try {
             if (Number(id)) {
                 const resultQuery = await SupplierRepository.getById(Number(id));
+                // console.log(resultQuery);
+                if (!resultQuery[0]) {
+                    throw new AllError("Usuário não encontrado no sistem!", 404);
+                }
                 const supplier = resultQuery.map(({ ...resultQuery }) => {
                     return {
                         ...resultQuery,
@@ -59,7 +63,8 @@ export class SupplierService {
                 await SupplierRepository.setSupplier(body, apiPhp[0]);
                 return;
             }
-            return await SupplierRepository.setSupplier(body, null);
+            await SupplierRepository.setSupplier(body, null);
+            return;
         }
         catch (error) {
             throw error;
@@ -80,6 +85,40 @@ export class SupplierService {
                     await deleteApiPhp([newPath]);
                 }
                 await SupplierRepository.deleteSupplier(Number(id));
+                return;
+            }
+            throw new AllError("Parametros inválidos!", 400);
+        }
+        catch (error) {
+            throw error;
+        }
+    }
+    static async updateSupplier(body, image, id) {
+        try {
+            if (Number(id)) {
+                const supplier = await SupplierRepository.getById(Number(id));
+                if (!supplier) {
+                    throw new AllError("Usuário não encontrado no sistema!");
+                }
+                const idAddress = supplier[0]?.address_supplier_pf[0].id_address;
+                const idImage = supplier[0]?.supplier_imagem[0].id_image;
+                const pathExist = supplier[0]?.supplier_imagem[0].supplier_pf_image.path;
+                if (pathExist) {
+                    const newPath = pathExist?.replace("https://bgtech.com.br/erp/assets/", "");
+                    await deleteApiPhp([newPath]);
+                }
+                if (image) {
+                    const file = image.path;
+                    console.log(file);
+                    const apiPhp = await ApiPhpUtils([file], "img_profile", [image]);
+                    console.log(apiPhp[0]);
+                    idAddress && idImage ? await SupplierRepository.updateSupplier(Number(id), idAddress, idImage, body, apiPhp[0]) : null;
+                    return;
+                }
+                console.log(idAddress);
+                console.log(body);
+                console.log('chehuei aqui');
+                idAddress && idImage ? await SupplierRepository.updateSupplier(Number(id), idAddress, idImage, body, null) : null;
                 return;
             }
             throw new AllError("Parametros inválidos!", 400);

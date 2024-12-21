@@ -152,7 +152,7 @@ export class SupplierPjRespository {
           data: { ...pj },
         });
         await tsx.address.update({
-          where: { id: addressId },
+          where: { id: addressId},
           data: { ...address },
         });
         await tsx.imagem.update({
