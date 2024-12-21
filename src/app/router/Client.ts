@@ -21,17 +21,13 @@ clientRouter.post(
   CreateClientValidator(),
   Client.CreateClient
 );
-clientRouter.get("/", authentication, hasPermission("ler"), showClients);
+
 clientRouter.get("/", showClients);
 clientRouter.get("/filtragem", Client.showClientsFilter);
 clientRouter.get("/:id", showClientById);
 clientRouter.get("/enderecos/:id", Client.getAllAddress);
 clientRouter.patch(
   "/atualizar/:id",
-
-  authentication,
-  hasPermission("atualizar"),
-
   UploadFile.Upload().array("photos", 5),
   CreateClientValidator(),
   Client.updateClient

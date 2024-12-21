@@ -103,7 +103,7 @@ model Supplier_pf {
   email               String                @db.VarChar(150)
   phone               String                @db.VarChar(20)
   rg                  String                @db.VarChar(15)
-  cpf                 String                @unique           @db.VarChar(11)
+  cpf                 String                @unique @db.VarChar(11)
   birth_date          DateTime?
   // product_supplier_pf Product_Supplier_pf[]
   address_supplier_pf Supplier_pf_Address[]
@@ -120,9 +120,9 @@ model Supplier_pf_Image {
   supplier_pf_image imagem      @relation(fields: [id_image], references: [id], onDelete: Cascade, onUpdate: Cascade)
   created_at        DateTime    @default(now())
   update_at         DateTime    @default(now())
+
   @@id([id_image, id_supplier_pf])
 }
-
 
 model Supplier_pf_Address {
   id             Int @id @default(autoincrement())
@@ -163,7 +163,6 @@ model Supplier_pf_Address {
 //   // @@id([id_product, id_supplier_pf])
 //   @@id([id_supplier_pf])
 // }
-
 
 model Supplier_pj {
   id                     Int                   @id @default(autoincrement())
