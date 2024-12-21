@@ -30,6 +30,16 @@
 // );
 // console.log(response.data);
 
+// const cnpj = "35.338.247/0001-05"
+
+// const newCnpj = cnpj.replace(/\D/g, "")
+// console.log(newCnpj);
+
+const date = "1980-05-12"
+
+const newdate =  Date.toString(date + "T00:00:00Z")
+
+console.log(newdate);
 // import { log } from "console";
 
 // const a = undefined

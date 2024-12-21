@@ -1,5 +1,7 @@
 import { AllError } from "../error/AllError.js";
 import { SupplierRepository } from "../repository/SupplierRepository.js";
+import { ApiPhpUtils } from "../utils/ApiPhp.js";
+import { deleteApiPhp } from "../middleware/ApiPhp.js";
 export class SupplierService {
     // : Promise<AllSupplier_pf[] | null>
     static async getAll(skip) {
@@ -22,11 +24,6 @@ export class SupplierService {
                 const supplier = resultQuery.map(({ ...resultQuery }) => {
                     return {
                         ...resultQuery,
-                        product_supplier_pf: [
-                            ...resultQuery.product_supplier_pf.map(({ product }) => {
-                                return { product };
-                            })
-                        ],
                         address_supplier_pf: [
                             ...resultQuery.address_supplier_pf.map(({ address }) => {
                                 return { address };
@@ -41,6 +38,49 @@ export class SupplierService {
                     };
                 });
                 return supplier;
+            }
+            throw new AllError("Parametros inválidos!", 400);
+        }
+        catch (error) {
+            throw error;
+        }
+    }
+    static async setSupplier(body, image) {
+        try {
+            const supplier = await SupplierRepository.getByCpf(body.supplier.cpf);
+            console.log(supplier);
+            if (supplier) {
+                throw new AllError("Usuário já cadastrado no sistema!", 409);
+            }
+            if (image) {
+                const file = image.path;
+                const apiPhp = await ApiPhpUtils([file], "img_profile", [image]);
+                console.log(apiPhp[0]);
+                await SupplierRepository.setSupplier(body, apiPhp[0]);
+                return;
+            }
+            return await SupplierRepository.setSupplier(body, null);
+        }
+        catch (error) {
+            throw error;
+        }
+    }
+    static async deleteSupplier(id) {
+        try {
+            console.log(id);
+            if (Number(id)) {
+                const [supplier] = await SupplierRepository.getById(Number(id));
+                if (!supplier) {
+                    throw new AllError("Usuário não encontrado no sistema!", 404);
+                }
+                const path = await SupplierRepository.getImage(Number(id));
+                const newPath = path?.replace("https://bgtech.com.br/erp/assets/", "");
+                console.log(newPath);
+                if (newPath) {
+                    await deleteApiPhp([newPath]);
+                }
+                await SupplierRepository.deleteSupplier(Number(id));
+                return;
             }
             throw new AllError("Parametros inválidos!", 400);
         }
