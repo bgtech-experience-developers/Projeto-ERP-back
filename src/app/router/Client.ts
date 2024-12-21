@@ -30,9 +30,6 @@ clientRouter.patch(
   Client.updateClient
 );
 
-clientRouter.delete(
-  "/remover/:id",
-  Client.deleteClient
-);
+clientRouter.delete("/remover/:id", Client.deleteClient);
 
 clientRouter.use(GlobalError);
