@@ -39,7 +39,6 @@ import path from "path";
 // }
 // a(arquivos)
 
-
 // const result = await cloud.api.delete_resources(
 //   ["client/erp/softhouse-loo", "client/erp/OKEMOe"],
 //   (err, resul) => {
@@ -98,3 +97,7 @@ import path from "path";
 //   value ? ((file[index] = arrayNovo[controle]), controle++) : "";
 // });
 // console.log(file);
+
+import bycript from "bcrypt";
+const password = bycript.hashSync("minha senha", 10);
+console.log(password);
