@@ -3,7 +3,7 @@ import { InstanciaPrisma } from "../db/PrismaClient.js";
 import { da } from "@faker-js/faker";
 
 
-export class SupplierRepository {
+export default class SupplierRepository {
     protected static connectionDb: PrismaClient = InstanciaPrisma.GetConnection();
 
     // Estudar Promisse.All()
@@ -169,7 +169,6 @@ export class SupplierRepository {
         }
     }
 
-
     static async updateSupplier(id: number, idAddress: number,idImage: number, {supplier, address}: BodySupplierPf, image: string | null) {
         try {
             // await this.connectionDb.supplier_pf.update({
@@ -258,6 +257,58 @@ export class SupplierRepository {
             })
             
         }  catch(error) {   
+            throw error;
+        }
+    }
+
+    static async getFilterByStatus({cpf, email, supplier_name, phone}: filterSupplierPf, status: string | null, page: number) {
+        try {
+            return await this.connectionDb.supplier_pf.findMany({
+                where: {
+                    OR: [
+                        {supplier_name: {contains: supplier_name.contanis}},
+                        {email: {contains: email.contanis}},
+                        {phone: {contains: phone.contanis}},
+                        {cpf: {contains: cpf.contanis}}],
+                        AND: {status: status === "true" ? true : false},
+                },
+                select: {
+                    supplier_name: true,
+                    email: true,
+                    phone: true,
+                    cpf: true
+                },
+                skip: page,
+                take: 10
+            })
+        } catch(error) {
+            throw error;
+
+        }
+    }
+
+    static async getFilter({cpf, email, supplier_name, phone}: filterSupplierPf, page: number) {
+        try {
+            return await this.connectionDb.supplier_pf.findMany({
+                where: {
+                    OR: [
+                        {supplier_name: {contains: supplier_name.contanis}},
+                        {email: {contains: email.contanis}},
+                        {phone: {contains: phone.contanis}},
+                        {cpf: {contains: cpf.contanis}}],                    
+                },
+                select: {
+                    supplier_name: true,
+                    email: true,
+                    phone: true,
+                    cpf: true
+                },
+                skip: page,
+                take: 10
+
+            })
+
+        } catch(error) {
             throw error;
         }
     }

@@ -62,4 +62,24 @@ export class SupplierController {
         }
 
     }
+
+    static async getByFilter(request: Request<any, any, any, {page: string, status: string, value: string, }>, response: Response, next:NextFunction) {
+        try {
+            const query = request.query;
+            // Ele faz isso para poder passar como parâmetro pra função do service
+            const status = query.status ? (query.status as string) : null;
+            // Oque ele vai fazer com esse valor em branco "";
+            const value = typeof query.value === "string" ? query.value : "";
+            // A lógica que seria emplementada no service
+            // const page = Number(query.page) ? Number(query.page) * 10 : 10;
+
+            const queryResult = await SupplierService.getByFilter(query.page, status, value);
+            
+            console.log(request.query);
+            response.status(200).json(queryResult);
+            
+        } catch(error) {
+            next(error)
+        }
+    }
 }

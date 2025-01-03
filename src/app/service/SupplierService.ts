@@ -1,6 +1,6 @@
 import { log } from "node:console";
 import { AllError } from "../error/AllError.js";
-import { SupplierRepository } from "../repository/SupplierRepository.js";
+import SupplierRepository from "../repository/SupplierRepository.js";
 import { ApiPhpUtils } from "../utils/ApiPhp.js";
 import { Sharp } from "../utils/sharp.js";
 import { deleteApiPhp } from "../middleware/ApiPhp.js";
@@ -162,6 +162,43 @@ export class SupplierService {
         } catch(error) {
             throw error
         }
+    }
+
+    static async getByFilter(page: string | number, status: string | null, value: string) {
+        try {
+            const filterCondition = this.FilterContains(value, [
+                "supplier_name",
+                "cpf",
+                "email",
+                "phone"
+            ]); 
+
+            const offset = (Number(page) - 1) * 10
+            return status ? await SupplierRepository.getFilterByStatus(filterCondition, status, offset) : SupplierRepository.getFilter(filterCondition, offset);
+        } catch(error) {
+            throw error;
+        }
+    }
+
+    private static FilterContains(
+    value: string,
+    fields: [
+        keyof filterSupplierPf,
+        keyof filterSupplierPf,
+        keyof filterSupplierPf,
+        keyof filterSupplierPf
+    ]
+    ) {
+    const filter: filterSupplierPf = {
+        supplier_name: { contanis: "" },
+        cpf: { contanis: "" },
+        email: { contanis: "" },
+        phone: { contanis: "" },
+    };
+    fields.forEach((field, index) => {
+        filter[field] = { contanis: value };
+    });
+    return filter;
     }
 
 }

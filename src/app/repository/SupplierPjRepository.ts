@@ -39,6 +39,7 @@ export class SupplierPjRespository {
       throw error;
     }
   }
+
   static async findSupplierById(id: number) {
     try {
       const [registerSupplier] = (await this.connection
@@ -49,6 +50,7 @@ export class SupplierPjRespository {
       throw error;
     }
   }
+
   static async filterSupplier(
     { email, phone, corporate_reason, answerable }: filterSupplier,
     page: number,
@@ -77,36 +79,38 @@ export class SupplierPjRespository {
       throw error;
     }
   }
+
   static async filterSupplierByStatus(
-    { email, phone, corporate_reason, answerable }: filterSupplier,
-    status: string | null,
-    page: number,
-    limit: number
-  ) {
-    try {
-      return await this.connection.supplier_pj.findMany({
-        where: {
-          OR: [
-            { email: email.contanis },
-            { phone: phone.contanis },
-            { corporate_reason: corporate_reason.contanis },
-            { answerable: answerable.contanis },
-          ],
-          AND: { status: status === "true" ? true : false },
-        },
-        select: {
-          email: true,
-          phone: true,
-          corporate_reason: true,
-          answerable: true,
-        },
-        skip: page,
-        take: limit,
-      });
-    } catch (error) {
-      throw error;
-    }
+      { email, phone, corporate_reason, answerable }: filterSupplier,
+      status: string | null,
+      page: number,
+      limit: number
+    ) {
+      try {
+        return await this.connection.supplier_pj.findMany({
+          where: {
+            OR: [
+              { email: email.contanis },
+              { phone: phone.contanis },
+              { corporate_reason: corporate_reason.contanis },
+              { answerable: answerable.contanis },
+            ],
+            AND: { status: status === "true" ? true : false },
+          },
+          select: {
+            email: true,
+            phone: true,
+            corporate_reason: true,
+            answerable: true,
+          },
+          skip: page,
+          take: limit,
+        });
+      } catch (error) {
+        throw error;
+      }
   }
+
   static async getAll(page: number, limit: number) {
     try {
       const registerColaboraters = await this.connection
@@ -126,6 +130,7 @@ export class SupplierPjRespository {
       throw error;
     }
   }
+
   static getSuppliersByStatus(
     status: number,
     pageSized: number,
@@ -138,6 +143,7 @@ export class SupplierPjRespository {
       throw error;
     }
   }
+
   static async updateByIdSupplier(
     { pj, address }: SupplierPj,
     image: SupplierFildsString | SupplierFildsString[],
@@ -165,6 +171,7 @@ export class SupplierPjRespository {
       throw error;
     }
   }
+
   static async setSupplier({ pj, address }: SupplierPj, image: AllImagens) {
     try {
       const result = await this.connection.$transaction(async (tsx) => {
@@ -186,6 +193,7 @@ export class SupplierPjRespository {
       throw error;
     }
   }
+
   static async removeSupplierByAddressAndImage(
     addressId: number,
     ImageId: number
@@ -201,4 +209,5 @@ export class SupplierPjRespository {
       throw error;
     }
   }
+  
 }

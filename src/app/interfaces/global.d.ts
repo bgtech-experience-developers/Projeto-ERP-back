@@ -154,6 +154,7 @@ interface Supplier_pf {
   rg: string;
   cpf: string;
   birth_date: string;
+  status: boolean
   // product_supplier_pf?: Product_Supplier_pf;
   // address_supplier_pf?: Address;
 }
@@ -181,4 +182,13 @@ interface Product_Supplier_pf {
   price: string;
   purchase_tax: string;
   delivery_time: string;
+}
+
+type filterContanis = {contanis: string}
+
+interface filterSupplierPf {
+  supplier_name: filterContanis
+  cpf: filterContanis
+  email: filterContanis
+  phone: filterContanis
 }

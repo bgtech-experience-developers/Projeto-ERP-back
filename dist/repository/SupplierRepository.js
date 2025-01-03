@@ -1,5 +1,5 @@
 import { InstanciaPrisma } from "../db/PrismaClient.js";
-export class SupplierRepository {
+export default class SupplierRepository {
     static connectionDb = InstanciaPrisma.GetConnection();
     // Estudar Promisse.All()
     // : Promise<AllSupplier_pf[] | null> 
@@ -228,6 +228,57 @@ export class SupplierRepository {
                         }
                     }
                 });
+            });
+        }
+        catch (error) {
+            throw error;
+        }
+    }
+    static async getFilterByStatus({ cpf, email, supplier_name, phone }, status, page) {
+        try {
+            return await this.connectionDb.supplier_pf.findMany({
+                where: {
+                    OR: [
+                        { supplier_name: { contains: supplier_name.contanis } },
+                        { email: { contains: email.contanis } },
+                        { phone: { contains: phone.contanis } },
+                        { cpf: { contains: cpf.contanis } }
+                    ],
+                    AND: { status: status === "true" ? true : false },
+                },
+                select: {
+                    supplier_name: true,
+                    email: true,
+                    phone: true,
+                    cpf: true
+                },
+                skip: page,
+                take: 10
+            });
+        }
+        catch (error) {
+            throw error;
+        }
+    }
+    static async getFilter({ cpf, email, supplier_name, phone }, page) {
+        try {
+            return await this.connectionDb.supplier_pf.findMany({
+                where: {
+                    OR: [
+                        { supplier_name: { contains: supplier_name.contanis } },
+                        { email: { contains: email.contanis } },
+                        { phone: { contains: phone.contanis } },
+                        { cpf: { contains: cpf.contanis } }
+                    ],
+                },
+                select: {
+                    supplier_name: true,
+                    email: true,
+                    phone: true,
+                    cpf: true
+                },
+                skip: page,
+                take: 10
             });
         }
         catch (error) {

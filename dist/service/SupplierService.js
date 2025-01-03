@@ -1,5 +1,5 @@
 import { AllError } from "../error/AllError.js";
-import { SupplierRepository } from "../repository/SupplierRepository.js";
+import SupplierRepository from "../repository/SupplierRepository.js";
 import { ApiPhpUtils } from "../utils/ApiPhp.js";
 import { deleteApiPhp } from "../middleware/ApiPhp.js";
 export class SupplierService {
@@ -126,5 +126,32 @@ export class SupplierService {
         catch (error) {
             throw error;
         }
+    }
+    static async getByFilter(page, status, value) {
+        try {
+            const filterCondition = this.FilterContains(value, [
+                "supplier_name",
+                "cpf",
+                "email",
+                "phone"
+            ]);
+            const offset = (Number(page) - 1) * 10;
+            return status ? await SupplierRepository.getFilterByStatus(filterCondition, status, offset) : SupplierRepository.getFilter(filterCondition, offset);
+        }
+        catch (error) {
+            throw error;
+        }
+    }
+    static FilterContains(value, fields) {
+        const filter = {
+            supplier_name: { contanis: "" },
+            cpf: { contanis: "" },
+            email: { contanis: "" },
+            phone: { contanis: "" },
+        };
+        fields.forEach((field, index) => {
+            filter[field] = { contanis: value };
+        });
+        return filter;
     }
 }
