@@ -6,10 +6,10 @@ import { func } from "joi";
 import { SupplierPfMiddleware } from "../middleware/SupplierPfMiddleware.js";
 import { SupplierService } from "../service/SupplierService.js";
 const supplierPf = express.Router();
-
-supplierPf.get("/", SupplierController.getAll);
+supplierPf.get("/", SupplierController.getAll)
+supplierPf.get("/status", SupplierController.getAllByStatus);
 supplierPf.post("/", SupplierPfMiddleware.uploadFileSingle, SupplierPfMiddleware.handleFile, SupplierController.setSupplier);
-supplierPf.get("/filtrar", SupplierController.getByFilter)
+supplierPf.get("/filtrar", SupplierController.getByFilter);
 supplierPf.get("/:id", SupplierController.getById);
 supplierPf.patch("/:id", SupplierPfMiddleware.uploadFileSingle, SupplierPfMiddleware.handleFile, SupplierController.updateSupplier);
 supplierPf.delete("/:id", SupplierController.deleteSupplier);

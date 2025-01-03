@@ -14,6 +14,20 @@ export default class SupplierRepository {
             throw error;
         }
     }
+    static async getAllByStatus(skip, status) {
+        try {
+            return await this.connectionDb.supplier_pf.findMany({
+                where: {
+                    status: status
+                },
+                take: 10,
+                skip
+            });
+        }
+        catch (error) {
+            throw error;
+        }
+    }
     static async getById(id) {
         try {
             const supplier = await this.connectionDb.supplier_pf.findUnique({

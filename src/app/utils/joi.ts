@@ -103,7 +103,8 @@ export class JoiValidation {
         "string.min":
         "O campo cpf deve conter no mínimo 11 digitos"
       }),
-      birth_date: joi.string().trim().allow("")
+      birth_date: joi.string().trim().allow(""),
+      status: joi.optional()
     })
 
     // const schemaProduct = joi.object<Product_Supplier_pf>({

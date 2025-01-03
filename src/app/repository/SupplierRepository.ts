@@ -1,6 +1,8 @@
 import { PrismaClient } from "@prisma/client";
 import { InstanciaPrisma } from "../db/PrismaClient.js";
 import { da } from "@faker-js/faker";
+import { boolean } from "joi";
+import { log } from "node:console";
 
 
 export default class SupplierRepository {
@@ -21,7 +23,22 @@ export default class SupplierRepository {
         }
 
 
-    } 
+    }
+
+    static async getAllByStatus(skip: number, status: boolean) {
+        
+        try {
+            return await this.connectionDb.supplier_pf.findMany({
+                where: {
+                    status: status
+                },
+                take: 10,
+                skip
+            })
+        } catch(error) {
+            throw error;
+        }
+    }
 
     static async getById(id: number) {
         try {

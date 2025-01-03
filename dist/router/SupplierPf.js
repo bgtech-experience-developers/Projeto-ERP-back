@@ -3,6 +3,7 @@ import { SupplierController } from "../controller/SupplierController.js";
 import { SupplierPfMiddleware } from "../middleware/SupplierPfMiddleware.js";
 const supplierPf = express.Router();
 supplierPf.get("/", SupplierController.getAll);
+supplierPf.get("/status", SupplierController.getAllByStatus);
 supplierPf.post("/", SupplierPfMiddleware.uploadFileSingle, SupplierPfMiddleware.handleFile, SupplierController.setSupplier);
 supplierPf.get("/filtrar", SupplierController.getByFilter);
 supplierPf.get("/:id", SupplierController.getById);

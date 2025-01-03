@@ -73,6 +73,7 @@ CREATE TABLE `Supplier_pf` (
     `rg` VARCHAR(15) NOT NULL,
     `cpf` VARCHAR(11) NOT NULL,
     `birth_date` DATETIME(3) NULL,
+    `status` BOOLEAN NOT NULL DEFAULT false,
     `created_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `update_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
 
@@ -92,13 +93,12 @@ CREATE TABLE `Supplier_pf_Image` (
 
 -- CreateTable
 CREATE TABLE `Supplier_pf_Address` (
-    `id` INTEGER NOT NULL AUTO_INCREMENT,
     `id_supplier_pf` INTEGER NOT NULL,
     `id_address` INTEGER NOT NULL,
     `created_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `update_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
 
-    PRIMARY KEY (`id`)
+    PRIMARY KEY (`id_address`, `id_supplier_pf`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable

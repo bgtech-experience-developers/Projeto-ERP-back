@@ -27,7 +27,7 @@ export class SupplierPfMiddleware {
             // request.body.supplier.cell_phone = request.body.supplier.cell_phone?.replace(/\D/g, "")
             // console.log(request.body);
 
-            const schemaValidation = await JoiValidation.schemaCreateSupplierPf(request.body)
+            const schemaValidation = await JoiValidation.schemaCreateSupplierPf(request.body);
             // console.log(schemaValidation);
             
             // Implementar a ideía de caso dê errado o corpo cancele o upload. E caso a imagem esteja ausente?

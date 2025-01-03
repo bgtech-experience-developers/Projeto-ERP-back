@@ -5,15 +5,38 @@ import { ApiPhpUtils } from "../utils/ApiPhp.js";
 import { Sharp } from "../utils/sharp.js";
 import { deleteApiPhp } from "../middleware/ApiPhp.js";
 import { ALL } from "node:dns";
+import { boolean } from "joi";
 
 export class SupplierService {
     // : Promise<AllSupplier_pf[] | null>
-    static async getAll(skip: string | number) {
+    static async getAll(page: string | number) {
         try {
-            if(Number(skip)) {
-                const offset = (Number(skip) - 1) * 10
-                // const allSupplier: AllSupplier_pf[] | null = await SupplierRepository.getAll(offset)
-                return await SupplierRepository.getAll(offset)
+             if(Number(page)) {
+                const offset = (Number(page) - 1) * 10;
+                return await SupplierRepository.getAll(offset);
+             }
+
+            throw new AllError("Parametros inválidos!", 400);
+            
+        } catch(error) {
+            throw error;
+        }
+    }
+    static async getAllByStatus(page: string | number, status:  string | boolean | null) {
+        try {
+            if(Number(page)) {
+                const offset = (Number(page) - 1) * 10;
+
+                // Criei uma redundância para não quebrar a query, se não especificar que é true, automaticamente é false.
+                // Aqui pode ser o erro
+                const newStatus = status === "true" ? true : false;
+                // console.log(newStatus);
+                // console.log(offset)
+                // if (typeof newStatus !== "boolean") {
+                //    throw new AllError("Parâmetro 'status' inválido!");
+                   
+                // }
+                return newStatus ? await SupplierRepository.getAllByStatus(offset, newStatus) :  await SupplierRepository.getAllByStatus(offset, newStatus);
 
             } 
 
@@ -122,9 +145,10 @@ export class SupplierService {
     static async updateSupplier(body: BodySupplierPf, image: Express.Multer.File, id: number | string) {
         try {
             if(Number(id)) {
-                const supplier = await SupplierRepository.getById(Number(id))
+                const supplier = await SupplierRepository.getById(Number(id));
+                console.log(supplier);                
                 
-                if(!supplier) {
+                if(!supplier[0]) {
                     throw new AllError("Usuário não encontrado no sistema!")
                 }
 
@@ -149,7 +173,7 @@ export class SupplierService {
                 console.log(idAddress);
                 console.log(body);
                 
-                console.log('chehuei aqui');
+                // console.log('chehuei aqui');
                 
                 idAddress && idImage ? await SupplierRepository.updateSupplier(Number(id), idAddress, idImage, body, null ) : null
                 return
@@ -179,6 +203,16 @@ export class SupplierService {
             throw error;
         }
     }
+    
+    // static async getAllByStatus(page: string | number, status: string | null) {
+    //     try {
+    //         const offset = (Number(page) - 1) * 10;
+
+    //         return status ? await SupplierRepository.getAllByStatus(offset, status) : await SupplierRepository.getAll(offset)
+    //     } catch(error) {
+    //         throw error;            
+    //     }
+    // }
 
     private static FilterContains(
     value: string,
@@ -200,6 +234,7 @@ export class SupplierService {
     });
     return filter;
     }
+
 
 }
 

@@ -3,8 +3,17 @@ export class SupplierController {
     // <AllSupplier_pf[] | null>
     static async getAll(request, response, next) {
         try {
+            const queryResult = await SupplierService.getAll(request.query.page);
+            response.status(200).json(queryResult);
+        }
+        catch (error) {
+            next(error);
+        }
+    }
+    static async getAllByStatus(request, response, next) {
+        try {
             // const AllSupplier: AllSupplier_pf[] | null = await SupplierService.getAll(request.query.page)
-            const allSuppliers = await SupplierService.getAll(request.query.page);
+            const allSuppliers = await SupplierService.getAllByStatus(request.query.page, request.query.status);
             response.status(200).json(allSuppliers);
             return;
         }
