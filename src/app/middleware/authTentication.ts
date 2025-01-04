@@ -1,4 +1,4 @@
-  import { NextFunction, Response, Request } from "express";
+import { NextFunction, Response, Request } from "express";
 import jwt, { verify } from "jsonwebtoken";
 import { AllError } from "../error/AllError.js";
 
@@ -10,6 +10,7 @@ export const authentication = (
   try {
     const { authorization } = request.headers;
     const token = authorization && authorization.split(" ")[1];
+
     if (!token) {
       throw new AllError("token não fornecido");
     }
@@ -19,6 +20,7 @@ export const authentication = (
     }
     jwt.verify(token, secret, (err, payload) => {
       if (err) {
+        console.log(err);
         throw new AllError("não autorizado", 403);
       }
       request.body.user = payload;
