@@ -13,6 +13,6 @@ clientRouter.get("/", showClients);
 clientRouter.get("/filtragem", Client.showClientsFilter);
 clientRouter.get("/:id", showClientById);
 clientRouter.get("/enderecos/:id", Client.getAllAddress);
-clientRouter.patch("/atualizar/:id", UploadFile.Upload().array("photos", 5), CreateClientValidator(), Client.updateClient);
-clientRouter.delete("/remover/:id", Client.deleteClient);
+clientRouter.patch("/atualizar/:id", authentication, hasPermission("atualizar"), UploadFile.Upload().array("photos", 5), CreateClientValidator(), Client.updateClient);
+clientRouter.delete("/remover/:id", authentication, hasPermission("atualizar"), Client.deleteClient);
 clientRouter.use(GlobalError);

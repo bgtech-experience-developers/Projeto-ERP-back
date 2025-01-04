@@ -5,6 +5,8 @@ export class AdmValidator {
         return async (request, response, next) => {
             try {
                 const body = request.body;
+                body.cnpj = body.cnpj.replace(/\D/gi, "");
+                body.password = body.password.replace(/\D/gi, "");
                 const { error, value } = await JoiValidation.schemaLogin(body);
                 if (error) {
                     throw new AllError(error.message);

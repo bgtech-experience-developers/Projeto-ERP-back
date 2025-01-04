@@ -12,7 +12,9 @@ export class AdmValidator {
   ): (request: Request, response: Response, next: NextFunction) => void {
     return async (request: Request, response: Response, next: NextFunction) => {
       try {
-        const body = request.body;
+        const body: login = request.body;
+        body.cnpj = body.cnpj.replace(/\D/gi, "");
+        body.password = body.password.replace(/\D/gi, "");
 
         const { error, value } = await JoiValidation.schemaLogin(body);
         if (error) {
@@ -20,6 +22,7 @@ export class AdmValidator {
         }
         if (adm) {
           const query$String = request.query.permission as string;
+
           if (!query$String) {
             throw new AllError(
               "é necessário pelo menos uma permissão para criar um administrador"
