@@ -14,6 +14,7 @@ export class SupplierController {
         }
 
     }
+
     static async getAllByStatus(request: Request<any, any, any, {page: string, status: string}>, response: Response, next: NextFunction) {
         
         try {
@@ -92,4 +93,6 @@ export class SupplierController {
             next(error)
         }
     }
+
+    
 }
