@@ -9,11 +9,11 @@ datasource db {
 
 model Client {
   id                 Int                  @default(autoincrement())
-  corporate_reason   String               @db.VarChar(100)
-  fantasy_name       String?              @db.VarChar(100)
-  branch_activity    String?              @db.VarChar(100)
+  corporate_reason   String               @db.VarChar(1000)
+  fantasy_name       String?              @db.VarChar(1000)
+  branch_activity    String?              @db.VarChar(1000)
   cnpj               String               @db.VarChar(14)
-  state_registration String?              @db.VarChar(9)
+  state_registration String?              @db.VarChar(100)
   type_contribuition String?
   situation          Boolean              @default(true)
   image_company      image_company[]
@@ -32,10 +32,10 @@ model Client {
 
 model sector {
   id         Int     @default(autoincrement())
-  name       String? @db.VarChar(100)
-  email      String? @db.VarChar(100)
-  phone      String? @db.VarChar(100)
-  cell_phone String? @db.VarChar(100)
+  name       String? @db.VarChar(1000)
+  email      String? @db.VarChar(1000)
+  phone      String? @db.VarChar(1000)
+  cell_phone String? @db.VarChar(1000)
   rg         String?
   cpf        String? @db.VarChar(11)
 
@@ -71,11 +71,11 @@ model imagem {
 model Address {
   id           Int     @id @default(autoincrement())
   cep          String? @db.VarChar(8)
-  street       String? @db.VarChar(100)
-  number       String? @db.VarChar(100)
-  complement   String? @db.VarChar(100)
-  city         String? @db.VarChar(100)
-  neighborhood String? @db.VarChar(100)
+  street       String? @db.VarChar(1000)
+  number       String? @db.VarChar(1000)
+  complement   String? @db.VarChar(1000)
+  city         String? @db.VarChar(1000)
+  neighborhood String? @db.VarChar(1000)
   state        String?
 
   company_address     company_address[]
@@ -101,7 +101,7 @@ model Supplier_pf {
   supplier_name       String                @db.VarChar(255)
   supplier_code       String                @db.VarChar(255)
   email               String                @db.VarChar(150)
-  phone               String                @db.VarChar(20)
+  phone               String                @db.VarChar(200)
   rg                  String                @db.VarChar(15)
   cpf                 String                @unique @db.VarChar(11)
   birth_date          DateTime?
