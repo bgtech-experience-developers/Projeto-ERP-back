@@ -7,7 +7,7 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Client {
+model client {
   id                 Int                  @default(autoincrement())
   corporate_reason   String               @db.VarChar(1000)
   fantasy_name       String?              @db.VarChar(1000)
@@ -33,9 +33,9 @@ model Client {
 model sector {
   id         Int     @default(autoincrement())
   name       String? @db.VarChar(1000)
-  email      String? @db.VarChar(1000)
-  phone      String? @db.VarChar(1000)
-  cell_phone String? @db.VarChar(1000)
+  email      String? @db.VarChar(100)
+  phone      String? @db.VarChar(100)
+  cell_phone String? @db.VarChar(100)
   rg         String?
   cpf        String? @db.VarChar(11)
 
@@ -62,61 +62,61 @@ model imagem {
   commercial_imagem        commercial_image[]
   owner_partner            owner_partner_image[]
   accounting_contact_image accounting_contact_image[]
-  supplier_pf              Supplier_pf_Image[]
-  supplier_pj              Supplier_pj[]
+  supplier_pf              supplier_pf_Image[]
+  supplier_pj              supplier_pj[]
   created_at               DateTime                   @default(now())
   update_at                DateTime                   @default(now())
 }
 
-model Address {
+model address {
   id           Int     @id @default(autoincrement())
   cep          String? @db.VarChar(8)
-  street       String? @db.VarChar(1000)
-  number       String? @db.VarChar(1000)
-  complement   String? @db.VarChar(1000)
-  city         String? @db.VarChar(1000)
-  neighborhood String? @db.VarChar(1000)
+  street       String? @db.VarChar(100)
+  number       String? @db.VarChar(100)
+  complement   String? @db.VarChar(100)
+  city         String? @db.VarChar(100)
+  neighborhood String? @db.VarChar(100)
   state        String?
 
   company_address     company_address[]
   delivery_address    delivery_address[]
-  address_supplier_pf Supplier_pf_Address[]
+  address_supplier_pf supplier_pf_Address[]
 
-  Supplier_pj_address Supplier_pj_address[]
+  Supplier_pj_address supplier_pj_address[]
   created_at          DateTime              @default(now())
   update_at           DateTime              @default(now())
 }
 
-model Supplier_pj_address {
+model supplier_pj_address {
   id_address  Int
   id_supplier Int
-  supplier    Supplier_pj @relation(fields: [id_supplier], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  address     Address     @relation(fields: [id_address], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  supplier    supplier_pj @relation(fields: [id_supplier], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  address     address     @relation(fields: [id_address], references: [id], onDelete: Cascade, onUpdate: Cascade)
 
   @@id([id_address, id_supplier])
 }
 
-model Supplier_pf {
+model supplier_pf {
   id                  Int                   @id @default(autoincrement())
   supplier_name       String                @db.VarChar(255)
   supplier_code       String                @db.VarChar(255)
   email               String                @db.VarChar(150)
-  phone               String                @db.VarChar(200)
+  phone               String                @db.VarChar(20)
   rg                  String                @db.VarChar(15)
   cpf                 String                @unique @db.VarChar(11)
   birth_date          DateTime?
   // product_supplier_pf Product_Supplier_pf[]
-  address_supplier_pf Supplier_pf_Address[]
-  supplier_imagem     Supplier_pf_Image[]
+  address_supplier_pf supplier_pf_Address[]
+  supplier_imagem     supplier_pf_Image[]
   created_at          DateTime              @default(now())
   update_at           DateTime              @default(now())
 }
 
-model Supplier_pf_Image {
+model supplier_pf_Image {
   // id                Int         @id @default(autoincrement())
   id_supplier_pf    Int
   id_image          Int
-  supplier_pf       Supplier_pf @relation(fields: [id_supplier_pf], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  supplier_pf       supplier_pf @relation(fields: [id_supplier_pf], references: [id], onDelete: Cascade, onUpdate: Cascade)
   supplier_pf_image imagem      @relation(fields: [id_image], references: [id], onDelete: Cascade, onUpdate: Cascade)
   created_at        DateTime    @default(now())
   update_at         DateTime    @default(now())
@@ -124,7 +124,7 @@ model Supplier_pf_Image {
   @@id([id_image, id_supplier_pf])
 }
 
-model Supplier_pf_Address {
+model supplier_pf_Address {
   id             Int @id @default(autoincrement())
   id_supplier_pf Int
   id_address     Int
@@ -132,8 +132,8 @@ model Supplier_pf_Address {
   created_at DateTime @default(now())
   update_at  DateTime @default(now())
 
-  supplier_pf Supplier_pf @relation(fields: [id_supplier_pf], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  address     Address     @relation(fields: [id_address], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  supplier_pf supplier_pf @relation(fields: [id_supplier_pf], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  address     address     @relation(fields: [id_address], references: [id], onDelete: Cascade, onUpdate: Cascade)
 }
 
 // model Product {
@@ -164,11 +164,11 @@ model Supplier_pf_Address {
 //   @@id([id_supplier_pf])
 // }
 
-model Supplier_pj {
+model supplier_pj {
   id                     Int                   @id @default(autoincrement())
   id_imagem              Int
   imagem                 imagem                @relation(fields: [id_imagem], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  supplier_pj_address    Supplier_pj_address[]
+  supplier_pj_address    supplier_pj_address[]
   corporate_reason       String
   email                  String?
   phone                  String?
@@ -191,8 +191,8 @@ model company_address {
   id         Int      @id @default(autoincrement())
   adressId   Int
   clientId   Int
-  client     Client   @relation(fields: [clientId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  adress     Address  @relation(fields: [adressId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  client     client   @relation(fields: [clientId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  adress     address  @relation(fields: [adressId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   created_at DateTime @default(now())
   update_at  DateTime @default(now())
 }
@@ -212,7 +212,7 @@ model image_company {
   companyId  Int
   imageId    Int
   image      imagem   @relation(fields: [imageId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  company    Client   @relation(fields: [companyId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  company    client   @relation(fields: [companyId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   created_at DateTime @default(now())
   update_at  DateTime @default(now())
 
@@ -223,8 +223,8 @@ model delivery_address {
   id         Int      @id @default(autoincrement())
   adressId   Int
   clientId   Int
-  client     Client   @relation(fields: [clientId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  adress     Address  @relation(fields: [adressId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  client     client   @relation(fields: [clientId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  adress     address  @relation(fields: [adressId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   created_at DateTime @default(now())
   update_at  DateTime @default(now())
 }
@@ -243,7 +243,7 @@ model financial_image {
 model financial_contact {
   sectorId   Int
   clientId   Int
-  client     Client   @relation(fields: [clientId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  client     client   @relation(fields: [clientId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   sector     sector   @relation(fields: [sectorId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   created_at DateTime @default(now())
   update_at  DateTime @default(now())
@@ -265,7 +265,7 @@ model owner_partner_image {
 model owner_partner {
   sectorId   Int
   clientId   Int
-  client     Client   @relation(fields: [clientId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  client     client   @relation(fields: [clientId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   sector     sector   @relation(fields: [sectorId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   created_at DateTime @default(now())
 
@@ -278,7 +278,7 @@ model commercial_contact {
   sectorId Int
   clientId Int
 
-  client     Client   @relation(fields: [clientId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  client     client   @relation(fields: [clientId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   sector     sector   @relation(fields: [sectorId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   created_at DateTime @default(now())
   update_at  DateTime @default(now())
@@ -300,7 +300,7 @@ model accounting_contact_image {
 model accounting_contact {
   sectorId   Int
   clientId   Int
-  client     Client   @relation(fields: [clientId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  client     client   @relation(fields: [clientId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   sector     sector   @relation(fields: [sectorId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   created_at DateTime @default(now())
   update_at  DateTime @default(now())
@@ -308,28 +308,28 @@ model accounting_contact {
   @@id([sectorId, clientId])
 }
 
-model Adm {
+model adm {
   id         Int       @id @default(autoincrement())
   cnpj       String    @unique @db.Char(14)
   password   String
-  role_adm   RoleAdm[]
+  role_adm   roleadm[]
   created_at DateTime  @default(now())
   update_at  DateTime  @default(now())
 }
 
-model Role {
+model role {
   id         Int       @id @default(autoincrement())
   role_name  String
-  role_adm   RoleAdm[]
+  role_adm   roleadm[]
   created_at DateTime  @default(now())
   update_at  DateTime  @default(now())
 }
 
-model RoleAdm {
+model roleadm {
   adm_id     Int
   role_id    Int
-  adm        Adm      @relation(fields: [adm_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  role       Role     @relation(fields: [role_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  adm        adm      @relation(fields: [adm_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  role       role     @relation(fields: [role_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
   created_at DateTime @default(now())
   update_at  DateTime @default(now())
 

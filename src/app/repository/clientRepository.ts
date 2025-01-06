@@ -74,6 +74,7 @@ export class ClientRepository {
 
       //consumo da api do marney para armazenar as imagens
       const result = connectionDb.$transaction(async (tsx) => {
+      
         const client = await tsx.client.create({
           data: { ...cliente },
           select: { id: true },
