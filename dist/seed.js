@@ -80,7 +80,7 @@ async function main() {
                 phone: "85912345678",
                 supplier_imagem: {
                     create: {
-                        supplier_pf_image: {
+                        supplier_pf_imag: {
                             create: {
                                 path: faker.image.url(),
                             },
@@ -224,21 +224,21 @@ async function client() {
     await connectionDb.$transaction(record);
     console.log("100 registros criados com sucesso! de clientes");
 }
-// main()
-//   .then(async () => {
-//     await connectionDb.$disconnect();
-//   })
-//   .catch(async (e) => {
-//     console.error(e);
-//     await connectionDb.$disconnect();
-//     process.exit(1);
-//   });
-// client()
-//   .then(async () => {
-//     await connectionDb.$disconnect();
-//   })
-// .catch(async (e) => {
-//   console.log(e);
-//   await connectionDb.$disconnect();
-// });
+main()
+    .then(async () => {
+    await connectionDb.$disconnect();
+})
+    .catch(async (e) => {
+    console.error(e);
+    await connectionDb.$disconnect();
+    process.exit(1);
+});
+client()
+    .then(async () => {
+    await connectionDb.$disconnect();
+})
+    .catch(async (e) => {
+    console.log(e);
+    await connectionDb.$disconnect();
+});
 export default main;
