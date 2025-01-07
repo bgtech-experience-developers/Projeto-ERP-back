@@ -33,7 +33,7 @@ export class AdmRepository {
                 const adm = await tsx.adm.create({
                     data: { ...body },
                 });
-                const role = await tsx.roleAdm.createMany({
+                const role = await tsx.roleadm.createMany({
                     data: permissions.map((id) => {
                         return { adm_id: adm.id, role_id: id };
                     }),
@@ -56,7 +56,7 @@ export class AdmRepository {
                 select: {
                     id: true,
                     cnpj: true,
-                }
+                },
             });
         }
         catch (error) {

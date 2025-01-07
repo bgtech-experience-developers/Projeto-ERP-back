@@ -35,7 +35,7 @@ export class AdmRepository {
         const adm = await tsx.adm.create({
           data: { ...body },
         });
-        const role = await tsx.roleAdm.createMany({
+        const role = await tsx.roleadm.createMany({
           data: permissions.map((id) => {
             return { adm_id: adm.id, role_id: id };
           }),
@@ -49,8 +49,7 @@ export class AdmRepository {
   }
   static async update() {}
 
-  static async getAll(skip: number): Promise<adm[]>{
-
+  static async getAll(skip: number): Promise<adm[]> {
     try {
       const connectionDb = InstanciaPrisma.GetConnection();
 
@@ -60,11 +59,10 @@ export class AdmRepository {
         select: {
           id: true,
           cnpj: true,
-        }
+        },
       });
+    } catch (error) {
+      throw error;
     }
-      catch(error) {
-        throw error;
-      }
   }
 }
