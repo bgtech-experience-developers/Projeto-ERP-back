@@ -12,7 +12,7 @@ const port = Number(process.env.PORT);
 const host = "0.0.0.0";
 app.use("/files", express.static("uploads")); // diretório acessível para requisições vindo do cliente, tendo acesso à arquivos hospedado internamente dentro dessa pasta!
 app.use(cors({
-    origin: "http://localhost:5173",
+    origin: ["http://erp-homologation.bgtech.com.br", "http://localhost:5173"],
     credentials: true,
 }));
 app.use(cookieParse());
