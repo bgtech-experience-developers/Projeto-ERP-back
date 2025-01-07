@@ -212,7 +212,7 @@ export default class SupplierRepository {
                         ...supplier
                     }
                 });
-                await conn.supplier_pf_Address.update({
+                await conn.supplier_pf_address.update({
                     where: {
                         id_address_id_supplier_pf: {
                             id_address: idAddress,
@@ -261,6 +261,7 @@ export default class SupplierRepository {
                     AND: { status: status === "true" ? true : false },
                 },
                 select: {
+                    id: true,
                     supplier_name: true,
                     email: true,
                     phone: true,
@@ -286,6 +287,7 @@ export default class SupplierRepository {
                     ],
                 },
                 select: {
+                    id: true,
                     supplier_name: true,
                     email: true,
                     phone: true,

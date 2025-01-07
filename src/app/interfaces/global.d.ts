@@ -9,9 +9,6 @@ interface ClientC {
   situation: boolean;
   type_contribuition: ValueCLient;
 
-  // created_at: Date;
-  // update_at: Date;
-
   created_at: Date | string;
   update_at: Date | string;
 }
@@ -142,12 +139,14 @@ interface Address {
   complement: ValueCLient;
   neighborhood: ValueCLient;
   city: ValueCLient;
-  state: ValueCLient;
   created_at: Date | string;
   update_at: Date | string;
-  // created_at: Date ;
+  state: ValueCLient;
+  // created_at: Date;
   // update_at: Date;
 }
+
+
 
 type AllImagens = (string | null)[];
 
