@@ -89,10 +89,9 @@ model address {
 
 model supplier_pj_address {
   id_address  Int
-  id_supplier Int
-  supplier    supplier_pj @relation(fields: [id_supplier], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  address     address     @relation(fields: [id_address], references: [id], onDelete: Cascade, onUpdate: Cascade)
-
+  supplier    Supplier_pj @relation(fields: [id_supplier], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  address     Address     @relation(fields: [id_address], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  
   @@id([id_address, id_supplier])
 }
 
@@ -105,6 +104,7 @@ model supplier_pf {
   rg                  String                @db.VarChar(15)
   cpf                 String                @unique @db.VarChar(11)
   birth_date          DateTime?
+  status              Boolean               @default(false)
   // product_supplier_pf Product_Supplier_pf[]
   address_supplier_pf supplier_pf_Address[]
   supplier_imagem     supplier_pf_Image[]
@@ -124,16 +124,16 @@ model supplier_pf_Image {
   @@id([id_image, id_supplier_pf])
 }
 
-model supplier_pf_Address {
-  id             Int @id @default(autoincrement())
-  id_supplier_pf Int
+model Supplier_pf_Address {
+  id_supplier_pf Int 
   id_address     Int
 
   created_at DateTime @default(now())
   update_at  DateTime @default(now())
 
-  supplier_pf supplier_pf @relation(fields: [id_supplier_pf], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  address     address     @relation(fields: [id_address], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  supplier_pf Supplier_pf @relation(fields: [id_supplier_pf], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  address     Address     @relation(fields: [id_address], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  @@id([id_address, id_supplier_pf])
 }
 
 // model Product {

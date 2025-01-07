@@ -14,7 +14,6 @@ export class SupplierPfMiddleware {
             // console.log(request.body);
             request.body.address.cep = request.body.address.cep?.replace(/\D/g, "");
             request.body.supplier.supplier_code = request.body.supplier.supplier_code?.replace(/\D/g, "");
-            request.body.supplier.rg = request.body.supplier.rg?.replace(/\D/g, "");
             request.body.supplier.cpf = request.body.supplier.cpf?.replace(/\D/g, "");
             request.body.supplier.phone = request.body.supplier.phone?.replace(/\D/g, "");
             request.body.supplier.birth_date = request.body.supplier.birth_date ? request.body.supplier.birth_date + "T00:00:00Z" : request.body.supplier.birth_date;

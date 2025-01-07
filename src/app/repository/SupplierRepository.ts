@@ -1,9 +1,11 @@
 import { PrismaClient } from "@prisma/client";
 import { InstanciaPrisma } from "../db/PrismaClient.js";
 import { da } from "@faker-js/faker";
+import { boolean } from "joi";
+import { log } from "node:console";
 
 
-export class SupplierRepository {
+export default class SupplierRepository {
     protected static connectionDb: PrismaClient = InstanciaPrisma.GetConnection();
 
     // Estudar Promisse.All()
@@ -21,7 +23,22 @@ export class SupplierRepository {
         }
 
 
-    } 
+    }
+
+    static async getAllByStatus(skip: number, status: boolean) {
+        
+        try {
+            return await this.connectionDb.supplier_pf.findMany({
+                where: {
+                    status: status
+                },
+                take: 10,
+                skip
+            })
+        } catch(error) {
+            throw error;
+        }
+    }
 
     static async getById(id: number) {
         try {
@@ -37,7 +54,9 @@ export class SupplierRepository {
                     //     }
                     // },
                     address_supplier_pf: {
-                        include: {
+                        select: {
+                            // O campo do json irá mudar
+                            id_address: true,
                             address: true
                         }
                     },
@@ -163,6 +182,150 @@ export class SupplierRepository {
 
             
         }   catch(error) {
+            throw error;
+        }
+    }
+
+    static async updateSupplier(id: number, idAddress: number,idImage: number, {supplier, address}: BodySupplierPf, image: string | null) {
+        try {
+            // await this.connectionDb.supplier_pf.update({
+            //     where: {
+            //         id: id
+            //     },
+            //     data: {
+            //         ...supplier,
+            //         address_supplier_pf: {
+            //             update: {
+            //                 where: {
+            //                     id_supplier_pf: id, id_address: id
+            //                 },
+            //                 data: {
+            //                     address: {
+            //                         update: {
+            //                             where: {
+            //                                 address_supplier_pf: id
+            //                             },
+            //                             data: {
+            //                                 ...address
+            //                             }
+            //                         }
+            //                     }
+            //                 }
+            //             }
+            //         }
+            //     }
+            // })
+
+            // [
+            //     this.connectionDb.supplier_pf.update({
+            //         where: {
+            //             id
+            //         }, 
+            //         data: {
+            //             ...supplier                   
+            //         }
+            //     }) 
+            // ]
+            console.log({supplier});
+            
+            await this.connectionDb.$transaction(async (conn) => {
+                await conn.supplier_pf.update({
+                    where: {
+                        id,
+                    },
+                    data: {
+                        ...supplier
+                    }
+                });
+
+                await conn.supplier_pf_Address.update({
+                    where: {
+                        id_address_id_supplier_pf: {
+                            id_address: idAddress,
+                            id_supplier_pf: id
+                        }
+                    }, 
+                    data: {
+                        address: {
+                            update: {
+                                ...address
+                            }
+                        }
+                    }
+                })
+
+                await conn.supplier_pf_Image.update({
+                    where: {
+                        id_image_id_supplier_pf: {
+                            id_image: idImage,
+                            id_supplier_pf:id
+                        }
+                    },
+                    data: {
+                        supplier_pf_image: {
+                            update: {
+                                path: image
+                            }
+                        }
+                    }
+                })
+                
+                
+            })
+            
+        }  catch(error) {   
+            throw error;
+        }
+    }
+
+    static async getFilterByStatus({cpf, email, supplier_name, phone}: filterSupplierPf, status: string | null, page: number) {
+        try {
+            return await this.connectionDb.supplier_pf.findMany({
+                where: {
+                    OR: [
+                        {supplier_name: {contains: supplier_name.contanis}},
+                        {email: {contains: email.contanis}},
+                        {phone: {contains: phone.contanis}},
+                        {cpf: {contains: cpf.contanis}}],
+                        AND: {status: status === "true" ? true : false},
+                },
+                select: {
+                    supplier_name: true,
+                    email: true,
+                    phone: true,
+                    cpf: true
+                },
+                skip: page,
+                take: 10
+            })
+        } catch(error) {
+            throw error;
+
+        }
+    }
+
+    static async getFilter({cpf, email, supplier_name, phone}: filterSupplierPf, page: number) {
+        try {
+            return await this.connectionDb.supplier_pf.findMany({
+                where: {
+                    OR: [
+                        {supplier_name: {contains: supplier_name.contanis}},
+                        {email: {contains: email.contanis}},
+                        {phone: {contains: phone.contanis}},
+                        {cpf: {contains: cpf.contanis}}],                    
+                },
+                select: {
+                    supplier_name: true,
+                    email: true,
+                    phone: true,
+                    cpf: true
+                },
+                skip: page,
+                take: 10
+
+            })
+
+        } catch(error) {
             throw error;
         }
     }

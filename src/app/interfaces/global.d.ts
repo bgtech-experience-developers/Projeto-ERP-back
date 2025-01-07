@@ -17,7 +17,7 @@ interface ClientC {
 interface address {
   adress: Address;
 }
-type ValueCLient = string | null | undefined;
+type ValueCLient = string | null;
 
 interface getUnic extends ClientC {
   financinal_contact: sectorId;
@@ -132,15 +132,18 @@ interface filtragem {
   name: queryWhere;
 }
 interface Address {
-  cep?: ValueCLient;
+  cep: ValueCLient;
+//   cep?: ValueCLient;
   street: ValueCLient;
   number: ValueCLient;
   complement: ValueCLient;
   neighborhood: ValueCLient;
   city: ValueCLient;
-  created_at: Date | string;
-  update_at: Date | string;
+//   created_at: Date | string;
+//   update_at: Date | string;
   state: ValueCLient;
+  created_at: Date ;
+  update_at: Date;
 }
 
 type AllImagens = (string | null)[];
@@ -153,10 +156,18 @@ interface Supplier_pf {
   rg: string;
   cpf: string;
   birth_date: string;
-  product_supplier_pf?: Product_Supplier_pf;
-  address_supplier_pf?: Address;
+  status: boolean
+  // product_supplier_pf?: Product_Supplier_pf;
+  // address_supplier_pf?: Address;
 }
 
+
+// interface AllSupplier_pf extends Supplier_pf {
+//   id: number;
+//   product?: string[];
+//   created_at?: Date;
+//   update_at?: Date;
+// }
 interface AllSupplier_pf extends Supplier_pf {
   id: number;
   product: string[];
@@ -178,4 +189,13 @@ interface Product_Supplier_pf {
   price: string;
   purchase_tax: string;
   delivery_time: string;
+}
+
+type filterContanis = {contanis: string}
+
+interface filterSupplierPf {
+  supplier_name: filterContanis
+  cpf: filterContanis
+  email: filterContanis
+  phone: filterContanis
 }
