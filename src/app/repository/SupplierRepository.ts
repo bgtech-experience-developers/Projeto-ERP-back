@@ -238,7 +238,7 @@ export default class SupplierRepository {
                     }
                 });
 
-                await conn.supplier_pf_Address.update({
+                await conn.supplier_pf_address.update({
                     where: {
                         id_address_id_supplier_pf: {
                             id_address: idAddress,
