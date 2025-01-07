@@ -49,8 +49,7 @@ export class AdmRepository {
   }
   static async update() {}
 
-  static async getAll(skip: number): Promise<adm[]>{
-
+  static async getAll(skip: number): Promise<adm[]> {
     try {
       const connectionDb = InstanciaPrisma.GetConnection();
 
@@ -60,11 +59,10 @@ export class AdmRepository {
         select: {
           id: true,
           cnpj: true,
-        }
+        },
       });
+    } catch (error) {
+      throw error;
     }
-      catch(error) {
-        throw error;
-      }
   }
 }

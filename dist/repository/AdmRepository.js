@@ -56,7 +56,7 @@ export class AdmRepository {
                 select: {
                     id: true,
                     cnpj: true,
-                }
+                },
             });
         }
         catch (error) {
