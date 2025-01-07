@@ -142,9 +142,10 @@ interface Address {
   created_at: Date | string;
   update_at: Date | string;
   state: ValueCLient;
-  // created_at: Date ;
-  // update_at: Date;
+
 }
+
+
 
 type AllImagens = (string | null)[];
 

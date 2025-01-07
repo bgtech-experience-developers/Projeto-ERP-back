@@ -108,8 +108,9 @@ model supplier_pj {
 }
 
 model supplier_pj_address {
-  id_address  Int
   id_supplier Int
+  id_address  Int
+
   supplier    supplier_pj @relation(fields: [id_supplier], references: [id], onDelete: Cascade, onUpdate: Cascade)
   address     address     @relation(fields: [id_address], references: [id], onDelete: Cascade, onUpdate: Cascade)
   

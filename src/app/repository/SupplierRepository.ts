@@ -290,6 +290,7 @@ export default class SupplierRepository {
                         AND: {status: status === "true" ? true : false},
                 },
                 select: {
+                    id: true,
                     supplier_name: true,
                     email: true,
                     phone: true,
@@ -315,6 +316,7 @@ export default class SupplierRepository {
                         {cpf: {contains: cpf.contanis}}],                    
                 },
                 select: {
+                    id: true,
                     supplier_name: true,
                     email: true,
                     phone: true,
