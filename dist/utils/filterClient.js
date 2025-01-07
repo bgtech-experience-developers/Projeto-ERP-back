@@ -1,8 +1,7 @@
 import { TypeFilter } from "../guard/filterDynamic.js";
-export const filterquery = async (value, status) => {
+export const filterquery = async (value) => {
     const instanciaFilter = new TypeFilter(value);
     try {
-        console.log("ola eu sou o status", status);
         if (instanciaFilter.filterCompany()) {
             return {
                 branch_activity: { contains: `%${value}%`, mode: "insensitive" },
@@ -10,7 +9,6 @@ export const filterquery = async (value, status) => {
                 fantasy_name: { contains: `%${value}%`, mode: "insensitive" },
                 email: { contains: `%${value}%`, mode: "insensitive" },
                 phone: { contains: "" },
-                situation: status ? 1 : 0,
             };
         }
         else if (instanciaFilter.filterEmail()) {
@@ -20,7 +18,6 @@ export const filterquery = async (value, status) => {
                 fantasy_name: { contains: "", mode: "insensitive" },
                 email: { contains: `%${value}%`, mode: "insensitive" },
                 phone: { contains: "" },
-                situation: status ? 1 : 0,
             };
         }
         return {
@@ -29,7 +26,6 @@ export const filterquery = async (value, status) => {
             fantasy_name: { contains: "", mode: "insensitive" },
             email: { contains: "", mode: "insensitive" },
             phone: { contains: `%${value}%` },
-            situation: status ? 1 : 0,
         };
     }
     catch (error) {

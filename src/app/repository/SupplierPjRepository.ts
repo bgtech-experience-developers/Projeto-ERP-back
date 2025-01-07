@@ -60,7 +60,7 @@ export class SupplierPjRespository {
       return await this.connection.supplier_pj.findMany({
         where: {
           OR: [
-            { email: email.contanis },
+            { email: { contains: email.contanis } },
             { phone: phone.contanis },
             { corporate_reason: corporate_reason.contanis },
             { answerable: answerable.contanis },
