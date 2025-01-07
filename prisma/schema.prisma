@@ -80,17 +80,38 @@ model address {
 
   company_address     company_address[]
   delivery_address    delivery_address[]
-  address_supplier_pf supplier_pf_Address[]
+  address_supplier_pf supplier_pf_address[]
 
   Supplier_pj_address supplier_pj_address[]
   created_at          DateTime              @default(now())
   update_at           DateTime              @default(now())
 }
 
+model supplier_pj {
+  id                     Int                   @id @default(autoincrement())
+  id_imagem              Int
+  imagem                 imagem                @relation(fields: [id_imagem], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  supplier_pj_address    supplier_pj_address[]
+  corporate_reason       String
+  email                  String?
+  phone                  String?
+  fantasy_name           String?
+  cnpj                   String                @unique @db.VarChar(14)
+  answerable             String?
+  state_registration     String?
+  type_contribuition     String?
+  municipal_registration String?
+  suframa_registration   String?
+  status                 Boolean               @default(true)
+  created_at             DateTime              @default(now())
+  update_at              DateTime              @default(now())
+}
+
 model supplier_pj_address {
   id_address  Int
-  supplier    Supplier_pj @relation(fields: [id_supplier], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  address     Address     @relation(fields: [id_address], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  id_supplier Int
+  supplier    supplier_pj @relation(fields: [id_supplier], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  address     address     @relation(fields: [id_address], references: [id], onDelete: Cascade, onUpdate: Cascade)
   
   @@id([id_address, id_supplier])
 }
@@ -106,7 +127,7 @@ model supplier_pf {
   birth_date          DateTime?
   status              Boolean               @default(false)
   // product_supplier_pf Product_Supplier_pf[]
-  address_supplier_pf supplier_pf_Address[]
+  address_supplier_pf supplier_pf_address[]
   supplier_imagem     supplier_pf_Image[]
   created_at          DateTime              @default(now())
   update_at           DateTime              @default(now())
@@ -124,15 +145,15 @@ model supplier_pf_Image {
   @@id([id_image, id_supplier_pf])
 }
 
-model Supplier_pf_Address {
+model supplier_pf_address {
   id_supplier_pf Int 
   id_address     Int
 
   created_at DateTime @default(now())
   update_at  DateTime @default(now())
 
-  supplier_pf Supplier_pf @relation(fields: [id_supplier_pf], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  address     Address     @relation(fields: [id_address], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  supplier_pf supplier_pf @relation(fields: [id_supplier_pf], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  address     address     @relation(fields: [id_address], references: [id], onDelete: Cascade, onUpdate: Cascade)
   @@id([id_address, id_supplier_pf])
 }
 
@@ -164,25 +185,7 @@ model Supplier_pf_Address {
 //   @@id([id_supplier_pf])
 // }
 
-model supplier_pj {
-  id                     Int                   @id @default(autoincrement())
-  id_imagem              Int
-  imagem                 imagem                @relation(fields: [id_imagem], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  supplier_pj_address    supplier_pj_address[]
-  corporate_reason       String
-  email                  String?
-  phone                  String?
-  fantasy_name           String?
-  cnpj                   String                @unique @db.VarChar(14)
-  answerable             String?
-  state_registration     String?
-  type_contribuition     String?
-  municipal_registration String?
-  suframa_registration   String?
-  status                 Boolean               @default(true)
-  created_at             DateTime              @default(now())
-  update_at              DateTime              @default(now())
-}
+
 
 // model Supplier_pj_Product{}
 // Contruir a tabela de Produtos Generica
