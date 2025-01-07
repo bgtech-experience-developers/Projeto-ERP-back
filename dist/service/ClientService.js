@@ -33,9 +33,15 @@ export class ClientService {
             throw error;
         }
     }
+    static async Status(limit, page, status) {
+        const statusq = status === "true" ? true : false;
+        return await ClientRepository.getAllByStatus(limit, page, statusq);
+    }
     static async showClints(limit, page, status) {
         try {
-            const allClints = await ClientRepository.showCLients(limit, page, status);
+            const allClints = status
+                ? await this.Status(limit, page, status)
+                : await ClientRepository.showCLients(limit, page);
             const newArray = allClints.map(({ id, branch_activity, situation, fantasy_name, owner_partner }) => {
                 return {
                     id,
@@ -292,9 +298,9 @@ export class ClientService {
             throw error;
         }
     }
-    static async filterCLient(status, value) {
+    static async filterCLient(value) {
         try {
-            const queryFilter = await filterquery(value, status);
+            const queryFilter = await filterquery(value);
             const clients = await ClientRepository.filterClient(queryFilter);
             return clients;
         }

@@ -9,8 +9,8 @@ interface ClientC {
   situation: boolean;
   type_contribuition: ValueCLient;
 
-  created_at: Date;
-  update_at: Date;
+  created_at: Date | string;
+  update_at: Date | string;
 }
 // type valueClient = string | null;
 
@@ -130,15 +130,17 @@ interface filtragem {
   email: queryWhere;
   phone: queryWhere;
   name: queryWhere;
-  situation: number;
 }
 interface Address {
   cep: ValueCLient;
+//   cep?: ValueCLient;
   street: ValueCLient;
   number: ValueCLient;
   complement: ValueCLient;
-  city: ValueCLient;
   neighborhood: ValueCLient;
+  city: ValueCLient;
+//   created_at: Date | string;
+//   update_at: Date | string;
   state: ValueCLient;
   created_at: Date ;
   update_at: Date;
@@ -166,15 +168,20 @@ interface Supplier_pf {
 //   created_at?: Date;
 //   update_at?: Date;
 // }
+interface AllSupplier_pf extends Supplier_pf {
+  id: number;
+  product: string[];
+  created_at: Date;
+  update_at: Date;
+}
 
 // interface SupplierSchema extends Supplier_pf{}
 interface BodySupplierPf {
-  json?:string,
-  supplier: Supplier_pf
+  json?: string;
+  supplier: Supplier_pf;
   // product: Product_Supplier_pf
-  address: Address
+  address: Address;
 }
-
 
 interface Product_Supplier_pf {
   id_product?: string;

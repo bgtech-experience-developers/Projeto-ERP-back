@@ -26,7 +26,34 @@ interface imagensIds {
 
 export class ClientRepository {
   static connectionDb = InstanciaPrisma.GetConnection(); //gerando uma conexxão
+  static async getAllByStatus(limit: number, page: number, status: boolean) {
+    try {
+      const allclients: allClientes[] =
+        await InstanciaPrisma.GetConnection().client.findMany({
+          include: {
+            owner_partner: {
+              include: {
+                sector: {
+                  select: {
+                    name: true,
+                    email: true,
+                    cell_phone: true,
+                    phone: true,
+                  },
+                },
+              },
+            },
+          },
+          where: { situation: status },
 
+          take: limit,
+          skip: page,
+        });
+      return allclients;
+    } catch (error) {
+      throw error;
+    }
+  }
   static async createCliente(
     {
       cliente,
@@ -259,7 +286,7 @@ export class ClientRepository {
     }
   }
 
-  static async showCLients(limit: number, page: number, status: boolean) {
+  static async showCLients(limit: number, page: number) {
     try {
       const allclients: allClientes[] =
         await InstanciaPrisma.GetConnection().client.findMany({
@@ -277,7 +304,7 @@ export class ClientRepository {
               },
             },
           },
-          where: { situation: status },
+
           take: limit,
           skip: page,
         });
@@ -613,16 +640,15 @@ export class ClientRepository {
     email,
     name,
     phone,
-    situation,
   }: filtragem) {
     try {
       const executeQuery = new SQLAdapter(this.connectionDb);
       const result = await this.connectionDb
-        .$queryRaw`SELECT erp.Client.*,erp.sector.*,erp.owner_partner.* FROM erp.Client
-        LEFT JOIN erp.owner_partner ON erp.Client.id = erp.owner_partner.clientId
+        .$queryRaw`SELECT erp.client.*,erp.sector.*,erp.owner_partner.* FROM erp.client
+        LEFT JOIN erp.owner_partner ON erp.client.id = erp.owner_partner.clientId
         LEFT JOIN erp.sector ON erp.owner_partner.sectorId = erp.sector.id
-        WHERE (erp.Client.branch_activity LIKE ${branch_activity.contains} OR erp.Client.fantasy_name LIKE ${fantasy_name.contains} OR (erp.Client.id) NOT IN (SELECT t1.clientId FROM erp.owner_partner AS t1 LEFT JOIN erp.sector AS j2 ON
-      (j2.id) = (t1.sectorId) LEFT JOIN erp.sector AS j3 ON (j3.id) = (t1.sectorId) LEFT JOIN erp.sector AS j4 ON (j4.id) = (t1.sectorId) WHERE ((NOT ((j2.email LIKE ${email.contains} AND (j2.id IS NOT NULL)) OR (j3.name LIKE ${name.contains} AND (j3.id IS NOT NULL)) OR (j4.cell_phone LIKE ${phone.contains} AND (j4.id IS NOT NULL)))) AND t1.clientId IS NOT NULL))) AND erp.Client.situation LIKE ${situation} `;
+        WHERE (erp.Client.branch_activity LIKE ${branch_activity.contains} OR erp.client.fantasy_name LIKE ${fantasy_name.contains} OR (erp.client.id) NOT IN (SELECT t1.clientId FROM erp.owner_partner AS t1 LEFT JOIN erp.sector AS j2 ON
+      (j2.id) = (t1.sectorId) LEFT JOIN erp.sector AS j3 ON (j3.id) = (t1.sectorId) LEFT JOIN erp.sector AS j4 ON (j4.id) = (t1.sectorId) WHERE ((NOT ((j2.email LIKE ${email.contains} AND (j2.id IS NOT NULL)) OR (j3.name LIKE ${name.contains} AND (j3.id IS NOT NULL)) OR (j4.cell_phone LIKE ${phone.contains} AND (j4.id IS NOT NULL)))) AND t1.clientId IS NOT NULL)))  `;
       // const result = executeQuery.executeQuery(result)
 
       return result;

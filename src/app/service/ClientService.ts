@@ -49,10 +49,15 @@ export class ClientService {
       throw error;
     }
   }
-
-  static async showClints(limit: number, page: number, status: boolean) {
+  private static async Status(limit: number, page: number, status: string) {
+    const statusq = status === "true" ? true : false;
+    return await ClientRepository.getAllByStatus(limit, page, statusq);
+  }
+  static async showClints(limit: number, page: number, status: string | null) {
     try {
-      const allClints = await ClientRepository.showCLients(limit, page, status);
+      const allClints = status
+        ? await this.Status(limit, page, status)
+        : await ClientRepository.showCLients(limit, page);
 
       const newArray = allClints.map(
         ({ id, branch_activity, situation, fantasy_name, owner_partner }) => {
@@ -402,9 +407,9 @@ export class ClientService {
       throw error;
     }
   }
-  static async filterCLient(status: boolean, value: string) {
+  static async filterCLient(value: string) {
     try {
-      const queryFilter = await filterquery(value, status);
+      const queryFilter = await filterquery(value);
       const clients = await ClientRepository.filterClient(queryFilter);
       return clients;
     } catch (error) {
