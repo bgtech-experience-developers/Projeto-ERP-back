@@ -87,9 +87,30 @@ model address {
   update_at           DateTime              @default(now())
 }
 
+model supplier_pj {
+  id                     Int                   @id @default(autoincrement())
+  id_imagem              Int
+  imagem                 imagem                @relation(fields: [id_imagem], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  supplier_pj_address    supplier_pj_address[]
+  corporate_reason       String
+  email                  String?
+  phone                  String?
+  fantasy_name           String?
+  cnpj                   String                @unique @db.VarChar(14)
+  answerable             String?
+  state_registration     String?
+  type_contribuition     String?
+  municipal_registration String?
+  suframa_registration   String?
+  status                 Boolean               @default(true)
+  created_at             DateTime              @default(now())
+  update_at              DateTime              @default(now())
+}
+
 model supplier_pj_address {
   id_supplier Int
   id_address  Int
+
   supplier    supplier_pj @relation(fields: [id_supplier], references: [id], onDelete: Cascade, onUpdate: Cascade)
   address     address     @relation(fields: [id_address], references: [id], onDelete: Cascade, onUpdate: Cascade)
   
@@ -165,25 +186,7 @@ model supplier_pf_address {
 //   @@id([id_supplier_pf])
 // }
 
-model supplier_pj {
-  id                     Int                   @id @default(autoincrement())
-  id_imagem              Int
-  imagem                 imagem                @relation(fields: [id_imagem], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  supplier_pj_address    supplier_pj_address[]
-  corporate_reason       String
-  email                  String?
-  phone                  String?
-  fantasy_name           String?
-  cnpj                   String                @unique @db.VarChar(14)
-  answerable             String?
-  state_registration     String?
-  type_contribuition     String?
-  municipal_registration String?
-  suframa_registration   String?
-  status                 Boolean               @default(true)
-  created_at             DateTime              @default(now())
-  update_at              DateTime              @default(now())
-}
+
 
 // model Supplier_pj_Product{}
 // Contruir a tabela de Produtos Generica
