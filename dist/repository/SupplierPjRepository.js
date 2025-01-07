@@ -12,7 +12,7 @@ export class SupplierPjRespository {
     static async findSupplierById(id) {
         try {
             const [registerSupplier] = (await this.connection
-                .$queryRaw `SELECT s.*, a.*,i.*,p.id_address FROM Supplier_pj s LEFT JOIN erp.imagem AS i ON s.id_imagem = i.id LEFT JOIN erp.Supplier_pj_address AS p ON p.id_supplier = s.id LEFT JOIN erp.Address AS a ON p.id_address = a.id WHERE s.id = ${id}`);
+                .$queryRaw `SELECT s.*, a.*,i.*,p.id_address FROM supplier_pj s LEFT JOIN erp.imagem AS i ON s.id_imagem = i.id LEFT JOIN erp.supplier_pj_address AS p ON p.id_supplier = s.id LEFT JOIN erp.address AS a ON p.id_address = a.id WHERE s.id = ${id}`);
             return registerSupplier;
         }
         catch (error) {
@@ -73,7 +73,7 @@ export class SupplierPjRespository {
     static async getAll(page, limit) {
         try {
             const registerColaboraters = await this.connection
-                .$queryRaw `SELECT s.phone,s.email,s.corporate_reason,s.answerable,s.id FROM Supplier_pj s `;
+                .$queryRaw `SELECT s.phone,s.email,s.corporate_reason,s.answerable,s.id FROM supplier_pj s `;
             // const registerColaboraters = await this.connection.supplier_pj.findMany({
             //   select: {
             //     corporate_reason: true,
@@ -91,7 +91,7 @@ export class SupplierPjRespository {
     static getSuppliersByStatus(status, pageSized, limit) {
         try {
             return this.connection
-                .$queryRaw `SELECT s.phone,s.email,s.corporate_reason,s.answerable,s.id FROM Supplier_pj s WHERE s.status = ${status}`;
+                .$queryRaw `SELECT s.phone,s.email,s.corporate_reason,s.answerable,s.id FROM supplier_pj s WHERE s.status = ${status}`;
         }
         catch (error) {
             throw error;

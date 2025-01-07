@@ -233,12 +233,7 @@ main()
     await connectionDb.$disconnect();
     process.exit(1);
 });
-client()
-    .then(async () => {
-    await connectionDb.$disconnect();
-})
-    .catch(async (e) => {
-    console.log(e);
+client().then(async () => {
     await connectionDb.$disconnect();
 });
 export default main;
