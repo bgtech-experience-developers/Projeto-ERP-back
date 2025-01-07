@@ -7,6 +7,10 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model ola {
+  id Int @id
+}
+
 model client {
   id                 Int                  @default(autoincrement())
   corporate_reason   String               @db.VarChar(1000)
@@ -62,10 +66,11 @@ model imagem {
   commercial_imagem        commercial_image[]
   owner_partner            owner_partner_image[]
   accounting_contact_image accounting_contact_image[]
-  supplier_pf              supplier_pf_Image[]
+  supplier_pf              supplier_pf_Image[]        @relation("campo")
   supplier_pj              supplier_pj[]
-  created_at               DateTime                   @default(now())
-  update_at                DateTime                   @default(now())
+
+  created_at DateTime @default(now())
+  update_at  DateTime @default(now())
 }
 
 model address {
@@ -111,9 +116,9 @@ model supplier_pj_address {
   id_supplier Int
   id_address  Int
 
-  supplier    supplier_pj @relation(fields: [id_supplier], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  address     address     @relation(fields: [id_address], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  
+  supplier supplier_pj @relation(fields: [id_supplier], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  address  address     @relation(fields: [id_address], references: [id], onDelete: Cascade, onUpdate: Cascade)
+
   @@id([id_address, id_supplier])
 }
 
@@ -127,7 +132,6 @@ model supplier_pf {
   cpf                 String                @unique @db.VarChar(11)
   birth_date          DateTime?
   status              Boolean               @default(false)
-  // product_supplier_pf Product_Supplier_pf[]
   address_supplier_pf supplier_pf_address[]
   supplier_imagem     supplier_pf_Image[]
   created_at          DateTime              @default(now())
@@ -136,18 +140,18 @@ model supplier_pf {
 
 model supplier_pf_Image {
   // id                Int         @id @default(autoincrement())
-  id_supplier_pf    Int
-  id_image          Int
-  supplier_pf       supplier_pf @relation(fields: [id_supplier_pf], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  supplier_pf_image imagem      @relation(fields: [id_image], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  created_at        DateTime    @default(now())
-  update_at         DateTime    @default(now())
+  id_supplier_pf   Int
+  id_image         Int
+  supplier_pf      supplier_pf @relation(fields: [id_supplier_pf], references: [id], onDelete: Cascade, onUpdate: Cascade, name: "supplier_id_image")
+  supplier_pf_imag imagem      @relation(fields: [id_image], references: [id], onDelete: Cascade, onUpdate: Cascade, name: "campo")
+  created_at       DateTime    @default(now())
+  update_at        DateTime    @default(now())
 
   @@id([id_image, id_supplier_pf])
 }
 
 model supplier_pf_address {
-  id_supplier_pf Int 
+  id_supplier_pf Int
   id_address     Int
 
   created_at DateTime @default(now())
@@ -155,41 +159,29 @@ model supplier_pf_address {
 
   supplier_pf supplier_pf @relation(fields: [id_supplier_pf], references: [id], onDelete: Cascade, onUpdate: Cascade)
   address     address     @relation(fields: [id_address], references: [id], onDelete: Cascade, onUpdate: Cascade)
+
   @@id([id_address, id_supplier_pf])
 }
 
-// model Product {
-//   id                  Int                   @id @default(autoincrement())
-//   name                String                @db.VarChar(100)
-//   internal_code       String                @db.VarChar(20)
-//   stock               Int
-//   product_supplier_pf Product_Supplier_pf[]
-//   created_at          DateTime              @default(now())
-//   update_at           DateTime              @default(now())
-// }
-
-// model Product_Supplier_pf {
-
-//   price          String @db.VarChar(40)
-//   purchase_tax   String @db.VarChar(40) // Definir qual o propósito desse campo, se é calcular o price final.
-//   delivery_time  String @db.VarChar(50)
-//   id_product     Int?
-//   id_supplier_pf Int
-
-//   created_at DateTime @default(now())
-//   update_at  DateTime @default(now())
-
-//   supplier_pf Supplier_pf @relation(fields: [id_supplier_pf], references: [id])
-//   product     Product?     @relation(fields: [id_product], references: [id])
-
-//   // @@id([id_product, id_supplier_pf])
-//   @@id([id_supplier_pf])
-// }
-
-
-
-// model Supplier_pj_Product{}
-// Contruir a tabela de Produtos Generica
+model supplier_pj {
+  id                     Int                   @id @default(autoincrement())
+  id_imagem              Int
+  imagem                 imagem                @relation(fields: [id_imagem], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  supplier_pj_address    supplier_pj_address[]
+  corporate_reason       String
+  email                  String?
+  phone                  String?
+  fantasy_name           String?
+  cnpj                   String                @unique @db.VarChar(14)
+  answerable             String?
+  state_registration     String?
+  type_contribuition     String?
+  municipal_registration String?
+  suframa_registration   String?
+  status                 Boolean               @default(true)
+  created_at             DateTime              @default(now())
+  update_at              DateTime              @default(now())
+}
 
 model company_address {
   id         Int      @id @default(autoincrement())

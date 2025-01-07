@@ -80,7 +80,7 @@ async function main() {
                 phone: "85912345678",
                 supplier_imagem: {
                     create: {
-                        supplier_pf_image: {
+                        supplier_pf_imag: {
                             create: {
                                 path: faker.image.url(),
                             },

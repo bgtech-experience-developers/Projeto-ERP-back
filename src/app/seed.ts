@@ -91,7 +91,7 @@ async function main() {
           phone: "85912345678",
           supplier_imagem: {
             create: {
-              supplier_pf_image: {
+              supplier_pf_imag: {
                 create: {
                   path: faker.image.url(),
                 },
@@ -251,12 +251,7 @@ main()
     await connectionDb.$disconnect();
     process.exit(1);
   });
-client()
-  .then(async () => {
-    await connectionDb.$disconnect();
-  })
-.catch(async (e) => {
-  console.log(e);
+client().then(async () => {
   await connectionDb.$disconnect();
 });
 
