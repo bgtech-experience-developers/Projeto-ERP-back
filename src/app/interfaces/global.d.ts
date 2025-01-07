@@ -140,9 +140,11 @@ interface Address {
   city: ValueCLient;
   neighborhood: ValueCLient;
   state: ValueCLient;
-  created_at: Date ;
+  created_at: Date;
   update_at: Date;
 }
+
+
 
 type AllImagens = (string | null)[];
 
