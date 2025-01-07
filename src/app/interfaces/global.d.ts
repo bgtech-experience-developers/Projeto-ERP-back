@@ -139,11 +139,11 @@ interface Address {
   complement: ValueCLient;
   neighborhood: ValueCLient;
   city: ValueCLient;
-//   created_at: Date | string;
-//   update_at: Date | string;
+  created_at: Date | string;
+  update_at: Date | string;
   state: ValueCLient;
-  created_at: Date ;
-  update_at: Date;
+  // created_at: Date ;
+  // update_at: Date;
 }
 
 type AllImagens = (string | null)[];
