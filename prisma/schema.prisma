@@ -111,7 +111,7 @@ model supplier_pf {
   rg                  String                @db.VarChar(15)
   cpf                 String                @unique @db.VarChar(11)
   birth_date          DateTime?
-  status              Boolean               @default(false)
+  status              Boolean               @default(true)
   address_supplier_pf supplier_pf_address[]
   supplier_imagem     supplier_pf_Image[]   @relation("supplier_id_image")
   created_at          DateTime              @default(now())

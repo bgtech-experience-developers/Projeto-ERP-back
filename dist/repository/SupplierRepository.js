@@ -147,7 +147,9 @@ export default class SupplierRepository {
         try {
             const path = await this.connectionDb.supplier_pf_Image.findFirst({
                 where: {
-                    id_supplier_pf
+                    supplier_pf: {
+                        id: id_supplier_pf
+                    }
                 },
                 select: {
                     supplier_pf_image: {
