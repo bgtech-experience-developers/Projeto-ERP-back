@@ -87,7 +87,7 @@ export class SupplierPjRespository {
   static async getAll(page: number, limit: number) {
     try {
       const registerColaboraters = await this.connection
-        .$queryRaw`SELECT s.phone,s.email,s.corporate_reason,s.answerable,s.id FROM supplier_pj s  OFFSET ${page} LIMIT ${limit}`;
+        .$queryRaw`SELECT s.phone,s.email,s.corporate_reason,s.answerable,s.id FROM supplier_pj s  LIMIT ${limit} OFFSET ${page}`;
 
       // const registerColaboraters = await this.connection.supplier_pj.findMany({
       //   select: {

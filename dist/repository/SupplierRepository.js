@@ -145,7 +145,7 @@ export default class SupplierRepository {
     }
     static async getImage(id_supplier_pf) {
         try {
-            const path = await this.connectionDb.supplier_pf_Image.findFirst({
+            const path = await this.connectionDb.supplier_pf_image.findFirst({
                 where: {
                     supplier_pf: {
                         id: id_supplier_pf
