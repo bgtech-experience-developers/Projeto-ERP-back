@@ -276,16 +276,12 @@ pj()
     await connectionDb.$disconnect();
     process.exit(1);
 });
-// main()
-//   .then(async () => {
-//     await connectionDb.$disconnect();
-//   })
-//   .catch(async (e) => {
-//     console.error(e);
-//     await connectionDb.$disconnect();
-//     process.exit(1);
-//   });
-// client().then(async () => {
-//   await connectionDb.$disconnect();
-// });
+client()
+    .then(async () => {
+    await connectionDb.$disconnect();
+})
+    .catch(async (e) => {
+    console.log(e);
+    await connectionDb.$disconnect();
+});
 export default main;

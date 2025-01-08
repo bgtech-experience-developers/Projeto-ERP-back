@@ -122,6 +122,8 @@ export class SupplierService {
                 }
     
                 const path = await SupplierRepository.getImage(Number(id));
+                console.log(path);
+                
                 const newPath = path?.replace("https://bgtech.com.br/erp/assets/", "")
                 console.log(newPath);
                 if(newPath) {
