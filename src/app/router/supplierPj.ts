@@ -25,7 +25,7 @@ supplierPjRouter.patch(
   SupplierPjValidator.getByIdSupplier,
   SupplierControllerPj.updateSupplier
 );
-supplierPjRouter.get("/filtrar");
+supplierPjRouter.get("/filtrar", SupplierControllerPj.FilterSupplier);
 supplierPjRouter.get(
   "/:id",
   SupplierPjValidator.getByIdSupplier,
