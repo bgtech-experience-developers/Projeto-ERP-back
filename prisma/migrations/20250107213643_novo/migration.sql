@@ -17,7 +17,7 @@ ALTER TABLE `supplier_pf` MODIFY `status` BOOLEAN NOT NULL DEFAULT false;
 
 -- AlterTable
 ALTER TABLE `supplier_pf_address` DROP PRIMARY KEY,
-    DROP COLUMN `id`,
+    -- DROP COLUMN `id`,
     ADD PRIMARY KEY (`id_address`, `id_supplier_pf`);
 
 -- DropTable
