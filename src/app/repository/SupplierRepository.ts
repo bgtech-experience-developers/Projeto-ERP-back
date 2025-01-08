@@ -168,7 +168,9 @@ export default class SupplierRepository {
         try {
             const path = await this.connectionDb.supplier_pf_image.findFirst({
                 where: {
-                    id_supplier_pf
+                    supplier_pf: {
+                        id: id_supplier_pf
+                    }
                 },
                 select: {
                     supplier_pf_image: {
@@ -290,6 +292,7 @@ export default class SupplierRepository {
                         AND: {status: status === "true" ? true : false},
                 },
                 select: {
+                    id: true,
                     supplier_name: true,
                     email: true,
                     phone: true,
@@ -315,6 +318,7 @@ export default class SupplierRepository {
                         {cpf: {contains: cpf.contanis}}],                    
                 },
                 select: {
+                    id: true,
                     supplier_name: true,
                     email: true,
                     phone: true,

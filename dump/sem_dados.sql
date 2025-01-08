@@ -17,55 +17,19 @@
 /*M!100616 SET @OLD_NOTE_VERBOSITY=@@NOTE_VERBOSITY, NOTE_VERBOSITY=0 */;
 
 --
--- Table structure for table `_prisma_migrations`
---
-
-DROP TABLE IF EXISTS `_prisma_migrations`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `_prisma_migrations` (
-  `id` varchar(36) NOT NULL,
-  `checksum` varchar(64) NOT NULL,
-  `finished_at` datetime(3) DEFAULT NULL,
-  `migration_name` varchar(255) NOT NULL,
-  `logs` text DEFAULT NULL,
-  `rolled_back_at` datetime(3) DEFAULT NULL,
-  `started_at` datetime(3) NOT NULL DEFAULT current_timestamp(3),
-  `applied_steps_count` int(10) unsigned NOT NULL DEFAULT 0,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
 -- Dumping data for table `_prisma_migrations`
 --
 
 LOCK TABLES `_prisma_migrations` WRITE;
 /*!40000 ALTER TABLE `_prisma_migrations` DISABLE KEYS */;
 INSERT INTO `_prisma_migrations` VALUES
-('30ae8a16-d7c8-4a7d-9ca7-56910fcc3a78','9b22a3d0bc44cb82051a2777d6fcae74ddebc2e79269e40f793f8a0d6631e13d','2025-01-06 22:18:36.329','20241221185259_sicro_normal',NULL,NULL,'2025-01-06 22:18:35.275',1),
-('9d18c826-579d-4415-9b70-55d352a9ad81','8aacf4fe24b7e8f6bd8b10a8f76d5818fceb79712881098cff9638a0465f4b32','2025-01-06 22:18:36.402','20250106211929_init',NULL,NULL,'2025-01-06 22:18:36.331',1);
+('1bc00072-a82f-4a9c-b359-b483cc0adc4d','992585df8eac7eb6c0093e39be6f953f66709a125b76934e92b66bf31841d6ef','2025-01-07 19:39:07.295','20250107154859_remover_ttt',NULL,NULL,'2025-01-07 19:39:06.161',1),
+('975310ab-9c32-4aca-b763-e3dacd711624','7c14acc553dc412d6956bea9b06ab01e68704b419e01e6ae7acb31414e68bb21','2025-01-07 19:39:07.334','20250107180127_add_status_column',NULL,NULL,'2025-01-07 19:39:07.314',1),
+('a86cd857-c47c-4627-9840-14b2fa74182e','e9292b19c4403a232261eac79ffdb953378665a4f8793d76c598d15a2b37890c','2025-01-07 19:39:06.159','20250107153235_remover_test',NULL,NULL,'2025-01-07 19:39:06.145',1),
+('b8c0efa4-b1af-4143-ae89-4cd213f0177a','a615483dca5e89fbd4b1abad063d0a7f2c6efe21249a1df8574002442de6ccbd','2025-01-07 19:39:06.144','20250107153114_test_migrate',NULL,NULL,'2025-01-07 19:39:06.122',1),
+('f25695b3-709c-4b52-b1f1-6fe439d08f84','82508f8445a44e9fb2d19886cb2ad2f08c30b1bd28b417a193116ed8e56d4b4c','2025-01-07 19:39:07.312','20250107155016_add_ola',NULL,NULL,'2025-01-07 19:39:07.297',1);
 /*!40000 ALTER TABLE `_prisma_migrations` ENABLE KEYS */;
 UNLOCK TABLES;
-
---
--- Table structure for table `accounting_contact`
---
-
-DROP TABLE IF EXISTS `accounting_contact`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `accounting_contact` (
-  `sectorId` int(11) NOT NULL,
-  `clientId` int(11) NOT NULL,
-  `created_at` datetime(3) NOT NULL DEFAULT current_timestamp(3),
-  `update_at` datetime(3) NOT NULL DEFAULT current_timestamp(3),
-  PRIMARY KEY (`sectorId`,`clientId`),
-  KEY `accounting_contact_clientId_fkey` (`clientId`),
-  CONSTRAINT `accounting_contact_clientId_fkey` FOREIGN KEY (`clientId`) REFERENCES `client` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `accounting_contact_sectorId_fkey` FOREIGN KEY (`sectorId`) REFERENCES `sector` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `accounting_contact`
@@ -122,25 +86,6 @@ INSERT INTO `accounting_contact` VALUES
 UNLOCK TABLES;
 
 --
--- Table structure for table `accounting_contact_image`
---
-
-DROP TABLE IF EXISTS `accounting_contact_image`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `accounting_contact_image` (
-  `imageId` int(11) NOT NULL,
-  `accounting_contactId` int(11) NOT NULL,
-  `created_at` datetime(3) NOT NULL DEFAULT current_timestamp(3),
-  `update_at` datetime(3) NOT NULL DEFAULT current_timestamp(3),
-  PRIMARY KEY (`imageId`,`accounting_contactId`),
-  KEY `accounting_contact_image_accounting_contactId_fkey` (`accounting_contactId`),
-  CONSTRAINT `accounting_contact_image_accounting_contactId_fkey` FOREIGN KEY (`accounting_contactId`) REFERENCES `sector` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `accounting_contact_image_imageId_fkey` FOREIGN KEY (`imageId`) REFERENCES `imagem` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
 -- Dumping data for table `accounting_contact_image`
 --
 
@@ -193,28 +138,6 @@ INSERT INTO `accounting_contact_image` VALUES
 (171,176,'2025-01-06 22:20:20.202','2025-01-06 22:20:20.202');
 /*!40000 ALTER TABLE `accounting_contact_image` ENABLE KEYS */;
 UNLOCK TABLES;
-
---
--- Table structure for table `address`
---
-
-DROP TABLE IF EXISTS `address`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `address` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `cep` varchar(8) DEFAULT NULL,
-  `street` varchar(1000) DEFAULT NULL,
-  `number` varchar(1000) DEFAULT NULL,
-  `complement` varchar(1000) DEFAULT NULL,
-  `city` varchar(1000) DEFAULT NULL,
-  `neighborhood` varchar(1000) DEFAULT NULL,
-  `state` varchar(191) DEFAULT NULL,
-  `created_at` datetime(3) NOT NULL DEFAULT current_timestamp(3),
-  `update_at` datetime(3) NOT NULL DEFAULT current_timestamp(3),
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=89 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `address`
@@ -315,24 +238,6 @@ INSERT INTO `address` VALUES
 UNLOCK TABLES;
 
 --
--- Table structure for table `adm`
---
-
-DROP TABLE IF EXISTS `adm`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `adm` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `cnpj` char(14) NOT NULL,
-  `password` varchar(191) NOT NULL,
-  `created_at` datetime(3) NOT NULL DEFAULT current_timestamp(3),
-  `update_at` datetime(3) NOT NULL DEFAULT current_timestamp(3),
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `Adm_cnpj_key` (`cnpj`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
 -- Dumping data for table `adm`
 --
 
@@ -340,28 +245,6 @@ LOCK TABLES `adm` WRITE;
 /*!40000 ALTER TABLE `adm` DISABLE KEYS */;
 /*!40000 ALTER TABLE `adm` ENABLE KEYS */;
 UNLOCK TABLES;
-
---
--- Table structure for table `client`
---
-
-DROP TABLE IF EXISTS `client`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `client` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `corporate_reason` varchar(1000) NOT NULL,
-  `fantasy_name` varchar(1000) DEFAULT NULL,
-  `branch_activity` varchar(1000) DEFAULT NULL,
-  `cnpj` varchar(14) NOT NULL,
-  `state_registration` varchar(100) DEFAULT NULL,
-  `type_contribuition` varchar(191) DEFAULT NULL,
-  `situation` tinyint(1) NOT NULL DEFAULT 1,
-  `created_at` datetime(3) NOT NULL DEFAULT current_timestamp(3),
-  `update_at` datetime(3) NOT NULL DEFAULT current_timestamp(3),
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=45 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `client`
@@ -418,25 +301,6 @@ INSERT INTO `client` VALUES
 UNLOCK TABLES;
 
 --
--- Table structure for table `commercial_contact`
---
-
-DROP TABLE IF EXISTS `commercial_contact`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `commercial_contact` (
-  `sectorId` int(11) NOT NULL,
-  `clientId` int(11) NOT NULL,
-  `created_at` datetime(3) NOT NULL DEFAULT current_timestamp(3),
-  `update_at` datetime(3) NOT NULL DEFAULT current_timestamp(3),
-  PRIMARY KEY (`sectorId`,`clientId`),
-  KEY `commercial_contact_clientId_fkey` (`clientId`),
-  CONSTRAINT `commercial_contact_clientId_fkey` FOREIGN KEY (`clientId`) REFERENCES `client` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `commercial_contact_sectorId_fkey` FOREIGN KEY (`sectorId`) REFERENCES `sector` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
 -- Dumping data for table `commercial_contact`
 --
 
@@ -489,25 +353,6 @@ INSERT INTO `commercial_contact` VALUES
 (166,44,'2025-01-06 22:20:20.202','2025-01-06 22:20:20.202');
 /*!40000 ALTER TABLE `commercial_contact` ENABLE KEYS */;
 UNLOCK TABLES;
-
---
--- Table structure for table `commercial_image`
---
-
-DROP TABLE IF EXISTS `commercial_image`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `commercial_image` (
-  `imageId` int(11) NOT NULL,
-  `commercial_contactId` int(11) NOT NULL,
-  `created_at` datetime(3) NOT NULL DEFAULT current_timestamp(3),
-  `update_at` datetime(3) NOT NULL DEFAULT current_timestamp(3),
-  PRIMARY KEY (`imageId`,`commercial_contactId`),
-  KEY `commercial_image_commercial_contactId_fkey` (`commercial_contactId`),
-  CONSTRAINT `commercial_image_commercial_contactId_fkey` FOREIGN KEY (`commercial_contactId`) REFERENCES `sector` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `commercial_image_imageId_fkey` FOREIGN KEY (`imageId`) REFERENCES `imagem` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `commercial_image`
@@ -564,27 +409,6 @@ INSERT INTO `commercial_image` VALUES
 UNLOCK TABLES;
 
 --
--- Table structure for table `company_address`
---
-
-DROP TABLE IF EXISTS `company_address`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `company_address` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `adressId` int(11) NOT NULL,
-  `clientId` int(11) NOT NULL,
-  `created_at` datetime(3) NOT NULL DEFAULT current_timestamp(3),
-  `update_at` datetime(3) NOT NULL DEFAULT current_timestamp(3),
-  PRIMARY KEY (`id`),
-  KEY `company_address_clientId_fkey` (`clientId`),
-  KEY `company_address_adressId_fkey` (`adressId`),
-  CONSTRAINT `company_address_adressId_fkey` FOREIGN KEY (`adressId`) REFERENCES `address` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `company_address_clientId_fkey` FOREIGN KEY (`clientId`) REFERENCES `client` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=45 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
 -- Dumping data for table `company_address`
 --
 
@@ -637,27 +461,6 @@ INSERT INTO `company_address` VALUES
 (44,83,44,'2025-01-06 22:20:20.202','2025-01-06 22:20:20.202');
 /*!40000 ALTER TABLE `company_address` ENABLE KEYS */;
 UNLOCK TABLES;
-
---
--- Table structure for table `delivery_address`
---
-
-DROP TABLE IF EXISTS `delivery_address`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `delivery_address` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `adressId` int(11) NOT NULL,
-  `clientId` int(11) NOT NULL,
-  `created_at` datetime(3) NOT NULL DEFAULT current_timestamp(3),
-  `update_at` datetime(3) NOT NULL DEFAULT current_timestamp(3),
-  PRIMARY KEY (`id`),
-  KEY `delivery_address_clientId_fkey` (`clientId`),
-  KEY `delivery_address_adressId_fkey` (`adressId`),
-  CONSTRAINT `delivery_address_adressId_fkey` FOREIGN KEY (`adressId`) REFERENCES `address` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `delivery_address_clientId_fkey` FOREIGN KEY (`clientId`) REFERENCES `client` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=45 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `delivery_address`
@@ -714,25 +517,6 @@ INSERT INTO `delivery_address` VALUES
 UNLOCK TABLES;
 
 --
--- Table structure for table `financial_contact`
---
-
-DROP TABLE IF EXISTS `financial_contact`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `financial_contact` (
-  `sectorId` int(11) NOT NULL,
-  `clientId` int(11) NOT NULL,
-  `created_at` datetime(3) NOT NULL DEFAULT current_timestamp(3),
-  `update_at` datetime(3) NOT NULL DEFAULT current_timestamp(3),
-  PRIMARY KEY (`sectorId`,`clientId`),
-  KEY `financial_contact_clientId_fkey` (`clientId`),
-  CONSTRAINT `financial_contact_clientId_fkey` FOREIGN KEY (`clientId`) REFERENCES `client` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `financial_contact_sectorId_fkey` FOREIGN KEY (`sectorId`) REFERENCES `sector` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
 -- Dumping data for table `financial_contact`
 --
 
@@ -787,25 +571,6 @@ INSERT INTO `financial_contact` VALUES
 UNLOCK TABLES;
 
 --
--- Table structure for table `financial_image`
---
-
-DROP TABLE IF EXISTS `financial_image`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `financial_image` (
-  `imageId` int(11) NOT NULL,
-  `financial_contactId` int(11) NOT NULL,
-  `created_at` datetime(3) NOT NULL DEFAULT current_timestamp(3),
-  `update_at` datetime(3) NOT NULL DEFAULT current_timestamp(3),
-  PRIMARY KEY (`imageId`,`financial_contactId`),
-  KEY `financial_image_financial_contactId_fkey` (`financial_contactId`),
-  CONSTRAINT `financial_image_financial_contactId_fkey` FOREIGN KEY (`financial_contactId`) REFERENCES `sector` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `financial_image_imageId_fkey` FOREIGN KEY (`imageId`) REFERENCES `imagem` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
 -- Dumping data for table `financial_image`
 --
 
@@ -813,25 +578,6 @@ LOCK TABLES `financial_image` WRITE;
 /*!40000 ALTER TABLE `financial_image` DISABLE KEYS */;
 /*!40000 ALTER TABLE `financial_image` ENABLE KEYS */;
 UNLOCK TABLES;
-
---
--- Table structure for table `image_company`
---
-
-DROP TABLE IF EXISTS `image_company`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `image_company` (
-  `companyId` int(11) NOT NULL,
-  `imageId` int(11) NOT NULL,
-  `created_at` datetime(3) NOT NULL DEFAULT current_timestamp(3),
-  `update_at` datetime(3) NOT NULL DEFAULT current_timestamp(3),
-  PRIMARY KEY (`companyId`,`imageId`),
-  KEY `image_company_imageId_fkey` (`imageId`),
-  CONSTRAINT `image_company_companyId_fkey` FOREIGN KEY (`companyId`) REFERENCES `client` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `image_company_imageId_fkey` FOREIGN KEY (`imageId`) REFERENCES `imagem` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `image_company`
@@ -886,22 +632,6 @@ INSERT INTO `image_company` VALUES
 (44,166,'2025-01-06 22:20:20.202','2025-01-06 22:20:20.202');
 /*!40000 ALTER TABLE `image_company` ENABLE KEYS */;
 UNLOCK TABLES;
-
---
--- Table structure for table `imagem`
---
-
-DROP TABLE IF EXISTS `imagem`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `imagem` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `path` varchar(191) DEFAULT NULL,
-  `created_at` datetime(3) NOT NULL DEFAULT current_timestamp(3),
-  `update_at` datetime(3) NOT NULL DEFAULT current_timestamp(3),
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=177 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `imagem`
@@ -1090,23 +820,13 @@ INSERT INTO `imagem` VALUES
 UNLOCK TABLES;
 
 --
--- Table structure for table `owner_partner`
+-- Dumping data for table `ola`
 --
 
-DROP TABLE IF EXISTS `owner_partner`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `owner_partner` (
-  `sectorId` int(11) NOT NULL,
-  `clientId` int(11) NOT NULL,
-  `created_at` datetime(3) NOT NULL DEFAULT current_timestamp(3),
-  `update_at` datetime(3) NOT NULL DEFAULT current_timestamp(3),
-  PRIMARY KEY (`sectorId`,`clientId`),
-  KEY `owner_partner_clientId_fkey` (`clientId`),
-  CONSTRAINT `owner_partner_clientId_fkey` FOREIGN KEY (`clientId`) REFERENCES `client` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `owner_partner_sectorId_fkey` FOREIGN KEY (`sectorId`) REFERENCES `sector` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
+LOCK TABLES `ola` WRITE;
+/*!40000 ALTER TABLE `ola` DISABLE KEYS */;
+/*!40000 ALTER TABLE `ola` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
 -- Dumping data for table `owner_partner`
@@ -1163,25 +883,6 @@ INSERT INTO `owner_partner` VALUES
 UNLOCK TABLES;
 
 --
--- Table structure for table `owner_partner_image`
---
-
-DROP TABLE IF EXISTS `owner_partner_image`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `owner_partner_image` (
-  `imageId` int(11) NOT NULL,
-  `owner_partnerId` int(11) NOT NULL,
-  `created_at` datetime(3) NOT NULL DEFAULT current_timestamp(3),
-  `update_at` datetime(3) NOT NULL DEFAULT current_timestamp(3),
-  PRIMARY KEY (`imageId`,`owner_partnerId`),
-  KEY `owner_partner_image_owner_partnerId_fkey` (`owner_partnerId`),
-  CONSTRAINT `owner_partner_image_imageId_fkey` FOREIGN KEY (`imageId`) REFERENCES `imagem` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `owner_partner_image_owner_partnerId_fkey` FOREIGN KEY (`owner_partnerId`) REFERENCES `sector` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
 -- Dumping data for table `owner_partner_image`
 --
 
@@ -1236,22 +937,6 @@ INSERT INTO `owner_partner_image` VALUES
 UNLOCK TABLES;
 
 --
--- Table structure for table `role`
---
-
-DROP TABLE IF EXISTS `role`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `role` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `role_name` varchar(191) NOT NULL,
-  `created_at` datetime(3) NOT NULL DEFAULT current_timestamp(3),
-  `update_at` datetime(3) NOT NULL DEFAULT current_timestamp(3),
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
 -- Dumping data for table `role`
 --
 
@@ -1261,25 +946,6 @@ LOCK TABLES `role` WRITE;
 UNLOCK TABLES;
 
 --
--- Table structure for table `roleadm`
---
-
-DROP TABLE IF EXISTS `roleadm`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `roleadm` (
-  `adm_id` int(11) NOT NULL,
-  `role_id` int(11) NOT NULL,
-  `created_at` datetime(3) NOT NULL DEFAULT current_timestamp(3),
-  `update_at` datetime(3) NOT NULL DEFAULT current_timestamp(3),
-  PRIMARY KEY (`adm_id`,`role_id`),
-  KEY `RoleAdm_role_id_fkey` (`role_id`),
-  CONSTRAINT `RoleAdm_adm_id_fkey` FOREIGN KEY (`adm_id`) REFERENCES `adm` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `RoleAdm_role_id_fkey` FOREIGN KEY (`role_id`) REFERENCES `role` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
 -- Dumping data for table `roleadm`
 --
 
@@ -1287,27 +953,6 @@ LOCK TABLES `roleadm` WRITE;
 /*!40000 ALTER TABLE `roleadm` DISABLE KEYS */;
 /*!40000 ALTER TABLE `roleadm` ENABLE KEYS */;
 UNLOCK TABLES;
-
---
--- Table structure for table `sector`
---
-
-DROP TABLE IF EXISTS `sector`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `sector` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `name` varchar(1000) DEFAULT NULL,
-  `email` varchar(1000) DEFAULT NULL,
-  `phone` varchar(1000) DEFAULT NULL,
-  `cell_phone` varchar(1000) DEFAULT NULL,
-  `rg` varchar(191) DEFAULT NULL,
-  `cpf` varchar(11) DEFAULT NULL,
-  `created_at` datetime(3) NOT NULL DEFAULT current_timestamp(3),
-  `update_at` datetime(3) NOT NULL DEFAULT current_timestamp(3),
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=177 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `sector`
@@ -1496,29 +1141,6 @@ INSERT INTO `sector` VALUES
 UNLOCK TABLES;
 
 --
--- Table structure for table `supplier_pf`
---
-
-DROP TABLE IF EXISTS `supplier_pf`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `supplier_pf` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `supplier_name` varchar(255) NOT NULL,
-  `supplier_code` varchar(255) NOT NULL,
-  `email` varchar(150) NOT NULL,
-  `phone` varchar(200) NOT NULL,
-  `rg` varchar(15) NOT NULL,
-  `cpf` varchar(11) NOT NULL,
-  `birth_date` datetime(3) DEFAULT NULL,
-  `created_at` datetime(3) NOT NULL DEFAULT current_timestamp(3),
-  `update_at` datetime(3) NOT NULL DEFAULT current_timestamp(3),
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `Supplier_pf_cpf_key` (`cpf`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
 -- Dumping data for table `supplier_pf`
 --
 
@@ -1526,27 +1148,6 @@ LOCK TABLES `supplier_pf` WRITE;
 /*!40000 ALTER TABLE `supplier_pf` DISABLE KEYS */;
 /*!40000 ALTER TABLE `supplier_pf` ENABLE KEYS */;
 UNLOCK TABLES;
-
---
--- Table structure for table `supplier_pf_address`
---
-
-DROP TABLE IF EXISTS `supplier_pf_address`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `supplier_pf_address` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `id_supplier_pf` int(11) NOT NULL,
-  `id_address` int(11) NOT NULL,
-  `created_at` datetime(3) NOT NULL DEFAULT current_timestamp(3),
-  `update_at` datetime(3) NOT NULL DEFAULT current_timestamp(3),
-  PRIMARY KEY (`id`),
-  KEY `Supplier_pf_Address_id_supplier_pf_fkey` (`id_supplier_pf`),
-  KEY `Supplier_pf_Address_id_address_fkey` (`id_address`),
-  CONSTRAINT `Supplier_pf_Address_id_address_fkey` FOREIGN KEY (`id_address`) REFERENCES `address` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `Supplier_pf_Address_id_supplier_pf_fkey` FOREIGN KEY (`id_supplier_pf`) REFERENCES `supplier_pf` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `supplier_pf_address`
@@ -1558,25 +1159,6 @@ LOCK TABLES `supplier_pf_address` WRITE;
 UNLOCK TABLES;
 
 --
--- Table structure for table `supplier_pf_image`
---
-
-DROP TABLE IF EXISTS `supplier_pf_image`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `supplier_pf_image` (
-  `id_supplier_pf` int(11) NOT NULL,
-  `id_image` int(11) NOT NULL,
-  `created_at` datetime(3) NOT NULL DEFAULT current_timestamp(3),
-  `update_at` datetime(3) NOT NULL DEFAULT current_timestamp(3),
-  PRIMARY KEY (`id_image`,`id_supplier_pf`),
-  KEY `Supplier_pf_Image_id_supplier_pf_fkey` (`id_supplier_pf`),
-  CONSTRAINT `Supplier_pf_Image_id_image_fkey` FOREIGN KEY (`id_image`) REFERENCES `imagem` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `Supplier_pf_Image_id_supplier_pf_fkey` FOREIGN KEY (`id_supplier_pf`) REFERENCES `supplier_pf` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
 -- Dumping data for table `supplier_pf_image`
 --
 
@@ -1584,36 +1166,6 @@ LOCK TABLES `supplier_pf_image` WRITE;
 /*!40000 ALTER TABLE `supplier_pf_image` DISABLE KEYS */;
 /*!40000 ALTER TABLE `supplier_pf_image` ENABLE KEYS */;
 UNLOCK TABLES;
-
---
--- Table structure for table `supplier_pj`
---
-
-DROP TABLE IF EXISTS `supplier_pj`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `supplier_pj` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `id_imagem` int(11) NOT NULL,
-  `corporate_reason` varchar(191) NOT NULL,
-  `email` varchar(191) DEFAULT NULL,
-  `phone` varchar(191) DEFAULT NULL,
-  `fantasy_name` varchar(191) DEFAULT NULL,
-  `cnpj` varchar(14) NOT NULL,
-  `answerable` varchar(191) DEFAULT NULL,
-  `state_registration` varchar(191) DEFAULT NULL,
-  `type_contribuition` varchar(191) DEFAULT NULL,
-  `municipal_registration` varchar(191) DEFAULT NULL,
-  `suframa_registration` varchar(191) DEFAULT NULL,
-  `status` tinyint(1) NOT NULL DEFAULT 1,
-  `created_at` datetime(3) NOT NULL DEFAULT current_timestamp(3),
-  `update_at` datetime(3) NOT NULL DEFAULT current_timestamp(3),
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `Supplier_pj_cnpj_key` (`cnpj`),
-  KEY `Supplier_pj_id_imagem_fkey` (`id_imagem`),
-  CONSTRAINT `Supplier_pj_id_imagem_fkey` FOREIGN KEY (`id_imagem`) REFERENCES `imagem` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `supplier_pj`
@@ -1625,23 +1177,6 @@ LOCK TABLES `supplier_pj` WRITE;
 UNLOCK TABLES;
 
 --
--- Table structure for table `supplier_pj_address`
---
-
-DROP TABLE IF EXISTS `supplier_pj_address`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `supplier_pj_address` (
-  `id_address` int(11) NOT NULL,
-  `id_supplier` int(11) NOT NULL,
-  PRIMARY KEY (`id_address`,`id_supplier`),
-  KEY `Supplier_pj_address_id_supplier_fkey` (`id_supplier`),
-  CONSTRAINT `Supplier_pj_address_id_address_fkey` FOREIGN KEY (`id_address`) REFERENCES `address` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `Supplier_pj_address_id_supplier_fkey` FOREIGN KEY (`id_supplier`) REFERENCES `supplier_pj` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
 -- Dumping data for table `supplier_pj_address`
 --
 
@@ -1649,14 +1184,22 @@ LOCK TABLES `supplier_pj_address` WRITE;
 /*!40000 ALTER TABLE `supplier_pj_address` DISABLE KEYS */;
 /*!40000 ALTER TABLE `supplier_pj_address` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Dumping data for table `test_s`
+--
+
+LOCK TABLES `test_s` WRITE;
+/*!40000 ALTER TABLE `test_s` DISABLE KEYS */;
+/*!40000 ALTER TABLE `test_s` ENABLE KEYS */;
+UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
-/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*M!100616 SET NOTE_VERBOSITY=@OLD_NOTE_VERBOSITY */;
 
--- Dump completed on 2025-01-06 19:27:42
+-- Dump completed on 2025-01-07 18:16:45

@@ -43,7 +43,7 @@ export class SupplierPjRespository {
   static async findSupplierById(id: number) {
     try {
       const [registerSupplier] = (await this.connection
-        .$queryRaw`SELECT s.*, a.*,i.*,p.id_address FROM Supplier_pj s LEFT JOIN erp.imagem AS i ON s.id_imagem = i.id LEFT JOIN erp.Supplier_pj_address AS p ON p.id_supplier = s.id LEFT JOIN erp.Address AS a ON p.id_address = a.id WHERE s.id = ${id}`) as findSupplierById[];
+        .$queryRaw`SELECT s.*, a.*,i.*,p.id_address FROM supplier_pj s LEFT JOIN erp.imagem AS i ON s.id_imagem = i.id LEFT JOIN erp.supplier_pj_address AS p ON p.id_supplier = s.id LEFT JOIN erp.address AS a ON p.id_address = a.id WHERE s.id = ${id}`) as findSupplierById[];
 
       return registerSupplier;
     } catch (error) {
@@ -81,40 +81,40 @@ export class SupplierPjRespository {
   }
 
   static async filterSupplierByStatus(
-      { email, phone, corporate_reason, answerable }: filterSupplier,
-      status: string | null,
-      page: number,
-      limit: number
-    ) {
-      try {
-        return await this.connection.supplier_pj.findMany({
-          where: {
-            OR: [
-              { email: email.contanis },
-              { phone: phone.contanis },
-              { corporate_reason: corporate_reason.contanis },
-              { answerable: answerable.contanis },
-            ],
-            AND: { status: status === "true" ? true : false },
-          },
-          select: {
-            email: true,
-            phone: true,
-            corporate_reason: true,
-            answerable: true,
-          },
-          skip: page,
-          take: limit,
-        });
-      } catch (error) {
-        throw error;
-      }
+    { email, phone, corporate_reason, answerable }: filterSupplier,
+    status: string | null,
+    page: number,
+    limit: number
+  ) {
+    try {
+      return await this.connection.supplier_pj.findMany({
+        where: {
+          OR: [
+            { email: email.contanis },
+            { phone: phone.contanis },
+            { corporate_reason: corporate_reason.contanis },
+            { answerable: answerable.contanis },
+          ],
+          AND: { status: status === "true" ? true : false },
+        },
+        select: {
+          email: true,
+          phone: true,
+          corporate_reason: true,
+          answerable: true,
+        },
+        skip: page,
+        take: limit,
+      });
+    } catch (error) {
+      throw error;
+    }
   }
 
   static async getAll(page: number, limit: number) {
     try {
       const registerColaboraters = await this.connection
-        .$queryRaw`SELECT s.phone,s.email,s.corporate_reason,s.answerable,s.id FROM Supplier_pj s `;
+        .$queryRaw`SELECT s.phone,s.email,s.corporate_reason,s.answerable,s.id FROM supplier_pj s `;
 
       // const registerColaboraters = await this.connection.supplier_pj.findMany({
       //   select: {
@@ -138,7 +138,7 @@ export class SupplierPjRespository {
   ) {
     try {
       return this.connection
-        .$queryRaw`SELECT s.phone,s.email,s.corporate_reason,s.answerable,s.id FROM Supplier_pj s WHERE s.status = ${status}`;
+        .$queryRaw`SELECT s.phone,s.email,s.corporate_reason,s.answerable,s.id FROM supplier_pj s WHERE s.status = ${status}`;
     } catch (error) {
       throw error;
     }
@@ -158,7 +158,7 @@ export class SupplierPjRespository {
           data: { ...pj },
         });
         await tsx.address.update({
-          where: { id: addressId},
+          where: { id: addressId },
           data: { ...address },
         });
         await tsx.imagem.update({
@@ -209,5 +209,4 @@ export class SupplierPjRespository {
       throw error;
     }
   }
-  
 }

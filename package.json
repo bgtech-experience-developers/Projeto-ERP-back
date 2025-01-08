@@ -9,9 +9,6 @@
     "preServer": "npm run build",
     "server": " concurrently \"nodemon ./dist/server.js\"   \"tsc -w\" "
   },
-  "prisma": {
-    "seed": "node ./dist/seed.js"
-  },
   "keywords": [],
   "author": "",
   "license": "ISC",
