@@ -66,7 +66,7 @@ model imagem {
   commercial_imagem        commercial_image[]
   owner_partner            owner_partner_image[]
   accounting_contact_image accounting_contact_image[]
-  supplier_pf              supplier_pf_Image[]        @relation("campo")
+  supplier_pf              supplier_pf_image[]        @relation("campo")
   supplier_pj              supplier_pj[]
 
   created_at DateTime @default(now())
@@ -113,19 +113,19 @@ model supplier_pf {
   birth_date          DateTime?
   status              Boolean               @default(true)
   address_supplier_pf supplier_pf_address[]
-  supplier_imagem     supplier_pf_Image[]   @relation("supplier_id_image")
+  supplier_imagem     supplier_pf_image[]   @relation("supplier_id_image")
   created_at          DateTime              @default(now())
   update_at           DateTime              @default(now())
 }
 
-model supplier_pf_Image {
+model supplier_pf_image {
   // id                Int         @id @default(autoincrement())
-  id_supplier_pf   Int
-  id_image         Int
-  supplier_pf      supplier_pf @relation(fields: [id_supplier_pf], references: [id], onDelete: Cascade, onUpdate: Cascade, name: "supplier_id_image")
-  supplier_pf_imag imagem      @relation(fields: [id_image], references: [id], onDelete: Cascade, onUpdate: Cascade, name: "campo")
-  created_at       DateTime    @default(now())
-  update_at        DateTime    @default(now())
+  id_supplier_pf    Int
+  id_image          Int
+  supplier_pf       supplier_pf @relation(fields: [id_supplier_pf], references: [id], onDelete: Cascade, onUpdate: Cascade, name: "supplier_id_image")
+  supplier_pf_image imagem      @relation(fields: [id_image], references: [id], onDelete: Cascade, onUpdate: Cascade, name: "campo")
+  created_at        DateTime    @default(now())
+  update_at         DateTime    @default(now())
 
   @@id([id_image, id_supplier_pf])
 }
