@@ -2,7 +2,7 @@ import { InstanciaPrisma } from "../db/PrismaClient.js";
 export default class SupplierRepository {
     static connectionDb = InstanciaPrisma.GetConnection();
     // Estudar Promisse.All()
-    // : Promise<AllSupplier_pf[] | null>
+    // : Promise<AllSupplier_pf[] | null> 
     static async getAll(skip) {
         try {
             return this.connectionDb.supplier_pf.findMany({
@@ -18,10 +18,10 @@ export default class SupplierRepository {
         try {
             return await this.connectionDb.supplier_pf.findMany({
                 where: {
-                    status: status,
+                    status: status
                 },
                 take: 10,
-                skip,
+                skip
             });
         }
         catch (error) {
@@ -32,7 +32,7 @@ export default class SupplierRepository {
         try {
             const supplier = await this.connectionDb.supplier_pf.findUnique({
                 where: {
-                    id,
+                    id
                 },
                 include: {
                     // product_supplier_pf: {
@@ -44,19 +44,19 @@ export default class SupplierRepository {
                         select: {
                             // O campo do json irá mudar
                             id_address: true,
-                            address: true,
-                        },
+                            address: true
+                        }
                     },
                     supplier_imagem: {
                         include: {
                             supplier_pf_image: {
                                 select: {
-                                    path: true,
-                                },
-                            },
-                        },
-                    },
-                },
+                                    path: true
+                                }
+                            }
+                        }
+                    }
+                }
             });
             return [supplier];
         }
@@ -68,7 +68,7 @@ export default class SupplierRepository {
         try {
             const supplier = await this.connectionDb.supplier_pf.findUnique({
                 where: {
-                    cpf,
+                    cpf
                 },
                 include: {
                     // product_supplier_pf: {
@@ -78,19 +78,19 @@ export default class SupplierRepository {
                     // },
                     address_supplier_pf: {
                         include: {
-                            address: true,
-                        },
+                            address: true
+                        }
                     },
                     supplier_imagem: {
                         include: {
                             supplier_pf_image: {
                                 select: {
-                                    path: true,
-                                },
-                            },
-                        },
-                    },
-                },
+                                    path: true
+                                }
+                            }
+                        }
+                    }
+                }
             });
             return supplier;
         }
@@ -108,22 +108,22 @@ export default class SupplierRepository {
                             create: {
                                 address: {
                                     create: {
-                                        ...address,
-                                    },
-                                },
-                            },
+                                        ...address
+                                    }
+                                }
+                            }
                         },
                         supplier_imagem: {
                             create: {
                                 supplier_pf_image: {
                                     create: {
-                                        path: image,
-                                    },
-                                },
-                            },
-                        },
-                    },
-                }),
+                                        path: image
+                                    }
+                                }
+                            }
+                        }
+                    }
+                })
             ]);
             return supplierQuery;
         }
@@ -135,8 +135,8 @@ export default class SupplierRepository {
         try {
             return this.connectionDb.supplier_pf.delete({
                 where: {
-                    id,
-                },
+                    id
+                }
             });
         }
         catch (error) {
@@ -147,15 +147,17 @@ export default class SupplierRepository {
         try {
             const path = await this.connectionDb.supplier_pf_image.findFirst({
                 where: {
-                    id_supplier_pf,
+                    supplier_pf: {
+                        id: id_supplier_pf
+                    }
                 },
                 select: {
                     supplier_pf_image: {
                         select: {
-                            path: true,
-                        },
-                    },
-                },
+                            path: true
+                        }
+                    }
+                }
             });
             return path?.supplier_pf_image?.path || null;
         }
@@ -196,11 +198,11 @@ export default class SupplierRepository {
             //     this.connectionDb.supplier_pf.update({
             //         where: {
             //             id
-            //         },
+            //         }, 
             //         data: {
-            //             ...supplier
+            //             ...supplier                   
             //         }
-            //     })
+            //     }) 
             // ]
             console.log({ supplier });
             await this.connectionDb.$transaction(async (conn) => {
@@ -209,38 +211,38 @@ export default class SupplierRepository {
                         id,
                     },
                     data: {
-                        ...supplier,
-                    },
+                        ...supplier
+                    }
                 });
                 await conn.supplier_pf_address.update({
                     where: {
                         id_address_id_supplier_pf: {
                             id_address: idAddress,
-                            id_supplier_pf: id,
-                        },
+                            id_supplier_pf: id
+                        }
                     },
                     data: {
                         address: {
                             update: {
-                                ...address,
-                            },
-                        },
-                    },
+                                ...address
+                            }
+                        }
+                    }
                 });
-                await conn.supplier_pf_Image.update({
+                await conn.supplier_pf_image.update({
                     where: {
                         id_image_id_supplier_pf: {
                             id_image: idImage,
-                            id_supplier_pf: id,
-                        },
+                            id_supplier_pf: id
+                        }
                     },
                     data: {
                         supplier_pf_image: {
                             update: {
-                                path: image,
-                            },
-                        },
-                    },
+                                path: image
+                            }
+                        }
+                    }
                 });
             });
         }
@@ -256,7 +258,7 @@ export default class SupplierRepository {
                         { supplier_name: { contains: supplier_name.contanis } },
                         { email: { contains: email.contanis } },
                         { phone: { contains: phone.contanis } },
-                        { cpf: { contains: cpf.contanis } },
+                        { cpf: { contains: cpf.contanis } }
                     ],
                     AND: { status: status === "true" ? true : false },
                 },
@@ -265,10 +267,10 @@ export default class SupplierRepository {
                     supplier_name: true,
                     email: true,
                     phone: true,
-                    cpf: true,
+                    cpf: true
                 },
                 skip: page,
-                take: 10,
+                take: 10
             });
         }
         catch (error) {
@@ -283,7 +285,7 @@ export default class SupplierRepository {
                         { supplier_name: { contains: supplier_name.contanis } },
                         { email: { contains: email.contanis } },
                         { phone: { contains: phone.contanis } },
-                        { cpf: { contains: cpf.contanis } },
+                        { cpf: { contains: cpf.contanis } }
                     ],
                 },
                 select: {
@@ -291,10 +293,10 @@ export default class SupplierRepository {
                     supplier_name: true,
                     email: true,
                     phone: true,
-                    cpf: true,
+                    cpf: true
                 },
                 skip: page,
-                take: 10,
+                take: 10
             });
         }
         catch (error) {

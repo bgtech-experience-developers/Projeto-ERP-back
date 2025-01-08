@@ -80,7 +80,7 @@ async function main() {
                 phone: "85912345678",
                 supplier_imagem: {
                     create: {
-                        supplier_pf_imag: {
+                        supplier_pf_image: {
                             create: {
                                 path: faker.image.url(),
                             },
@@ -224,7 +224,50 @@ async function client() {
     await connectionDb.$transaction(record);
     console.log("100 registros criados com sucesso! de clientes");
 }
-main()
+async function pj() {
+    try {
+        const record = [];
+        for (let i = 0; i < 50; i++) {
+            const { id } = await connectionDb.imagem.create({
+                data: { path: faker.image.url() },
+                select: { id: true },
+            });
+            record.push(connectionDb.supplier_pj.create({
+                data: {
+                    answerable: faker.person.firstName("female"),
+                    cnpj: faker.string.numeric(14),
+                    corporate_reason: faker.commerce.productMaterial(),
+                    id_imagem: id,
+                    email: faker.internet.email(),
+                    fantasy_name: faker.company.name(),
+                    municipal_registration: faker.string.numeric(8),
+                    type_contribuition: faker.person.jobType(),
+                    phone: faker.phone.number(),
+                    suframa_registration: faker.book.publisher(),
+                    supplier_pj_address: {
+                        create: {
+                            address: {
+                                create: {
+                                    cep: faker.string.numeric(8),
+                                    city: faker.location.city(),
+                                    complement: "house",
+                                    neighborhood: faker.location.street(),
+                                    number: faker.location.buildingNumber(),
+                                    state: faker.location.state(),
+                                },
+                            },
+                        },
+                    },
+                },
+            }));
+        }
+        await connectionDb.$transaction(record);
+    }
+    catch (error) {
+        console.error(error);
+    }
+}
+pj()
     .then(async () => {
     await connectionDb.$disconnect();
 })
@@ -233,7 +276,16 @@ main()
     await connectionDb.$disconnect();
     process.exit(1);
 });
-client().then(async () => {
-    await connectionDb.$disconnect();
-});
+// main()
+//   .then(async () => {
+//     await connectionDb.$disconnect();
+//   })
+//   .catch(async (e) => {
+//     console.error(e);
+//     await connectionDb.$disconnect();
+//     process.exit(1);
+//   });
+// client().then(async () => {
+//   await connectionDb.$disconnect();
+// });
 export default main;

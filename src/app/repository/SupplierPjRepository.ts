@@ -57,24 +57,8 @@ export class SupplierPjRespository {
     limit: number
   ) {
     try {
-      return await this.connection.supplier_pj.findMany({
-        where: {
-          OR: [
-            { email: { contains: email.contanis } },
-            { phone: phone.contanis },
-            { corporate_reason: corporate_reason.contanis },
-            { answerable: answerable.contanis },
-          ],
-        },
-        select: {
-          email: true,
-          phone: true,
-          corporate_reason: true,
-          answerable: true,
-        },
-        skip: page,
-        take: limit,
-      });
+      return await this.connection
+        .$queryRaw`SELECT p.email,p.phone,p.corporate_reason,p.answerable FROM supplier_pj p WHERE p.email LIKE ${email.contanis} or p.phone LIKE ${phone.contanis} or p.corporate_reason LIKE ${corporate_reason.contanis} or p.answerable LIKE ${answerable.contanis}`;
     } catch (error) {
       throw error;
     }
@@ -87,25 +71,14 @@ export class SupplierPjRespository {
     limit: number
   ) {
     try {
-      return await this.connection.supplier_pj.findMany({
-        where: {
-          OR: [
-            { email: email.contanis },
-            { phone: phone.contanis },
-            { corporate_reason: corporate_reason.contanis },
-            { answerable: answerable.contanis },
-          ],
-          AND: { status: status === "true" ? true : false },
-        },
-        select: {
-          email: true,
-          phone: true,
-          corporate_reason: true,
-          answerable: true,
-        },
-        skip: page,
-        take: limit,
-      });
+      return await this.connection
+        .$queryRaw`SELECT p.email,p.phone,p.corporate_reason,p.answerable FROM supplier_pj p WHERE (p.email LIKE ${
+        email.contanis
+      } or p.phone LIKE ${phone.contanis} or p.corporate_reason LIKE ${
+        corporate_reason.contanis
+      } or p.answerable LIKE ${answerable.contanis}) AND p.status = ${
+        status === "true" ? 1 : 0
+      }`;
     } catch (error) {
       throw error;
     }
@@ -114,7 +87,7 @@ export class SupplierPjRespository {
   static async getAll(page: number, limit: number) {
     try {
       const registerColaboraters = await this.connection
-        .$queryRaw`SELECT s.phone,s.email,s.corporate_reason,s.answerable,s.id FROM supplier_pj s `;
+        .$queryRaw`SELECT s.phone,s.email,s.corporate_reason,s.answerable,s.id FROM supplier_pj s  OFFSET ${page} LIMIT ${limit}`;
 
       // const registerColaboraters = await this.connection.supplier_pj.findMany({
       //   select: {
@@ -138,7 +111,7 @@ export class SupplierPjRespository {
   ) {
     try {
       return this.connection
-        .$queryRaw`SELECT s.phone,s.email,s.corporate_reason,s.answerable,s.id FROM supplier_pj s WHERE s.status = ${status}`;
+        .$queryRaw`SELECT s.phone,s.email,s.corporate_reason,s.answerable,s.id FROM supplier_pj s WHERE s.status = ${status} OFFSET ${pageSized} LIMIT ${limit}`;
     } catch (error) {
       throw error;
     }

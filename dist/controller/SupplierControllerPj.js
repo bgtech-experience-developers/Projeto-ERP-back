@@ -58,14 +58,15 @@ export class SupplierControllerPj {
         try {
             const query = request.query;
             const status = query.status ? query.status : null;
-            const value = typeof query.value === "string" ? query.value : "";
+            const value = typeof query.value === "string" ? query.value : ""; //reduntante
+            console.log(value);
             const page = Number(query.page) ? Number(query.page) * 10 : 10;
             const limit = Number(query.limit) ? Number(query.limit) : 5;
             const allExistingRegister = await SuppplierPjService.filterSupplier(page, limit, status, value);
             response.status(200).json(allExistingRegister);
         }
         catch (error) {
-            throw error;
+            next(error);
         }
     }
 }
