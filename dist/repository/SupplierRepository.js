@@ -229,7 +229,7 @@ export default class SupplierRepository {
                         }
                     }
                 });
-                await conn.supplier_pf_Image.update({
+                await conn.supplier_pf_image.update({
                     where: {
                         id_image_id_supplier_pf: {
                             id_image: idImage,
