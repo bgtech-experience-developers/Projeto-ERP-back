@@ -311,3 +311,21 @@ model roleadm {
 
   @@id([adm_id, role_id])
 }
+
+model product {
+  id           Int       @id @default(autoincrement())
+  status       Boolean
+  name         String
+  supplier     String
+  serie_number Int
+  barcode      Int
+  amount       Int  
+  cost_value   String    // vai ter calculo em cima do valor?
+  weight       String    // vai ter calculo em cima do valor?
+  width        String    // vai ter calculo em cima do valor?
+  height       String    // vai ter calculo em cima do valor?
+  length       String    // vai ter calculo em cima do valor?
+  description  String    @db.Text()
+  created_at   DateTime  @default(now())
+  update_at    DateTime  @default(now())
+}
