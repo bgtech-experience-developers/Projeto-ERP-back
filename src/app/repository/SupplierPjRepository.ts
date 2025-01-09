@@ -87,16 +87,7 @@ export class SupplierPjRespository {
   static async getAll(page: number, limit: number) {
     try {
       const registerColaboraters = await this.connection
-        .$queryRaw`SELECT s.phone,s.email,s.corporate_reason,s.answerable,s.id FROM supplier_pj s  LIMIT ${limit} OFFSET ${page}`;
-
-      // const registerColaboraters = await this.connection.supplier_pj.findMany({
-      //   select: {
-      //     corporate_reason: true,
-      //     email: true,
-      //     phone: true,
-      //     answerable: true,
-      //   },
-      // }); aqui estou utililizandio o prisma pois caso troque de sgbd a orm se encarrega de converter o codigo para que haja uma compatiblidad3 com esse novo sgbd , vantagem de utilizar uma orm
+        .$queryRaw`SELECT s.phone,s.email,s.corporate_reason,s.answerable,s.id FROM supplier_pj s LIMIT ${limit} OFFSET ${page}`;
 
       return registerColaboraters;
     } catch (error) {
@@ -111,7 +102,7 @@ export class SupplierPjRespository {
   ) {
     try {
       return this.connection
-        .$queryRaw`SELECT s.phone,s.email,s.corporate_reason,s.answerable,s.id FROM supplier_pj s WHERE s.status = ${status} OFFSET ${pageSized} LIMIT ${limit}`;
+        .$queryRaw`SELECT s.phone,s.email,s.corporate_reason,s.answerable,s.id FROM supplier_pj s WHERE s.status = ${status} limit ${pageSized} offset ${limit}`;
     } catch (error) {
       throw error;
     }
