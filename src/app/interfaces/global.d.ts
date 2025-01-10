@@ -120,10 +120,12 @@ interface adminPermission {
     ];
   };
 }
+
 interface queryWhere {
   contains: string;
   mode?: "insensitive";
 }
+
 interface filtragem {
   branch_activity: queryWhere;
   fantasy_name: queryWhere;
@@ -131,6 +133,7 @@ interface filtragem {
   phone: queryWhere;
   name: queryWhere;
 }
+
 interface Address {
   cep: ValueCLient;
 //   cep?: ValueCLient;
@@ -145,23 +148,34 @@ interface Address {
 
 }
 
-
-
 type AllImagens = (string | null)[];
 
 interface Supplier_pf {
+  id?: number;
   supplier_name: string;
   supplier_code: string;
   email: string;
   phone: string;
   rg: string;
   cpf: string;
-  birth_date: string;
+  birth_date: Date | null;
   status: boolean
+  created_at?: Date;
+  update_at?: Date ;
+ 
   // product_supplier_pf?: Product_Supplier_pf;
   // address_supplier_pf?: Address;
 }
 
+
+
+// interface SupplierSchema extends Supplier_pf{}
+interface BodySupplierPf {
+  json?: string;
+  supplier: Supplier_pf;
+  // product: Product_Supplier_pf
+  address: Address;
+}
 
 // interface AllSupplier_pf extends Supplier_pf {
 //   id: number;
@@ -174,14 +188,6 @@ interface AllSupplier_pf extends Supplier_pf {
   product: string[];
   created_at: Date;
   update_at: Date;
-}
-
-// interface SupplierSchema extends Supplier_pf{}
-interface BodySupplierPf {
-  json?: string;
-  supplier: Supplier_pf;
-  // product: Product_Supplier_pf
-  address: Address;
 }
 
 interface Product_Supplier_pf {
