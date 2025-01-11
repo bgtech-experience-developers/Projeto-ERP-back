@@ -1,3 +1,4 @@
+
 interface ClientC {
   id: number;
   corporate_reason: string;
@@ -135,8 +136,7 @@ interface filtragem {
 }
 
 interface Address {
-  cep: ValueCLient;
-//   cep?: ValueCLient;
+  cep?: ValueCLient;
   street: ValueCLient;
   number: ValueCLient;
   complement: ValueCLient;
@@ -158,7 +158,7 @@ interface Supplier_pf {
   phone: string;
   rg: string;
   cpf: string;
-  birth_date: Date | null;
+  birth_date: (Date | null | string);
   status: boolean
   created_at?: Date;
   update_at?: Date ;
@@ -206,3 +206,26 @@ interface filterSupplierPf {
   email: filterContanis
   phone: filterContanis
 }
+
+
+// interface supplierGetById extends Supplier_pf {
+
+//   address_supplier_pf: addressGetById
+//   supplier_imagem: supplierImageGetById
+// }
+
+// interface addressGetById extends address {
+//   id_address: number
+//   address: Address[]
+// }
+
+// interface supplierImageGetById {
+//   id_supplier_pf: number
+//   id_image: number
+//   created_at?: Date;
+//   update_at?: Date ;
+//   supplier_pf_image:[ {path: string}]
+// }
+
+
+

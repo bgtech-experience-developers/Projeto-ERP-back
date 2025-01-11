@@ -3,16 +3,15 @@ import { InstanciaPrisma } from "../db/PrismaClient.js";
 import { da } from "@faker-js/faker";
 import { boolean, date } from "joi";
 import { log } from "node:console";
+// import { Supplier_pf, BodySupplierPf, filterSupplierPf } from "../interfaces/global.js";
 
 
 export default class SupplierRepository {
     protected static connectionDb: PrismaClient = InstanciaPrisma.GetConnection();
 
-    // Estudar Promisse.All()
-    // : Promise<AllSupplier_pf[] | null> 
+    
     static async getAll(skip: number): Promise<Supplier_pf[]> {
         try {
-
             return this.connectionDb.supplier_pf.findMany({
                 take: 20,
                 skip,
@@ -24,7 +23,7 @@ export default class SupplierRepository {
 
     }
 
-    static async getAllByStatus(skip: number, status: boolean) {
+    static async getAllByStatus(skip: number, status: boolean): Promise<Supplier_pf[]> {
         
         try {
             return await this.connectionDb.supplier_pf.findMany({

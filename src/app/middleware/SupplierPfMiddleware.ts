@@ -4,6 +4,7 @@ import { UploadFile } from "../utils/multer.js";
 import { log } from "node:console";
 import { AllError } from "../error/AllError.js";
 import { JoiValidation } from "../utils/joi.js";
+// import { BodySupplierPf } from "../interfaces/global.js";
 
 export class SupplierPfMiddleware {
     static uploadFileSingle = UploadFile.uploadSingle().single("photo")

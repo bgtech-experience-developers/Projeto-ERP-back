@@ -1,12 +1,11 @@
 import { InstanciaPrisma } from "../db/PrismaClient.js";
+// import { Supplier_pf, BodySupplierPf, filterSupplierPf } from "../interfaces/global.js";
 export default class SupplierRepository {
     static connectionDb = InstanciaPrisma.GetConnection();
-    // Estudar Promisse.All()
-    // : Promise<AllSupplier_pf[] | null> 
     static async getAll(skip) {
         try {
             return this.connectionDb.supplier_pf.findMany({
-                take: 10,
+                take: 20,
                 skip,
             });
         }
@@ -20,7 +19,7 @@ export default class SupplierRepository {
                 where: {
                     status: status
                 },
-                take: 10,
+                take: 20,
                 skip
             });
         }
@@ -145,7 +144,7 @@ export default class SupplierRepository {
     }
     static async getImage(id_supplier_pf) {
         try {
-            const path = await this.connectionDb.supplier_pf_Image.findFirst({
+            const path = await this.connectionDb.supplier_pf_image.findFirst({
                 where: {
                     supplier_pf: {
                         id: id_supplier_pf
@@ -229,7 +228,7 @@ export default class SupplierRepository {
                         }
                     }
                 });
-                await conn.supplier_pf_Image.update({
+                await conn.supplier_pf_image.update({
                     where: {
                         id_image_id_supplier_pf: {
                             id_image: idImage,
@@ -270,7 +269,7 @@ export default class SupplierRepository {
                     cpf: true
                 },
                 skip: page,
-                take: 10
+                take: 20
             });
         }
         catch (error) {
@@ -296,7 +295,7 @@ export default class SupplierRepository {
                     cpf: true
                 },
                 skip: page,
-                take: 10
+                take: 20
             });
         }
         catch (error) {

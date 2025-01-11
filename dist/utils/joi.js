@@ -1,5 +1,7 @@
 import joi from "joi";
 import { AllError } from "../error/AllError.js";
+// import { Address } from "node:cluster";
+// import { integral, bodyCreateClient, BodySupplierPf, Supplier_pf, Address } from "../interfaces/global.js";
 export class JoiValidation {
     static async schemaCreateClient({ contabil, comercial, socio, endereco_empresa, endereco_entrega, cliente, financeiro, }) {
         const schemaCreateClient = joi.object({
@@ -11,11 +13,11 @@ export class JoiValidation {
             state_registration: joi
                 .string()
                 .trim()
-                .min(9)
-                .max(9)
+                .min(50)
+                .max(50)
                 .messages({
-                "string.max": "o campo inscrição estadual deve conter no maximo 9 digitos",
-                "string.min": "o compo inscrição estadual deve conter no minimo 9 digitos",
+                "string.max": "o campo inscrição estadual deve conter no maximo 50 digitos",
+                "string.min": "o compo inscrição estadual deve conter no minimo 50 digitos",
             })
                 .allow(""),
             type_contribuition: joi.string().trim().allow(""),
