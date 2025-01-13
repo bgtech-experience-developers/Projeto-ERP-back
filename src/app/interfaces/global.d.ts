@@ -120,10 +120,12 @@ interface adminPermission {
     ];
   };
 }
+
 interface queryWhere {
   contains: string | null;
   mode?: "insensitive";
 }
+
 interface filtragem {
   branch_activity: queryWhere;
   fantasy_name: queryWhere;
@@ -131,9 +133,10 @@ interface filtragem {
   phone: queryWhere;
   name: queryWhere;
 }
+
 interface Address {
-  cep: ValueCLient;
-  //   cep?: ValueCLient;
+  cep?: ValueCLient;
+
   street: ValueCLient;
   number: ValueCLient;
   complement: ValueCLient;
@@ -147,16 +150,29 @@ interface Address {
 type AllImagens = (string | null)[];
 
 interface Supplier_pf {
+  id?: number;
   supplier_name: string;
   supplier_code: string;
   email: string;
   phone: string;
   rg: string;
   cpf: string;
-  birth_date: string;
+
+  birth_date: Date | null | string;
   status: boolean;
+  created_at?: Date;
+  update_at?: Date;
+
   // product_supplier_pf?: Product_Supplier_pf;
   // address_supplier_pf?: Address;
+}
+
+// interface SupplierSchema extends Supplier_pf{}
+interface BodySupplierPf {
+  json?: string;
+  supplier: Supplier_pf;
+  // product: Product_Supplier_pf
+  address: Address;
 }
 
 // interface AllSupplier_pf extends Supplier_pf {
@@ -170,14 +186,6 @@ interface AllSupplier_pf extends Supplier_pf {
   product: string[];
   created_at: Date;
   update_at: Date;
-}
-
-// interface SupplierSchema extends Supplier_pf{}
-interface BodySupplierPf {
-  json?: string;
-  supplier: Supplier_pf;
-  // product: Product_Supplier_pf
-  address: Address;
 }
 
 interface Product_Supplier_pf {
@@ -196,3 +204,22 @@ interface filterSupplierPf {
   email: filterContanis;
   phone: filterContanis;
 }
+
+// interface supplierGetById extends Supplier_pf {
+
+//   address_supplier_pf: addressGetById
+//   supplier_imagem: supplierImageGetById
+// }
+
+// interface addressGetById extends address {
+//   id_address: number
+//   address: Address[]
+// }
+
+// interface supplierImageGetById {
+//   id_supplier_pf: number
+//   id_image: number
+//   created_at?: Date;
+//   update_at?: Date ;
+//   supplier_pf_image:[ {path: string}]
+// }

@@ -79,3 +79,10 @@
     "state": "SP"
   }
 }
+
+Permissões
+
+ler -> 1
+criar -> 2
+deletar -> 3
+atualizar -> 4
