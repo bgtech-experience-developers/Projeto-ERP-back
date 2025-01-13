@@ -1,5 +1,15 @@
 import { AdmService } from "../service/Adm.js";
 export class AdmController {
+    static async sendEmailCode(request, response, next) {
+        try {
+            const email = request.body;
+            const resultToken = await AdmService.sendEmailCode(email);
+            response.json(resultToken);
+        }
+        catch (error) {
+            next(error);
+        }
+    }
     static async login(request, response, next) {
         try {
             const { token, refreshToken } = await AdmService.login(request.body);

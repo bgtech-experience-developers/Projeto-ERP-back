@@ -2,6 +2,7 @@ import { AllError } from "../error/AllError.js";
 import { AdmRepository } from "../repository/AdmRepository.js";
 import { BycriptCripto } from "../utils/bcrypt.js";
 import { JwtToken } from "../utils/Jwt.js";
+import axios from "axios";
 export class AdmService {
     static async login(body) {
         try {
@@ -31,6 +32,21 @@ export class AdmService {
                 throw new AllError("dados incorretos");
             }
             throw new AllError("erro interno");
+        }
+        catch (error) {
+            throw error;
+        }
+    }
+    static async sendEmailCode(email) {
+        try {
+            const userExist = await AdmRepository.getUniqueByEmail(email);
+            if (!userExist) {
+                throw new AllError("este email não está vinculado a nenhum administrador");
+            }
+            const token = await axios.post(`${process.env.url_python}send/email`, {
+                email,
+                id_user: userExist.id,
+            });
         }
         catch (error) {
             throw error;

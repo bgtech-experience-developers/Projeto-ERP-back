@@ -27,11 +27,16 @@ export class AdmRepository {
       throw error;
     }
   }
-
+  static async getUniqueByEmail(email: string) {
+    try {
+      return await this.connectionDb.emails.findFirst({ where: { email } });
+    } catch (error) {
+      throw error;
+    }
+  }
   static async create(body: login, permissions: number[]) {
     try {
       const result = await this.connectionDb.$transaction(async (tsx) => {
-        //ideia da
         const adm = await tsx.adm.create({
           data: { ...body },
         });

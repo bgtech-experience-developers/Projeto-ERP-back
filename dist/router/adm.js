@@ -6,6 +6,7 @@ import { JwtToken } from "../utils/Jwt.js";
 import jwt from "jsonwebtoken";
 import { AllError } from "../error/AllError.js";
 export const routerAdm = Router();
+routerAdm.post('/recuperar/senha', () => { });
 routerAdm.post("/login", AdmValidator.loginValidator(), AdmController.login);
 routerAdm.post("/criar", AdmValidator.loginValidator(true), AdmController.createAdm);
 routerAdm.get("/refresh-token", async (request, response, next) => {
