@@ -1,4 +1,3 @@
-
 interface ClientC {
   id: number;
   corporate_reason: string;
@@ -123,7 +122,7 @@ interface adminPermission {
 }
 
 interface queryWhere {
-  contains: string;
+  contains: string | null;
   mode?: "insensitive";
 }
 
@@ -137,6 +136,7 @@ interface filtragem {
 
 interface Address {
   cep?: ValueCLient;
+
   street: ValueCLient;
   number: ValueCLient;
   complement: ValueCLient;
@@ -145,7 +145,6 @@ interface Address {
   created_at: Date | string;
   update_at: Date | string;
   state: ValueCLient;
-
 }
 
 type AllImagens = (string | null)[];
@@ -158,16 +157,15 @@ interface Supplier_pf {
   phone: string;
   rg: string;
   cpf: string;
-  birth_date: (Date | null | string);
-  status: boolean
+
+  birth_date: Date | null | string;
+  status: boolean;
   created_at?: Date;
-  update_at?: Date ;
- 
+  update_at?: Date;
+
   // product_supplier_pf?: Product_Supplier_pf;
   // address_supplier_pf?: Address;
 }
-
-
 
 // interface SupplierSchema extends Supplier_pf{}
 interface BodySupplierPf {
@@ -198,15 +196,14 @@ interface Product_Supplier_pf {
   delivery_time: string;
 }
 
-type filterContanis = {contanis: string}
+type filterContanis = { contanis: string };
 
 interface filterSupplierPf {
-  supplier_name: filterContanis
-  cpf: filterContanis
-  email: filterContanis
-  phone: filterContanis
+  supplier_name: filterContanis;
+  cpf: filterContanis;
+  email: filterContanis;
+  phone: filterContanis;
 }
-
 
 // interface supplierGetById extends Supplier_pf {
 
@@ -226,6 +223,3 @@ interface filterSupplierPf {
 //   update_at?: Date ;
 //   supplier_pf_image:[ {path: string}]
 // }
-
-
-
