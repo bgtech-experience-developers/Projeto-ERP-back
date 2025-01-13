@@ -200,3 +200,17 @@ interface filterSupplierPf {
   email: filterContanis
   phone: filterContanis
 }
+
+interface Product {
+  name: string;
+  supplier: string;
+  serie_number: number;
+  barcode: number;
+  amount: number;
+  cost_value: string;
+  weight: string;
+  width: string;
+  height: string;
+  length: string;
+  description: string;
+}

@@ -68,6 +68,7 @@ model imagem {
   accounting_contact_image accounting_contact_image[]
   supplier_pf              supplier_pf_image[]        @relation("campo")
   supplier_pj              supplier_pj[]
+  product                  product[]
 
   created_at DateTime @default(now())
   update_at  DateTime @default(now())
@@ -313,19 +314,21 @@ model roleadm {
 }
 
 model product {
-  id           Int       @id @default(autoincrement())
-  status       Boolean
-  name         String
-  supplier     String
-  serie_number Int
-  barcode      Int
-  amount       Int  
-  cost_value   String    // vai ter calculo em cima do valor?
-  weight       String    // vai ter calculo em cima do valor?
-  width        String    // vai ter calculo em cima do valor?
-  height       String    // vai ter calculo em cima do valor?
-  length       String    // vai ter calculo em cima do valor?
-  description  String    @db.Text()
-  created_at   DateTime  @default(now())
-  update_at    DateTime  @default(now())
+  id                Int       @id @default(autoincrement())
+  id_image          Int
+  name              String
+  supplier          String
+  serie_number      Int
+  barcode           Int
+  amount            Int  
+  cost_value        String
+  weight            String
+  width             String
+  height            String
+  length            String
+  description       String    @db.Text()
+  created_at        DateTime  @default(now())
+  update_at         DateTime  @default(now())
+  image             imagem    @relation(fields: [id_image], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  supplier_relation 
 }
