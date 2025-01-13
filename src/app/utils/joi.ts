@@ -16,13 +16,11 @@ export class JoiValidation {
       state_registration: joi
         .string()
         .trim()
-        .min(1)
         .max(50)
+        .optional()
         .messages({
           "string.max":
-            "o campo inscrição estadual deve conter no maximo 50 digitos",
-          "string.min":
-            "o compo inscrição estadual deve conter no minimo 1 digito",
+            "o campo inscrição estadual deve conter no maximo 50 digitos"
         })
         .allow(""),
       type_contribuition: joi.string().trim().allow(""),
