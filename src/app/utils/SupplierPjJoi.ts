@@ -18,13 +18,11 @@ export class SupplierPjJoi {
         municipal_registration: Joi.string().allow(""),
         state_registration: Joi.string()
           .trim()
-          .min(9)
-          .max(9)
+          .max(50)
+          .optional()
           .messages({
             "string.max":
               "o campo inscrição estadual deve conter no maximo 9 digitos",
-            "string.min":
-              "o compo inscrição estadual deve conter no minimo 9 digitos",
           })
           .allow(""),
         type_contribuition: Joi.string().trim().allow(""),
