@@ -21,10 +21,10 @@ export const filterquery = async (value) => {
             };
         }
         return {
-            branch_activity: { contains: null, mode: "insensitive" },
-            name: { contains: null, mode: "insensitive" },
-            fantasy_name: { contains: null, mode: "insensitive" },
-            email: { contains: null, mode: "insensitive" },
+            branch_activity: { contains: `%${value}%`, mode: "insensitive" },
+            name: { contains: `%${value}%`, mode: "insensitive" },
+            fantasy_name: { contains: `%${value}%`, mode: "insensitive" },
+            email: { contains: `%${value}%`, mode: "insensitive" },
             phone: { contains: `%${value}%` },
         };
     }
