@@ -9,22 +9,22 @@ export const filterquery = async (value: string): Promise<filtragem> => {
         name: { contains: `%${value}%`, mode: "insensitive" },
         fantasy_name: { contains: `%${value}%`, mode: "insensitive" },
         email: { contains: `%${value}%`, mode: "insensitive" },
-        phone: { contains: "" },
+        phone: { contains: null },
       };
     } else if (instanciaFilter.filterEmail()) {
       const filter = {
-        branch_activity: { contains: "", mode: "insensitive" },
-        name: { contains: "", mode: "insensitive" },
-        fantasy_name: { contains: "", mode: "insensitive" },
+        branch_activity: { contains: null, mode: "insensitive" },
+        name: { contains: null, mode: "insensitive" },
+        fantasy_name: { contains: null, mode: "insensitive" },
         email: { contains: `%${value}%`, mode: "insensitive" },
-        phone: { contains: "" },
+        phone: { contains: null },
       };
     }
     return {
-      branch_activity: { contains: "", mode: "insensitive" },
-      name: { contains: "", mode: "insensitive" },
-      fantasy_name: { contains: "", mode: "insensitive" },
-      email: { contains: "", mode: "insensitive" },
+      branch_activity: { contains: null, mode: "insensitive" },
+      name: { contains: null, mode: "insensitive" },
+      fantasy_name: { contains: null, mode: "insensitive" },
+      email: { contains: null, mode: "insensitive" },
       phone: { contains: `%${value}%` },
     };
   } catch (error) {

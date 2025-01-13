@@ -121,7 +121,7 @@ interface adminPermission {
   };
 }
 interface queryWhere {
-  contains: string;
+  contains: string | null;
   mode?: "insensitive";
 }
 interface filtragem {
@@ -133,7 +133,7 @@ interface filtragem {
 }
 interface Address {
   cep: ValueCLient;
-//   cep?: ValueCLient;
+  //   cep?: ValueCLient;
   street: ValueCLient;
   number: ValueCLient;
   complement: ValueCLient;
@@ -142,10 +142,7 @@ interface Address {
   created_at: Date | string;
   update_at: Date | string;
   state: ValueCLient;
-
 }
-
-
 
 type AllImagens = (string | null)[];
 
@@ -157,11 +154,10 @@ interface Supplier_pf {
   rg: string;
   cpf: string;
   birth_date: string;
-  status: boolean
+  status: boolean;
   // product_supplier_pf?: Product_Supplier_pf;
   // address_supplier_pf?: Address;
 }
-
 
 // interface AllSupplier_pf extends Supplier_pf {
 //   id: number;
@@ -192,11 +188,11 @@ interface Product_Supplier_pf {
   delivery_time: string;
 }
 
-type filterContanis = {contanis: string}
+type filterContanis = { contanis: string };
 
 interface filterSupplierPf {
-  supplier_name: filterContanis
-  cpf: filterContanis
-  email: filterContanis
-  phone: filterContanis
+  supplier_name: filterContanis;
+  cpf: filterContanis;
+  email: filterContanis;
+  phone: filterContanis;
 }
