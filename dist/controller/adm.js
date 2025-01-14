@@ -1,6 +1,19 @@
 import { AdmService } from "../service/Adm.js";
 import { AllError } from "../error/AllError.js";
 export class AdmController {
+    static async accessRenew(request, response, next) {
+        try {
+            const newPassword = request.body;
+            const tokenUser = request.headers.tokenrecieve;
+            const token = tokenUser && tokenUser.split(" ")[1];
+            console.log(tokenUser);
+            const message = await AdmService.accessRenew(newPassword, token);
+            response.status(201).json(message);
+        }
+        catch (error) {
+            next(error);
+        }
+    }
     static async receiveCode(request, response, next) {
         try {
             const tokenRecieve = request.headers.tokenrecieve;

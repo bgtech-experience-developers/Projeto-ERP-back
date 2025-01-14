@@ -1,3 +1,4 @@
+import { triggerAsyncId } from "node:async_hooks";
 import { InstanciaPrisma } from "../db/PrismaClient.js";
 import { login } from "../middleware/admValidator.js";
 
@@ -50,6 +51,21 @@ export class AdmRepository {
         where: { email },
         select: { adm_id: true },
       });
+    } catch (error) {
+      throw error;
+    }
+  }
+  static async resetPassword(IdUser: number, newPassword: string) {
+    try {
+      const message = this.connectionDb.$transaction(async (tsx) => {
+        await tsx.tempory_token.deleteMany({ where: { adm_id: IdUser } });
+        await tsx.adm.update({
+          where: { id: IdUser },
+          data: { password: newPassword },
+        });
+        return "restauração de senha com êxito";
+      });
+      return message;
     } catch (error) {
       throw error;
     }

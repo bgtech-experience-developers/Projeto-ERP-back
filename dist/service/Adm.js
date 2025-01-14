@@ -121,6 +121,17 @@ export class AdmService {
             throw error;
         }
     }
+    static async accessRenew(newPassword, tokenUser) {
+        try {
+            const newHashp = BycriptCripto.createPassword(newPassword, 10);
+            const payloadUser = await this.getTokenPayload(tokenUser, process.env.SEND_EMAIL ? process.env.SEND_EMAIL : "");
+            const message = await AdmRepository.resetPassword(payloadUser.idUser, newHashp);
+            return message;
+        }
+        catch (error) {
+            throw error;
+        }
+    }
     static async getTokenEmail(recevierEmail, idUser) {
         try {
             const code = this.getRandomCode();
@@ -190,9 +201,9 @@ export class AdmService {
                 throw new AllError("código inválido");
             }
             else if ((Date.now() - timeExp) / 1000 >= 600) {
-                throw new AllError("código expirou");
+                throw new AllError("código expirado, solicite outro");
             }
-            return "acesso permitdo";
+            return "acesso permitido";
         }
         catch (error) {
             throw error;
