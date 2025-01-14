@@ -26,6 +26,32 @@ export class JwtToken {
             throw error;
         }
     }
+    static async validToken(token, secret) {
+        try {
+            jwt.verify(token, secret, (error) => {
+                if (error) {
+                    throw new AllError("token inválido");
+                }
+                return "token válido ainda";
+            });
+        }
+        catch (error) {
+            throw error;
+        }
+    }
+    static async tokenPayload(token, secretKey) {
+        try {
+            await this.validToken(token, secretKey);
+            const { payload } = jwt.verify(token, secretKey, { complete: true });
+            return payload;
+        }
+        catch (error) {
+            throw error;
+        }
+    }
+    static TokenEmail(payload, secretKey) {
+        return jwt.sign(payload, secretKey, { expiresIn: "1h" });
+    }
     static async RefreshToken(payload, acess) {
         try {
             const secretKeyAdm = process.env.ADM_JWT_SECRET;

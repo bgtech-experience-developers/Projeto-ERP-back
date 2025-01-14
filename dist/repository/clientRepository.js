@@ -556,6 +556,8 @@ export class ClientRepository {
     }
     static async filterClient({ branch_activity, fantasy_name, email, name, phone, }) {
         try {
+            console.log("o telefone ~e ", phone.contains);
+            console.log(`ramo de atuação : ${branch_activity.contains}, nome_FANTASIA: ${fantasy_name.contains}, email : ${email.contains}, name: ${name.contains}, phone : ${phone.contains}`);
             const executeQuery = new SQLAdapter(this.connectionDb);
             const result = await this.connectionDb
                 .$queryRaw `SELECT  erp.sector.*,erp.client.*,erp.owner_partner.* FROM erp.client
@@ -570,3 +572,5 @@ export class ClientRepository {
         }
     }
 }
+// (erp.client.id) NOT IN (SELECT t1.clientId FROM erp.owner_partner AS t1 LEFT JOIN erp.sector AS j2 ON
+//   (j2.id) = (t1.sectorId) LEFT JOIN erp.sector AS j3 ON (j3.id) = (t1.sectorId) LEFT JOIN erp.sector AS j4 ON (j4.id) = (t1.sectorId) WHERE ((NOT ((j2.email LIKE ${email.contains} AND (j2.id IS NOT NULL)) OR (j3.name LIKE ${name.contains} AND (j3.id IS NOT NULL)) OR (j4.phone LIKE ${phone.contains} AND (j4.id IS NOT NULL)))) AND t1.clientId IS NOT NULL)))

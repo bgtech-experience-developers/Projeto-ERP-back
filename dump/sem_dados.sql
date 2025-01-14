@@ -819,14 +819,8 @@ INSERT INTO `imagem` VALUES
 /*!40000 ALTER TABLE `imagem` ENABLE KEYS */;
 UNLOCK TABLES;
 
---
--- Dumping data for table `ola`
---
 
-LOCK TABLES `ola` WRITE;
-/*!40000 ALTER TABLE `ola` DISABLE KEYS */;
-/*!40000 ALTER TABLE `ola` ENABLE KEYS */;
-UNLOCK TABLES;
+
 
 --
 -- Dumping data for table `owner_partner`
@@ -1188,11 +1182,6 @@ UNLOCK TABLES;
 --
 -- Dumping data for table `test_s`
 --
-
-LOCK TABLES `test_s` WRITE;
-/*!40000 ALTER TABLE `test_s` DISABLE KEYS */;
-/*!40000 ALTER TABLE `test_s` ENABLE KEYS */;
-UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
