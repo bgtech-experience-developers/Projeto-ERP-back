@@ -1,5 +1,46 @@
 import { AdmService } from "../service/Adm.js";
+import { AllError } from "../error/AllError.js";
 export class AdmController {
+    static async accessRenew(request, response, next) {
+        try {
+            const newPassword = request.body;
+            const tokenUser = request.headers.tokenrecieve;
+            const token = tokenUser && tokenUser.split(" ")[1];
+            console.log(tokenUser);
+            const message = await AdmService.accessRenew(newPassword, token);
+            response.status(201).json(message);
+        }
+        catch (error) {
+            next(error);
+        }
+    }
+    static async receiveCode(request, response, next) {
+        try {
+            const tokenRecieve = request.headers.tokenrecieve;
+            console.log(tokenRecieve);
+            const token = tokenRecieve && tokenRecieve.split(" ")[1];
+            console.log(token);
+            if (!token) {
+                throw new AllError("token de verificação não fornecido");
+            }
+            const code = request.body.code;
+            const result = await AdmService.receiveCode(token, code);
+            response.status(200).json(result);
+        }
+        catch (error) {
+            next(error);
+        }
+    }
+    static async sendEmailCode(request, response, next) {
+        try {
+            const email = request.body.email;
+            const resultToken = await AdmService.sendEmailCode(email);
+            response.json(resultToken);
+        }
+        catch (error) {
+            next(error);
+        }
+    }
     static async login(request, response, next) {
         try {
             const { token, refreshToken } = await AdmService.login(request.body);

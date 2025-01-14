@@ -8,7 +8,10 @@ import { hasPermission } from "../middleware/permission.js";
 export const clientRouter = express.Router();
 const { CreateClientValidator } = new ClientValidator();
 const { showClients, showClientById } = new Client();
-clientRouter.post("/registro", authentication, hasPermission("criar"), UploadFile.Upload().array("photos", 5), CreateClientValidator(), Client.CreateClient);
+clientRouter.post("/registro", 
+// authentication,
+// hasPermission("criar"),
+UploadFile.Upload().array("photos", 5), CreateClientValidator(), Client.CreateClient);
 clientRouter.get("/", showClients);
 clientRouter.get("/filtragem", Client.showClientsFilter);
 clientRouter.get("/:id", showClientById);

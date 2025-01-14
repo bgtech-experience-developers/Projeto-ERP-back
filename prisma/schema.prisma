@@ -7,10 +7,6 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model ola {
-  id Int @id
-}
-
 model client {
   id                 Int                  @default(autoincrement())
   corporate_reason   String               @db.VarChar(1000)
@@ -92,6 +88,15 @@ model address {
   update_at           DateTime              @default(now())
 }
 
+model emails {
+  id         Int      @id @default(autoincrement())
+  adm_id     Int
+  adm        adm      @relation(fields: [adm_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  email      String
+  created_at DateTime @default(now())
+  update_at  DateTime @default(now())
+}
+
 model supplier_pj_address {
   id_supplier Int
   id_address  Int
@@ -161,6 +166,16 @@ model supplier_pj {
   status                 Boolean               @default(true)
   created_at             DateTime              @default(now())
   update_at              DateTime              @default(now())
+}
+
+model tempory_token {
+  id         Int      @id @default(autoincrement())
+  adm_id     Int
+  adm        adm      @relation(fields: [adm_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  token      String
+  code       String
+  created_at DateTime @default(now())
+  update_at  DateTime @default(now())
 }
 
 model company_address {
@@ -285,12 +300,14 @@ model accounting_contact {
 }
 
 model adm {
-  id         Int       @id @default(autoincrement())
-  cnpj       String    @unique @db.Char(14)
-  password   String
-  role_adm   roleadm[]
-  created_at DateTime  @default(now())
-  update_at  DateTime  @default(now())
+  id            Int             @id @default(autoincrement())
+  cnpj          String          @unique @db.Char(14)
+  password      String
+  role_adm      roleadm[]
+  tempory_token tempory_token[]
+  emails        emails[]
+  created_at    DateTime        @default(now())
+  update_at     DateTime        @default(now())
 }
 
 model role {
