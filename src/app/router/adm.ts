@@ -15,6 +15,7 @@ routerAdm.post(
   AdmController.accessRenew
 );
 routerAdm.post("/login", AdmValidator.loginValidator(), AdmController.login);
+
 routerAdm.post(
   "/criar",
   AdmValidator.loginValidator(true),
