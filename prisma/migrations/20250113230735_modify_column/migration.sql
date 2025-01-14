@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE `emails` MODIFY `id` INTEGER NOT NULL AUTO_INCREMENT;

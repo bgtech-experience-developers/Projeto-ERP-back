@@ -6,7 +6,9 @@ import { JwtToken } from "../utils/Jwt.js";
 import jwt from "jsonwebtoken";
 import { AllError } from "../error/AllError.js";
 export const routerAdm = Router();
-routerAdm.post('/recuperar/senha', () => { });
+routerAdm.post("/recuperar/email", AdmController.sendEmailCode);
+routerAdm.post("/recuperar/code", AdmController.receiveCode);
+routerAdm.post("recuperar/senha");
 routerAdm.post("/login", AdmValidator.loginValidator(), AdmController.login);
 routerAdm.post("/criar", AdmValidator.loginValidator(true), AdmController.createAdm);
 routerAdm.get("/refresh-token", async (request, response, next) => {
@@ -56,7 +58,7 @@ routerAdm.get("/refresh-token", async (request, response, next) => {
 routerAdm.post("/payload/:type", (req, res) => {
     const { token } = req.body;
     const { type } = req.params;
-    const secreteKey = type === "adm" ? process.env.ADM_JWT_SECRET : process.env.REGULAR_JWT_SECRE;
+    const secreteKey = type === "adm" ? process.env.ADM_JWT_SECRET : process.env.SEND_EMAIL;
     const { payload } = jwt.verify(token, secreteKey, { complete: true });
     res.status(200).json(payload);
 });

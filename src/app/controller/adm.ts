@@ -3,13 +3,33 @@ import { AdmService } from "../service/Adm.js";
 
 import { AllError } from "../error/AllError.js";
 export class AdmController {
+  static async receiveCode(
+    request: Request,
+    response: Response,
+    next: NextFunction
+  ) {
+    try {
+      const tokenRecieve = request.headers.tokenrecieve as string;
+      console.log(tokenRecieve);
+      const token = tokenRecieve && tokenRecieve.split(" ")[1];
+      console.log(token);
+      if (!token) {
+        throw new AllError("token de verificação não fornecido");
+      }
+      const code = request.body.code as string;
+      const result = await AdmService.receiveCode(token, code);
+      response.status(200).json(result);
+    } catch (error) {
+      next(error);
+    }
+  }
   static async sendEmailCode(
     request: Request,
     response: Response,
     next: NextFunction
   ) {
     try {
-      const email = request.body as string;
+      const email = request.body.email as string;
       const resultToken = await AdmService.sendEmailCode(email);
       response.json(resultToken);
     } catch (error) {
