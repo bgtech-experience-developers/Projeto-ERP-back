@@ -8,7 +8,7 @@ import { AllError } from "../error/AllError.js";
 export const routerAdm = Router();
 routerAdm.post("/recuperar/email", AdmController.sendEmailCode);
 routerAdm.post("/recuperar/code", AdmController.receiveCode);
-routerAdm.post("recuperar/senha");
+routerAdm.post("/recuperar/senha", AdmValidator.passwordValidator, AdmController.accessRenew);
 routerAdm.post("/login", AdmValidator.loginValidator(), AdmController.login);
 routerAdm.post("/criar", AdmValidator.loginValidator(true), AdmController.createAdm);
 routerAdm.get("/refresh-token", async (request, response, next) => {
