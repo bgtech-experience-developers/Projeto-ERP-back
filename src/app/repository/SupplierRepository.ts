@@ -1,20 +1,19 @@
 import { PrismaClient } from "@prisma/client";
 import { InstanciaPrisma } from "../db/PrismaClient.js";
 import { da } from "@faker-js/faker";
-import { boolean } from "joi";
+import { boolean, date } from "joi";
 import { log } from "node:console";
+// import { Supplier_pf, BodySupplierPf, filterSupplierPf } from "../interfaces/global.js";
 
 
 export default class SupplierRepository {
     protected static connectionDb: PrismaClient = InstanciaPrisma.GetConnection();
 
-    // Estudar Promisse.All()
-    // : Promise<AllSupplier_pf[] | null> 
-    static async getAll(skip: number) {
+    
+    static async getAll(skip: number): Promise<Supplier_pf[]> {
         try {
-
             return this.connectionDb.supplier_pf.findMany({
-                take:10,
+                take: 20,
                 skip,
             })
 
@@ -22,17 +21,16 @@ export default class SupplierRepository {
             throw error
         }
 
-
     }
 
-    static async getAllByStatus(skip: number, status: boolean) {
+    static async getAllByStatus(skip: number, status: boolean): Promise<Supplier_pf[]> {
         
         try {
             return await this.connectionDb.supplier_pf.findMany({
                 where: {
                     status: status
                 },
-                take: 10,
+                take: 20,
                 skip
             })
         } catch(error) {
@@ -299,7 +297,7 @@ export default class SupplierRepository {
                     cpf: true
                 },
                 skip: page,
-                take: 10
+                take: 20
             })
         } catch(error) {
             throw error;
@@ -325,7 +323,7 @@ export default class SupplierRepository {
                     cpf: true
                 },
                 skip: page,
-                take: 10
+                take: 20
 
             })
 

@@ -242,6 +242,8 @@ async function client() {
   await connectionDb.$transaction(record);
   console.log("100 registros criados com sucesso! de clientes");
 }
+
+main()
 async function pj() {
   try {
     const record = [];

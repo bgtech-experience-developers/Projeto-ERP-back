@@ -2,6 +2,7 @@ import { AllError } from "../error/AllError.js";
 import SupplierRepository from "../repository/SupplierRepository.js";
 import { ApiPhpUtils } from "../utils/ApiPhp.js";
 import { deleteApiPhp } from "../middleware/ApiPhp.js";
+// import { BodySupplierPf, filterSupplierPf } from "../interfaces/global.js";
 export class SupplierService {
     // : Promise<AllSupplier_pf[] | null>
     static async getAll(page) {
@@ -40,7 +41,7 @@ export class SupplierService {
         try {
             if (Number(id)) {
                 const resultQuery = await SupplierRepository.getById(Number(id));
-                // console.log(resultQuery);
+                console.log(resultQuery[0]);
                 if (!resultQuery[0]) {
                     throw new AllError("Usuário não encontrado no sistem!", 404);
                 }
