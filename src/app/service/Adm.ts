@@ -262,7 +262,7 @@ export class AdmService {
     }
   }
 
-  static async create({ cnpj, password }: login, permission: number[]) {
+  static async create({ cnpj, password, email }: login, permission: number[]) {
     try {
       const security = 10;
       const admRegister = await AdmRepository.getUnique(cnpj);
@@ -274,7 +274,7 @@ export class AdmService {
 
       password = senhaHash;
 
-      return await AdmRepository.create({ cnpj, password }, permission);
+      return await AdmRepository.create({ cnpj, password, email }, permission);
     } catch (error) {
       console.log(error);
       throw error;

@@ -14,8 +14,8 @@ const { showClients, showClientById } = new Client();
 
 clientRouter.post(
   "/registro",
-  // authentication,
-  // hasPermission("criar"),
+  authentication,
+  hasPermission("criar"),
   UploadFile.Upload().array("photos", 5),
   CreateClientValidator(),
   Client.CreateClient
@@ -37,7 +37,7 @@ clientRouter.patch(
 clientRouter.delete(
   "/remover/:id",
   authentication,
-  hasPermission("atualizar"),
+  hasPermission("deletar"),
   Client.deleteClient
 );
 
