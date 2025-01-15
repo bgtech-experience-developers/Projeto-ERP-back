@@ -202,6 +202,8 @@ interface filterSupplierPf {
 }
 
 interface Product {
+  id: number;
+  id_image: number;
   name: string;
   supplier: string;
   serie_number: number;
@@ -212,5 +214,7 @@ interface Product {
   width: string;
   height: string;
   length: string;
-  description: string;
+  description?: string;
+  created_at: Date;
+  update_at: Date;
 }
