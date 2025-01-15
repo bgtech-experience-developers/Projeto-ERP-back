@@ -10,10 +10,11 @@ export class AdmController {
   ) {
     try {
       const newPassword = request.body;
-      const tokenUser = request.headers.tokenrecieve as string;
-      const token = tokenUser && tokenUser.split(" ")[1];
-      console.log(tokenUser);
-      const message = await AdmService.accessRenew(newPassword, token);
+      const tokenRecieve = request.cookies.tokenRecieve as string;
+      if (!tokenRecieve) {
+        throw new AllError("token para alterar a senha não fornecido");
+      }
+      const message = await AdmService.accessRenew(newPassword, tokenRecieve);
       response.status(201).json(message);
     } catch (error) {
       next(error);
@@ -25,16 +26,20 @@ export class AdmController {
     next: NextFunction
   ) {
     try {
-      const tokenRecieve = request.headers.tokenrecieve as string;
-      console.log(tokenRecieve);
-      const token = tokenRecieve && tokenRecieve.split(" ")[1];
-      console.log(token);
-      if (!token) {
+      const tokenRecieve = request.cookies.tokenRecieve as string;
+      if (!tokenRecieve) {
         throw new AllError("token de verificação não fornecido");
       }
       const code = request.body.code as string;
-      const result = await AdmService.receiveCode(token, code);
-      response.status(200).json(result);
+      const result = await AdmService.receiveCode(tokenRecieve, code);
+      response.cookie("tokenRecieve", result, {
+        secure: true,
+        sameSite: "none",
+        maxAge: 24 * 60 * 60 * 7000,
+      });
+      response
+        .status(200)
+        .json("segundo token enviado para o cookie do navegador");
     } catch (error) {
       next(error);
     }
@@ -47,7 +52,12 @@ export class AdmController {
     try {
       const email = request.body.email as string;
       const resultToken = await AdmService.sendEmailCode(email);
-      response.json(resultToken);
+      response.cookie("tokenRecieve", resultToken, {
+        secure: true,
+        sameSite: "none",
+        maxAge: 24 * 60 * 60 * 7000,
+      });
+      response.json("token enviado para o cookie do navegador");
     } catch (error) {
       next(error);
     }
@@ -56,8 +66,7 @@ export class AdmController {
     try {
       const { token, refreshToken } = await AdmService.login(request.body);
       response.cookie("refreshToken", refreshToken, {
-        httpOnly: true,
-        secure: false,
+        secure: true,
         maxAge: 24 * 60 * 60 * 7000,
         sameSite: "none",
       });
