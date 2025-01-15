@@ -81,9 +81,13 @@ export class AdmRepository {
     }
     static async create(body, permissions) {
         try {
+            console.log(body);
             const result = await this.connectionDb.$transaction(async (tsx) => {
                 const adm = await tsx.adm.create({
-                    data: { ...body },
+                    data: { cnpj: body.cnpj, password: body.password },
+                });
+                await tsx.emails.create({
+                    data: { adm_id: adm.id, email: body.email },
                 });
                 const role = await tsx.roleadm.createMany({
                     data: permissions.map((id) => {

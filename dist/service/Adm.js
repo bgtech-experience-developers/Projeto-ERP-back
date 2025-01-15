@@ -209,7 +209,7 @@ export class AdmService {
             throw error;
         }
     }
-    static async create({ cnpj, password }, permission) {
+    static async create({ cnpj, password, email }, permission) {
         try {
             const security = 10;
             const admRegister = await AdmRepository.getUnique(cnpj);
@@ -219,7 +219,7 @@ export class AdmService {
             }
             const senhaHash = BycriptCripto.createPassword(password, security);
             password = senhaHash;
-            return await AdmRepository.create({ cnpj, password }, permission);
+            return await AdmRepository.create({ cnpj, password, email }, permission);
         }
         catch (error) {
             console.log(error);
