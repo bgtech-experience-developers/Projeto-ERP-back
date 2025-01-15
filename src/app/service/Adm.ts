@@ -230,10 +230,11 @@ export class AdmService {
       if (!tokenUser || !BycriptCripto.comparePassword(token, tokenUser)) {
         throw new AllError("solicite outro código");
       }
-      return await this.verifyCode(
+      await this.verifyCode(
         { codeRecieve, codeStorage: tokenPayload.code },
         tokenPayload.timeExp
       );
+      return token;
     } catch (error) {
       console.log(error);
       throw error;
