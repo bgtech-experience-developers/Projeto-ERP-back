@@ -18,6 +18,7 @@ routerAdm.post("/login", AdmValidator.loginValidator(), AdmController.login);
 
 routerAdm.post(
   "/criar",
+
   AdmValidator.loginValidator(true),
   AdmController.createAdm
 );
@@ -31,7 +32,7 @@ routerAdm.get("/refresh-token", async (request, response, next) => {
       return;
     }
 
-    const refreshToken = request.headers.refresh as string;
+    const refreshToken = request.cookies.refresh as string;
     console.log("esse é ", refreshToken);
     console.log(refreshToken); // esse é o token que eu armazenei durante o login
     const secretKeyRefresh = process.env.ADM_JWT_SECRET;
