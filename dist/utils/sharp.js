@@ -1,5 +1,4 @@
 import fs from "fs";
-import sharp from "sharp";
 import path from "path";
 export class Sharp {
     static limpezaSharp(files, next) {
@@ -7,7 +6,7 @@ export class Sharp {
             if (file.mimetype === "image/jpeg" || file.mimetype === "image/png") {
                 const path = file.path;
                 const outputpathfile = `uploads/sanitized_${file.filename}`;
-                await sharp(path).toFile(outputpathfile);
+                // await sharp(path).toFile(outputpathfile);
                 fs.rename(outputpathfile, path, (err) => {
                     if (err) {
                         return {

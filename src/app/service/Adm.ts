@@ -5,10 +5,17 @@ import { BycriptCripto } from "../utils/bcrypt.js";
 import { JwtToken, payload } from "../utils/Jwt.js";
 import { login } from "../middleware/admValidator.js";
 import { Payload } from "@prisma/client/runtime/library";
-import axios from "axios";
+import axios, { all } from "axios";
 import { ServerSmtpConnection } from "../utils/sendEmail.js";
 import { send } from "process";
 import { receiveMessageOnPort } from "worker_threads";
+import SendmailTransport from "nodemailer/lib/sendmail-transport/index.js";
+interface bodyEmail {
+  from: string | undefined;
+  to: string;
+  subject: string;
+  html: string;
+}
 export class AdmService {
   static async login(body: {
     cnpj: string;
@@ -163,19 +170,28 @@ export class AdmService {
       throw error;
     }
   }
+  static async verifyError(bodyemail: bodyEmail) {
+    try {
+      const sendEmail = ServerSmtpConnection.serverSmtp();
+      await new Promise((resolve, reject) => {
+        sendEmail.sendMail(bodyemail, (error, info) => {
+          if (error) {
+            reject(new AllError("email não enviado"));
+          } else {
+            resolve(info);
+          }
+        });
+      });
+    } catch (error) {
+      throw error;
+    }
+  }
   static async getTokenEmail(recevierEmail: string, idUser: number) {
     try {
       const code = this.getRandomCode();
-      const sendEmail = await ServerSmtpConnection.serverSmtp();
       const bodyEmail = this.getBodyEmail(recevierEmail, code);
+      await this.verifyError(bodyEmail);
       const timeExp = Date.now();
-      sendEmail.sendMail(bodyEmail, (error, info) => {
-        if (error) {
-          throw new AllError("não foi possivel enviar o email");
-        }
-        console.log("email enviado com sucesso");
-      });
-      console.log(process.env.SEND_EMAIL);
       return {
         token: JwtToken.TokenEmail(
           { email: recevierEmail, timeExp, code, idUser },
@@ -186,6 +202,9 @@ export class AdmService {
     } catch (error) {
       throw error;
     }
+  }
+  static async sleep(ms: number) {
+    return new Promise((resolve) => setTimeout(resolve, ms));
   }
   static async sendEmailCode(email: string) {
     try {

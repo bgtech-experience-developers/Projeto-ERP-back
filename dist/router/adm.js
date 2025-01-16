@@ -19,8 +19,7 @@ routerAdm.get("/refresh-token", async (request, response, next) => {
             response.status(200).json("usuário deslogado com sucesso");
             return;
         }
-        const refreshToken = request.cookies.refresh;
-        console.log("esse é ", refreshToken);
+        const refreshToken = request.cookies.refreshToken;
         console.log(refreshToken); // esse é o token que eu armazenei durante o login
         const secretKeyRefresh = process.env.ADM_JWT_SECRET;
         if (!secretKeyRefresh || !refreshToken) {

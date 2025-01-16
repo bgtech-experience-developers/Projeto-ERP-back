@@ -4,10 +4,11 @@ export class AdmController {
     static async accessRenew(request, response, next) {
         try {
             const newPassword = request.body;
-            const tokenUser = request.headers.tokenrecieve;
-            const token = tokenUser && tokenUser.split(" ")[1];
-            console.log(tokenUser);
-            const message = await AdmService.accessRenew(newPassword, token);
+            const tokenRecieve = request.cookies.tokenRecieve;
+            if (!tokenRecieve) {
+                throw new AllError("token para alterar a senha não fornecido");
+            }
+            const message = await AdmService.accessRenew(newPassword, tokenRecieve);
             response.status(201).json(message);
         }
         catch (error) {
@@ -16,15 +17,17 @@ export class AdmController {
     }
     static async receiveCode(request, response, next) {
         try {
-            const tokenRecieve = request.headers.tokenrecieve;
-            console.log(tokenRecieve);
-            const token = tokenRecieve && tokenRecieve.split(" ")[1];
-            console.log(token);
-            if (!token) {
+            const tokenRecieve = request.cookies.tokenRecieve;
+            if (!tokenRecieve) {
                 throw new AllError("token de verificação não fornecido");
             }
             const code = request.body.code;
-            const result = await AdmService.receiveCode(token, code);
+            const result = await AdmService.receiveCode(tokenRecieve, code);
+            response.cookie("tokenRecieve", result, {
+                secure: true,
+                sameSite: "none",
+                maxAge: 24 * 60 * 60 * 7000,
+            });
             response.status(200).json(result);
         }
         catch (error) {
@@ -35,6 +38,11 @@ export class AdmController {
         try {
             const email = request.body.email;
             const resultToken = await AdmService.sendEmailCode(email);
+            response.cookie("tokenRecieve", resultToken, {
+                secure: true,
+                sameSite: "none",
+                maxAge: 24 * 60 * 60 * 7000,
+            });
             response.json(resultToken);
         }
         catch (error) {
@@ -45,8 +53,7 @@ export class AdmController {
         try {
             const { token, refreshToken } = await AdmService.login(request.body);
             response.cookie("refreshToken", refreshToken, {
-                httpOnly: true,
-                secure: false,
+                secure: true,
                 maxAge: 24 * 60 * 60 * 7000,
                 sameSite: "none",
             });

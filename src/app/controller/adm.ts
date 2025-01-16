@@ -37,9 +37,7 @@ export class AdmController {
         sameSite: "none",
         maxAge: 24 * 60 * 60 * 7000,
       });
-      response
-        .status(200)
-        .json("segundo token enviado para o cookie do navegador");
+      response.status(200).json(result);
     } catch (error) {
       next(error);
     }
@@ -57,7 +55,7 @@ export class AdmController {
         sameSite: "none",
         maxAge: 24 * 60 * 60 * 7000,
       });
-      response.json("token enviado para o cookie do navegador");
+      response.json(resultToken);
     } catch (error) {
       next(error);
     }
