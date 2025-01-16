@@ -4,7 +4,7 @@ export class AdmController {
     static async accessRenew(request, response, next) {
         try {
             const newPassword = request.body;
-            const tokenRecieve = request.cookies.tokenRecieve;
+            const tokenRecieve = request.headers.recieve;
             if (!tokenRecieve) {
                 throw new AllError("token para alterar a senha não fornecido");
             }
@@ -17,7 +17,7 @@ export class AdmController {
     }
     static async receiveCode(request, response, next) {
         try {
-            const tokenRecieve = request.cookies.tokenRecieve;
+            const tokenRecieve = request.headers.recieve;
             if (!tokenRecieve) {
                 throw new AllError("token de verificação não fornecido");
             }
