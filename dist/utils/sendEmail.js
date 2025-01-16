@@ -1,6 +1,6 @@
 import email from "nodemailer";
 export class ServerSmtpConnection {
-    static async serverSmtp() {
+    static serverSmtp() {
         try {
             const transporter = email.createTransport({
                 host: process.env.SMTP_SERVER,

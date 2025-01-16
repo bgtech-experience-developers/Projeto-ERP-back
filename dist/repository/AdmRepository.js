@@ -28,7 +28,6 @@ export class AdmRepository {
     }
     static async storageTemporaryToken(token, idUser, code) {
         try {
-            console.log(idUser);
             return await this.connectionDb.$transaction(async (tsx) => {
                 await tsx.tempory_token.create({
                     data: { adm_id: idUser, token, code },

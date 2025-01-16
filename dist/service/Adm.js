@@ -132,19 +132,30 @@ export class AdmService {
             throw error;
         }
     }
+    static async verifyError(bodyemail) {
+        try {
+            const sendEmail = ServerSmtpConnection.serverSmtp();
+            await new Promise((resolve, reject) => {
+                sendEmail.sendMail(bodyemail, (error, info) => {
+                    if (error) {
+                        reject(new AllError("email não enviado"));
+                    }
+                    else {
+                        resolve(info);
+                    }
+                });
+            });
+        }
+        catch (error) {
+            throw error;
+        }
+    }
     static async getTokenEmail(recevierEmail, idUser) {
         try {
             const code = this.getRandomCode();
-            const sendEmail = await ServerSmtpConnection.serverSmtp();
             const bodyEmail = this.getBodyEmail(recevierEmail, code);
+            await this.verifyError(bodyEmail);
             const timeExp = Date.now();
-            sendEmail.sendMail(bodyEmail, (error, info) => {
-                if (error) {
-                    throw new AllError("não foi possivel enviar o email");
-                }
-                console.log("email enviado com sucesso");
-            });
-            console.log(process.env.SEND_EMAIL);
             return {
                 token: JwtToken.TokenEmail({ email: recevierEmail, timeExp, code, idUser }, process.env.SEND_EMAIL ? process.env.SEND_EMAIL : ""),
                 code,
@@ -153,6 +164,9 @@ export class AdmService {
         catch (error) {
             throw error;
         }
+    }
+    static async sleep(ms) {
+        return new Promise((resolve) => setTimeout(resolve, ms));
     }
     static async sendEmailCode(email) {
         try {
@@ -187,7 +201,8 @@ export class AdmService {
             if (!tokenUser || !BycriptCripto.comparePassword(token, tokenUser)) {
                 throw new AllError("solicite outro código");
             }
-            return await this.verifyCode({ codeRecieve, codeStorage: tokenPayload.code }, tokenPayload.timeExp);
+            await this.verifyCode({ codeRecieve, codeStorage: tokenPayload.code }, tokenPayload.timeExp);
+            return token;
         }
         catch (error) {
             console.log(error);
