@@ -213,10 +213,10 @@ export class AdmService {
         try {
             console.log(Date.now());
             if (codeRecieve != codeStorage) {
-                throw new AllError("código inválido");
+                throw new AllError("código inválido", 401);
             }
             else if ((Date.now() - timeExp) / 1000 >= 600) {
-                throw new AllError("código expirado, solicite outro");
+                throw new AllError("código expirado, solicite outro", 403);
             }
             return "acesso permitido";
         }

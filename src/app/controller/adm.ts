@@ -10,7 +10,7 @@ export class AdmController {
   ) {
     try {
       const newPassword = request.body;
-      const tokenRecieve = request.cookies.tokenRecieve as string;
+      const tokenRecieve = request.headers.recieve as string;
       if (!tokenRecieve) {
         throw new AllError("token para alterar a senha não fornecido");
       }
@@ -26,7 +26,7 @@ export class AdmController {
     next: NextFunction
   ) {
     try {
-      const tokenRecieve = request.cookies.tokenRecieve as string;
+      const tokenRecieve = request.headers.recieve as string;
       if (!tokenRecieve) {
         throw new AllError("token de verificação não fornecido");
       }
