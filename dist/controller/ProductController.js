@@ -7,7 +7,7 @@ export default class ProductController {
             return res.status(201).json(product);
         }
         catch (error) {
-            return res.status(500).json({ message: error });
+            return res.status(500).json({ message: error.message || 'Error creating product' });
         }
     }
 }
