@@ -165,15 +165,19 @@ export class AdmService {
             throw error;
         }
     }
+    static async clearTemporaryToken(id) {
+        return AdmRepository.clearTemporaryToken(id);
+    }
     static async sleep(ms) {
         return new Promise((resolve) => setTimeout(resolve, ms));
     }
-    static async sendEmailCode(email) {
+    static async sendEmailCode(email, resend) {
         try {
             const userExist = await AdmRepository.getUniqueByEmail(email);
             if (!userExist) {
                 throw new AllError("este email não está vinculado a nenhum administrador");
             }
+            resend ? await this.clearTemporaryToken(userExist.adm_id) : "";
             const { token, code } = await this.getTokenEmail(email, userExist.adm_id);
             const tokenHash = BycriptCripto.createPassword(token, 10);
             await AdmRepository.storageTemporaryToken(tokenHash, userExist.adm_id, code);

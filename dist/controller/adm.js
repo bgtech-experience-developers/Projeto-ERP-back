@@ -37,7 +37,9 @@ export class AdmController {
     static async sendEmailCode(request, response, next) {
         try {
             const email = request.body.email;
-            const resultToken = await AdmService.sendEmailCode(email);
+            const $query = request.query.resend;
+            const resend = $query === "true" ? true : false;
+            const resultToken = await AdmService.sendEmailCode(email, resend);
             response.cookie("tokenRecieve", resultToken, {
                 secure: true,
                 sameSite: "none",
