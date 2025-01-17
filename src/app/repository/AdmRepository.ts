@@ -54,6 +54,15 @@ export class AdmRepository {
       throw error;
     }
   }
+  static clearTemporaryToken(id: number) {
+    try {
+      this.connectionDb.$transaction(async (tsx) => {
+        await tsx.tempory_token.deleteMany({ where: { adm_id: id } });
+      });
+    } catch (error) {
+      throw error;
+    }
+  }
   static async resetPassword(IdUser: number, newPassword: string) {
     try {
       const message = this.connectionDb.$transaction(async (tsx) => {

@@ -49,7 +49,10 @@ export class AdmController {
   ) {
     try {
       const email = request.body.email as string;
-      const resultToken = await AdmService.sendEmailCode(email);
+      const $query = request.query.resend as string;
+      const resend = $query === "true" ? true : false;
+
+      const resultToken = await AdmService.sendEmailCode(email, resend);
       response.cookie("tokenRecieve", resultToken, {
         secure: true,
         sameSite: "none",
