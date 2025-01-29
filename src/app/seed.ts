@@ -145,7 +145,7 @@ async function product_seed() {
     );
   }
 
-  await connectionDb.$transaction(records);
+  await connectionDb.$transaction(products);
   console.log("100 registros criados com sucesso!");
 }
 

@@ -329,7 +329,6 @@ model roleadm {
 
   @@id([adm_id, role_id])
 }
-<<<<<<< HEAD
 
 model product {
   id                Int       @id @default(autoincrement())
@@ -349,5 +348,3 @@ model product {
   update_at         DateTime  @default(now())
   image             imagem    @relation(fields: [id_image], references: [id], onDelete: Cascade, onUpdate: Cascade)
 }
-=======
->>>>>>> feat/getAll-products
