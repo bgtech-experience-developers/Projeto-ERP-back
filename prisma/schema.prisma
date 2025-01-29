@@ -336,6 +336,7 @@ model product {
   id                Int       @id @default(autoincrement())
   id_image          Int
   name              String
+  supplier_name     String
   id_supplier_pf    Int?
   id_supplier_pj    Int?
   serie_number      Int
