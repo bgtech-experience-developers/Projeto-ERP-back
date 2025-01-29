@@ -17,4 +17,17 @@ export default class ProductRepository {
             throw error;
         }
     }
+
+    static getAll(take: number, skip: number) {
+        try {
+            this.connectionDb.product.findMany({
+                take,
+                skip,
+            })
+        } catch(error) {
+            throw error;
+        }
+    }
+
+    
 }
