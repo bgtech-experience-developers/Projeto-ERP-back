@@ -554,16 +554,53 @@ export class ClientRepository {
             throw error;
         }
     }
+    static async filterClientErpHomologation({ branch_activity, phone, name, email, fantasy_name, }) {
+        try {
+            const result = await this.connectionDb
+                .$queryRaw `SELECT erp_homologation.sector.*,erp_homologation.client.*,erp_homologation.owner_partner.* FROM erp_homologation.client
+      LEFT JOIN erp_homologation.owner_partner ON erp_homologation.client.id = erp_homologation.owner_partner.clientId
+      LEFT JOIN erp_homologation.sector ON erp_homologation.owner_partner.sectorId = erp_homologation.sector.id
+      WHERE (erp_homologation.client.branch_activity LIKE ${branch_activity.contains} OR erp_homologation.client.fantasy_name LIKE ${fantasy_name.contains} or erp_homologation.sector.phone LIKE ${phone.contains} or erp_homologation.sector.name LIKE ${name.contains} or erp_homologation.sector.email LIKE ${email.contains})`;
+            return result;
+        }
+        catch (error) {
+            throw error;
+        }
+    }
+    static async filterClientErp({ branch_activity, phone, name, email, fantasy_name, }) {
+        try {
+            const result = await this.connectionDb
+                .$queryRaw `SELECT erp.sector.*,erp.client.*,erp.owner_partner.* FROM erp.client
+      LEFT JOIN erp.owner_partner ON erp.client.id = erp.owner_partner.clientId
+      LEFT JOIN erp.sector ON erp.owner_partner.sectorId = erp.sector.id
+      WHERE (erp.client.branch_activity LIKE ${branch_activity.contains} OR erp.client.fantasy_name LIKE ${fantasy_name.contains} or erp.sector.phone LIKE ${phone.contains} or erp.sector.name LIKE ${name.contains} or erp.sector.email LIKE ${email.contains})`;
+            return result;
+        }
+        catch (error) {
+            throw error;
+        }
+    }
     static async filterClient({ branch_activity, fantasy_name, email, name, phone, }) {
         try {
             console.log("o telefone ~e ", phone.contains);
             console.log(`ramo de atuação : ${branch_activity.contains}, nome_FANTASIA: ${fantasy_name.contains}, email : ${email.contains}, name: ${name.contains}, phone : ${phone.contains}`);
             const executeQuery = new SQLAdapter(this.connectionDb);
-            const result = await this.connectionDb
-                .$queryRaw `SELECT  ${process.env.db_name}.sector.*,${process.env.db_name}.client.*,${process.env.db_name}.owner_partner.* FROM ${process.env.db_name}.client
-        LEFT JOIN ${process.env.db_name}.owner_partner ON ${process.env.db_name}.client.id = ${process.env.db_name}.owner_partner.clientId
-        LEFT JOIN ${process.env.db_name}.sector ON ${process.env.db_name}.owner_partner.sectorId = ${process.env.db_name}.sector.id
-        WHERE (${process.env.db_name}.client.branch_activity LIKE ${branch_activity.contains} OR ${process.env.db_name}.client.fantasy_name LIKE ${fantasy_name.contains} or ${process.env.db_name}.sector.phone LIKE ${phone.contains} or ${process.env.db_name}.sector.name LIKE ${name.contains} or ${process.env.db_name}.sector.email LIKE ${email.contains})`;
+            console.log("o nome é ", process.env.db_name);
+            const result = process.env.db_name === "erp"
+                ? this.filterClientErp({
+                    phone,
+                    fantasy_name,
+                    branch_activity,
+                    email,
+                    name,
+                })
+                : this.filterClientErpHomologation({
+                    phone,
+                    fantasy_name,
+                    branch_activity,
+                    email,
+                    name,
+                });
             // const result = executeQuery.executeQuery(result)
             return result;
         }
