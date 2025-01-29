@@ -15,4 +15,31 @@ export default class ProductRepository {
             throw error;
         }
     }
+    static async getAll(take, skip) {
+        try {
+            return this.connectionDb.product.findMany({
+                take,
+                skip,
+                select: {
+                    barcode: true,
+                    name: true,
+                    supplier_name: true,
+                    cost_value: true,
+                }
+            });
+        }
+        catch (error) {
+            throw error;
+        }
+    }
+    static async countAll() {
+        try {
+            return this.connectionDb.supplier_pf.count();
+        }
+        catch (error) {
+            throw error;
+        }
+    }
 }
+const test = await ProductRepository.countAll();
+console.log(test);
