@@ -18,7 +18,7 @@ export default class ProductRepository {
         }
     }
 
-    static async getAll(take: number, skip: number) {
+    static async getAll(take: number, skip: number): Promise<ProductGetAll[]> {
         try {
             return this.connectionDb.product.findMany({
                 take,
@@ -44,6 +44,3 @@ export default class ProductRepository {
     }
 }
 
-
-const test = await ProductRepository.countAll()
-console.log(test);
