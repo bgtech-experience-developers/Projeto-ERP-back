@@ -10,4 +10,13 @@ export default class ProductController {
             return res.status(500).json({ message: error.message || 'Error creating product' });
         }
     }
+    static async getAll(request, responde, next) {
+        try {
+            const productAll = await ProductService.getAll(request.query.take, request.query.skip);
+            return responde.status(200).json(productAll);
+        }
+        catch (error) {
+            next(error);
+        }
+    }
 }
