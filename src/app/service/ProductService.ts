@@ -12,4 +12,20 @@ export default class ProductService {
       throw new Error(`Error creating product: ${error}`);
     }
   }
+
+
+  static async getAll(take: string | number, skip: string | number) {
+    try {
+      take = Number(take) ? take as number : take = 10;
+      skip = Number(skip) ? skip as number : skip = 1;
+
+      skip = (skip - 1) * take;
+
+      return await ProductRepository.getAll(take, skip);
+      
+    } catch(error) {
+        throw error;
+    }
+
+  }
 }
