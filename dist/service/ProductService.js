@@ -23,4 +23,12 @@ export default class ProductService {
             throw error;
         }
     }
+    static async countAll() {
+        try {
+            return await ProductRepository.countAll();
+        }
+        catch (error) {
+            throw error;
+        }
+    }
 }

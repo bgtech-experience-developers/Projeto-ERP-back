@@ -1,19 +1,30 @@
 import ProductService from '../service/ProductService.js';
-export default class ProductController {
-    static async createProduct(req, res) {
-        try {
-            const data = req.body;
-            const product = await ProductService.createProduct(data);
-            return res.status(201).json(product);
-        }
-        catch (error) {
-            return res.status(500).json({ message: error.message || 'Error creating product' });
-        }
-    }
-    static async getAll(request, responde, next) {
+export class ProductController {
+    // static async createProduct(req: Request, res: Response) {
+    //   try {
+    //     const data = req.body;
+    //     const product = await ProductService.createProduct(data);
+    //     return res.status(201).json(product);
+    //   } catch (error: any) {
+    //     // return 
+    //     res.status(500).json({ message: error.message || 'Error creating product' });
+    //   }
+    // }
+    static async getAll(request, response, next) {
         try {
             const productAll = await ProductService.getAll(request.query.take, request.query.skip);
-            return responde.status(200).json(productAll);
+            response.status(200).json(productAll);
+            return;
+        }
+        catch (error) {
+            next(error);
+        }
+    }
+    static async countAll(request, response, next) {
+        try {
+            const countProduct = await ProductService.countAll();
+            response.status(200).json(countProduct);
+            return;
         }
         catch (error) {
             next(error);

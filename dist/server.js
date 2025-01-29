@@ -6,7 +6,7 @@ import { routerAdm } from "./router/adm.js";
 import cookieParse from "cookie-parser";
 import supplierPf from "./router/SupplierPf.js";
 import { supplierPjRouter } from "./router/supplierPj.js";
-import Product from '../app/router/Product.js';
+import product from "./router/Product.js";
 dotnev.config();
 const app = express();
 // const port = Number(process.env.PORT);
@@ -17,7 +17,7 @@ app.use(cors({
     origin: ["https://erp-homologation.bgtech.com.br", "http://localhost:5173"],
     credentials: true,
 }));
-app.use('/products', Product);
+app.use('/products', product);
 app.use(cookieParse());
 app.use(express.json()); // parte para a deserializaç~~ao das informações
 app.use("/clientes", clientRouter);

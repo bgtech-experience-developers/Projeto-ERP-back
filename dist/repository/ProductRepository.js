@@ -41,5 +41,3 @@ export default class ProductRepository {
         }
     }
 }
-const test = await ProductRepository.countAll();
-console.log(test);

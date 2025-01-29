@@ -8,8 +8,7 @@ import cookieParse from "cookie-parser";
 import Supplier_pf from "./router/SupplierPf.js";
 import supplierPf from "./router/SupplierPf.js";
 import { supplierPjRouter } from "./router/supplierPj.js";
-import Product from '../app/router/Product.js';
-
+import product from "./router/Product.js";
 dotnev.config();
 const app = express();
 // const port = Number(process.env.PORT);
@@ -24,7 +23,7 @@ app.use(
   })
 );
 
-app.use('/products', Product);
+app.use('/products', product);
 app.use(cookieParse());
 app.use(express.json()); // parte para a deserializaç~~ao das informações
 app.use("/clientes", clientRouter);

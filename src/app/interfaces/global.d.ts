@@ -209,7 +209,9 @@ interface Product {
   id: number;
   id_image: number;
   name: string;
-  supplier: string;
+  supplier_name: string;
+  id_supplier_pf?: number ;
+  id_supplier_pj?: number;
   serie_number: number;
   barcode: number;
   amount: number;
@@ -219,9 +221,12 @@ interface Product {
   height: string;
   length: string;
   description?: string;
-  created_at: Date;
-  update_at: Date;
+  created_at?: Date;
+  update_at?: Date;
 }
+
+type ProductGetAll = Pick<Product, 'barcode' | 'name' | 'supplier_name' | 'cost_value'>
+
 // interface supplierGetById extends Supplier_pf {
 
 //   address_supplier_pf: addressGetById
