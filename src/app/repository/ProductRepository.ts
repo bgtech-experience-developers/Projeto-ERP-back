@@ -20,14 +20,21 @@ export default class ProductRepository {
 
     static getAll(take: number, skip: number) {
         try {
-            this.connectionDb.product.findMany({
+            return this.connectionDb.product.findMany({
                 take,
                 skip,
+
             })
         } catch(error) {
             throw error;
         }
     }
 
-    
+    static countAll() {
+        try {
+            return this.connectionDb.product.count()
+        } catch(error) {
+            throw error;
+        }
+    }
 }
