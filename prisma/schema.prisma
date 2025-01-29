@@ -120,6 +120,7 @@ model supplier_pf {
   status              Boolean               @default(true)
   address_supplier_pf supplier_pf_address[]
   supplier_imagem     supplier_pf_image[]   @relation("supplier_id_image")
+  product             product[]
   created_at          DateTime              @default(now())
   update_at           DateTime              @default(now())
 }
@@ -154,6 +155,7 @@ model supplier_pj {
   id_imagem              Int
   imagem                 imagem                @relation(fields: [id_imagem], references: [id], onDelete: Cascade, onUpdate: Cascade)
   supplier_pj_address    supplier_pj_address[]
+  product                product[]
   corporate_reason       String
   email                  String?
   phone                  String?
@@ -334,7 +336,8 @@ model product {
   id                Int       @id @default(autoincrement())
   id_image          Int
   name              String
-  supplier          String
+  id_supplier_pf    Int?
+  id_supplier_pj    Int?
   serie_number      Int
   barcode           Int       @unique
   amount            Int  
@@ -347,4 +350,6 @@ model product {
   created_at        DateTime  @default(now())
   update_at         DateTime  @default(now())
   image             imagem    @relation(fields: [id_image], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  supplier_pf       supplier_pf?  @relation(fields: [id_supplier_pf], references: [id], onUpdate: Cascade,onDelete: Cascade)
+  supplier_pj       supplier_pj?  @relation(fields: [id_supplier_pj], references: [id], onUpdate: Cascade, onDelete: Cascade)
 }

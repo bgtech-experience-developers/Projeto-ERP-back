@@ -109,7 +109,7 @@ async function product_seed() {
     products.push(
       connectionDb.product.create({
         data: {
-          supplier_name: faker.company.name(),
+          supplier: faker.company.name(),
           supplier_code: faker.string.numeric(4), // Substitui faker.random.numeric
           cpf: faker.string.numeric(11), // Substitui faker.random.numeric
           email: faker.internet.email(),

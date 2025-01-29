@@ -24,6 +24,6 @@ app.use("/clientes", clientRouter);
 app.use("/adm", routerAdm);
 app.use("/fornecedor/fisico", supplierPf);
 app.use("/fornecedor/juridico", supplierPjRouter);
-app.listen(3500, host, () => {
+app.listen(port, host, () => {
     console.log("meu servidor está rodando na porta " + port);
 });
