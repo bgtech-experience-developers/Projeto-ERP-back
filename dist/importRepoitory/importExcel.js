@@ -65,6 +65,9 @@ export class RepositoryImport {
                     data: { ...cliente.contabil },
                     select: { id: true },
                 });
+                const image_finance = await tsx.imagem.create({
+                    data: { path: cliente.photoFinance },
+                });
                 const image_socio = await tsx.imagem.create({
                     data: { path: cliente.photoOwner },
                 });
@@ -95,6 +98,12 @@ export class RepositoryImport {
                 await tsx.financial_contact.create({
                     data: { clientId: client.id, sectorId: sector_finance.id },
                 });
+                await tsx.financial_image.create({
+                    data: {
+                        imageId: image_finance.id,
+                        financial_contactId: sector_finance.id,
+                    },
+                });
                 await tsx.accounting_contact_image.create({
                     data: {
                         imageId: image_accouting.id,
@@ -114,7 +123,7 @@ export class RepositoryImport {
                     data: { companyId: client.id, imageId: image_client.id },
                 });
                 return "Done";
-            });
+            }, { timeout: 30000 });
             return result;
         }
         catch (error) {
