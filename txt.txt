@@ -388,3 +388,4 @@ ALTER TABLE `roleadm` ADD CONSTRAINT `roleadm_adm_id_fkey` FOREIGN KEY (`adm_id`
 
 -- AddForeignKey
 ALTER TABLE `roleadm` ADD CONSTRAINT `roleadm_role_id_fkey` FOREIGN KEY (`role_id`) REFERENCES `role`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
