@@ -28,4 +28,12 @@ export default class ProductService {
     }
 
   }
+
+  static async countAll(): Promise<number> {
+    try {
+      return await ProductRepository.countAll();
+    } catch(error) {
+        throw error;
+    }
+  }
 }
