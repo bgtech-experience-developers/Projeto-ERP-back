@@ -242,6 +242,7 @@ export class ClientService {
                     console.log(allIdsAddress);
                 });
                 const pathImages = await ClientRepository.getImage(Number(param));
+                console.log(pathImages);
                 const props = [
                     "accounting_contact",
                     "financinal_contact",

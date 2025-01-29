@@ -650,11 +650,10 @@ export class ClientRepository {
 
       const executeQuery = new SQLAdapter(this.connectionDb);
       const result = await this.connectionDb
-        .$queryRaw`SELECT  erp.sector.*,erp.client.*,erp.owner_partner.* FROM erp.client
-        LEFT JOIN erp.owner_partner ON erp.client.id = erp.owner_partner.clientId
-        LEFT JOIN erp.sector ON erp.owner_partner.sectorId = erp.sector.id
-        WHERE (erp.client.branch_activity LIKE ${branch_activity.contains} OR erp.client.fantasy_name LIKE ${fantasy_name.contains} or erp.sector.phone LIKE ${phone.contains} or erp.sector.name LIKE ${name.contains} or erp.sector.email LIKE ${email.contains})`;
-
+        .$queryRaw`SELECT  ${process.env.db_name}.sector.*,${process.env.db_name}.client.*,${process.env.db_name}.owner_partner.* FROM ${process.env.db_name}.client
+        LEFT JOIN ${process.env.db_name}.owner_partner ON ${process.env.db_name}.client.id = ${process.env.db_name}.owner_partner.clientId
+        LEFT JOIN ${process.env.db_name}.sector ON ${process.env.db_name}.owner_partner.sectorId = ${process.env.db_name}.sector.id
+        WHERE (${process.env.db_name}.client.branch_activity LIKE ${branch_activity.contains} OR ${process.env.db_name}.client.fantasy_name LIKE ${fantasy_name.contains} or ${process.env.db_name}.sector.phone LIKE ${phone.contains} or ${process.env.db_name}.sector.name LIKE ${name.contains} or ${process.env.db_name}.sector.email LIKE ${email.contains})`;
 
       // const result = executeQuery.executeQuery(result)
       return result;
