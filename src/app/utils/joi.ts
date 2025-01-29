@@ -33,6 +33,7 @@ export class JoiValidation {
       fantasy_name: joi.string().trim().allow(""),
       corporate_reason: joi.string().trim(),
     });
+
     const SchemaCreateSector = joi.object<$Interface, false, $Interface>({
       cell_phone: joi.string().trim().allow(""),
       name: joi.string().trim().allow(""),
@@ -49,6 +50,7 @@ export class JoiValidation {
         })
         .allow(""),
     });
+    
     const SchemaAddress = joi.object<$Interface, false, $Interface>({
       cep: joi
         .string()
@@ -76,7 +78,7 @@ export class JoiValidation {
       SchemaAddress.validate(endereco_empresa),
       SchemaAddress.validate(endereco_entrega),
     ]);
-  }
+  } 
 
   static async schemaLogin(body: login) {
     try {
