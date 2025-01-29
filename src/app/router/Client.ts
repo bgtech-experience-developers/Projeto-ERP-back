@@ -37,7 +37,7 @@ clientRouter.patch(
 clientRouter.delete(
   "/remover/:id",
   authentication,
-  hasPermission("atualizar"),
+  hasPermission("deletar"),
   Client.deleteClient
 );
 

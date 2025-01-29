@@ -243,7 +243,7 @@ async function client() {
   console.log("100 registros criados com sucesso! de clientes");
 }
 
-main()
+main();
 async function pj() {
   try {
     const record = [];
@@ -297,13 +297,13 @@ pj()
     await connectionDb.$disconnect();
     process.exit(1);
   });
-client()
-  .then(async () => {
-    await connectionDb.$disconnect();
-  })
-.catch(async (e) => {
-  console.log(e);
-  await connectionDb.$disconnect();
-});
+// client()
+//   .then(async () => {
+//     await connectionDb.$disconnect();
+//   })
+// .catch(async (e) => {
+//   console.log(e);
+//   await connectionDb.$disconnect();
+// });
 
 export default main;

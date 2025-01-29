@@ -19,7 +19,7 @@ export class Sharp {
           const path = file.path;
 
           const outputpathfile = `uploads/sanitized_${file.filename}`;
-          await sharp(path).toFile(outputpathfile);
+          // await sharp(path).toFile(outputpathfile);
           fs.rename(outputpathfile, path, (err) => {
             if (err) {
               return {
@@ -89,6 +89,4 @@ export class Sharp {
       }
     });
   }
-
-
 }

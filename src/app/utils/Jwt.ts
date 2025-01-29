@@ -10,6 +10,12 @@ export interface payload extends JwtPayload {
   cnpj: string;
   role: role;
 }
+export interface payloadEmail {
+  idUser: number;
+  email: string;
+  timeExp: number;
+  code: string;
+}
 
 export class JwtToken {
   static async getCodeToken<$Payload extends payload>(
@@ -45,6 +51,41 @@ export class JwtToken {
     } catch (error) {
       throw error;
     }
+  }
+  static async validToken(token: string, secret: string) {
+    try {
+      jwt.verify(token, secret, (error) => {
+        if (error) {
+          throw new AllError("token inválido");
+        }
+        return "token válido ainda";
+      });
+    } catch (error) {
+      throw error;
+    }
+  }
+  static async tokenPayload(
+    token: string,
+    secretKey: string
+  ): Promise<payloadEmail> {
+    try {
+      await this.validToken(token, secretKey);
+      const { payload } = jwt.verify(token, secretKey, { complete: true });
+      return payload as payloadEmail;
+    } catch (error) {
+      throw error;
+    }
+  }
+  static TokenEmail(
+    payload: {
+      idUser: number;
+      email: string;
+      timeExp: number;
+      code: string;
+    },
+    secretKey: string
+  ) {
+    return jwt.sign(payload, secretKey, { expiresIn: "1h" });
   }
   static async RefreshToken<acess extends role = "adm" | "Regular">(
     payload: payload,

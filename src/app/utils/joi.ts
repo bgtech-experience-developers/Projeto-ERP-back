@@ -4,9 +4,15 @@ import { AllError } from "../error/AllError.js";
 // import { Address } from "node:cluster";
 // import { integral, bodyCreateClient, BodySupplierPf, Supplier_pf, Address } from "../interfaces/global.js";
 export class JoiValidation {
-
-  static async schemaCreateClient<$Interface extends integral>({contabil,comercial,socio,endereco_empresa,endereco_entrega,cliente,financeiro,}: bodyCreateClient) {
-
+  static async schemaCreateClient<$Interface extends integral>({
+    contabil,
+    comercial,
+    socio,
+    endereco_empresa,
+    endereco_entrega,
+    cliente,
+    financeiro,
+  }: bodyCreateClient) {
     const schemaCreateClient = joi.object<$Interface, false, $Interface>({
       branch_activity: joi.string().trim().allow(""),
       cnpj: joi.string().trim().min(14).max(14).required().messages({
@@ -20,7 +26,7 @@ export class JoiValidation {
         .optional()
         .messages({
           "string.max":
-            "o campo inscrição estadual deve conter no maximo 50 digitos"
+            "o campo inscrição estadual deve conter no maximo 50 digitos",
         })
         .allow(""),
       type_contribuition: joi.string().trim().allow(""),
@@ -74,14 +80,22 @@ export class JoiValidation {
     ]);
   } 
 
-    static async schemaLogin(body: login) {
+  static async schemaLogin(body: login) {
     try {
       const schemalogin = joi.object<login, true, login>({
         cnpj: joi.string().max(14).min(14).trim().required().messages({
           "string.max": "o campo deve conter no maximo 14 digitos",
           "string.min": "o campo cnpj deve conter pelo menos 14 digitos",
         }),
-        password: joi.string().trim(),
+        password: joi
+          .string()
+          .trim()
+          .regex(/^(?=.*[A-Z])(?=.*[^a-zA-Z0-9]).*$/)
+          .messages({
+            "string.pattern.base":
+              "formato de senha não aceitável, coloque pelo menos 1 letra maiscula e um caracter especial",
+          }),
+        email: joi.string().email(),
       });
 
       return schemalogin.validate(body);
@@ -91,7 +105,10 @@ export class JoiValidation {
     }
   }
 
-  static async schemaCreateSupplierPf({supplier, address}: BodySupplierPf ): Promise<BodySupplierPf> {
+  static async schemaCreateSupplierPf({
+    supplier,
+    address,
+  }: BodySupplierPf): Promise<BodySupplierPf> {
     const schemaSupplier = joi.object<Supplier_pf>({
       supplier_name: joi.string().trim().required(),
       supplier_code: joi.string().trim().allow(""),
@@ -100,17 +117,15 @@ export class JoiValidation {
       // cell_phone: joi.string().trim().allow(""),
       rg: joi.string().trim().allow(""),
       cpf: joi.string().trim().required().min(11).max(11).messages({
-        "string.max":
-        "O campo cpf deve conter no máximo 11 digitos",
-        "string.min":
-        "O campo cpf deve conter no mínimo 11 digitos"
+        "string.max": "O campo cpf deve conter no máximo 11 digitos",
+        "string.min": "O campo cpf deve conter no mínimo 11 digitos",
       }),
       birth_date: joi.string().trim().allow(""),
-      status: joi.optional()
-    })
+      status: joi.optional(),
+    });
 
     // const schemaProduct = joi.object<Product_Supplier_pf>({
-    //   // name: joi.string().trim().allow(""),    
+    //   // name: joi.string().trim().allow(""),
     //   price: joi.string().trim().allow(""),
     //   delivery_time: joi.string().trim().allow(""),
     //   purchase_tax: joi.string().trim().allow(""),
@@ -124,24 +139,22 @@ export class JoiValidation {
       city: joi.string().trim().allow(""),
       neighborhood: joi.string().trim().allow(""),
       state: joi.string().trim().allow(""),
-    })
+    });
 
-    const {value: newSupplier, error: errorSupplier} = schemaSupplier.validate(supplier)
+    const { value: newSupplier, error: errorSupplier } =
+      schemaSupplier.validate(supplier);
     // const {value: newProduct, error: errorProduct} = schemaProduct.validate(product)
-    const {value: newAddress, error: errorAddress} = schemaAddress.validate(address)
+    const { value: newAddress, error: errorAddress } =
+      schemaAddress.validate(address);
 
-    if(errorSupplier  || errorAddress) {
-      const error = errorSupplier?.message ||  errorAddress?.message
-      throw new AllError((error ? error : ""));
+    if (errorSupplier || errorAddress) {
+      const error = errorSupplier?.message || errorAddress?.message;
+      throw new AllError(error ? error : "");
     }
     return {
       supplier: newSupplier,
       address: newAddress,
       // product: newProduct
-    }
-      
-
-    
+    };
   }
-
 }

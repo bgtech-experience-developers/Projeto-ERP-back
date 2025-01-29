@@ -7,9 +7,18 @@ import jwt, { JsonWebTokenError } from "jsonwebtoken";
 import { AllError } from "../error/AllError.js";
 
 export const routerAdm = Router();
+routerAdm.post("/recuperar/email", AdmController.sendEmailCode);
+routerAdm.post("/recuperar/code", AdmController.receiveCode);
+routerAdm.post(
+  "/recuperar/senha",
+  AdmValidator.passwordValidator,
+  AdmController.accessRenew
+);
 routerAdm.post("/login", AdmValidator.loginValidator(), AdmController.login);
+
 routerAdm.post(
   "/criar",
+
   AdmValidator.loginValidator(true),
   AdmController.createAdm
 );
@@ -23,8 +32,7 @@ routerAdm.get("/refresh-token", async (request, response, next) => {
       return;
     }
 
-    const refreshToken = request.headers.refresh as string;
-    console.log("esse é ", refreshToken);
+    const refreshToken = request.cookies.refreshToken as string;
     console.log(refreshToken); // esse é o token que eu armazenei durante o login
     const secretKeyRefresh = process.env.ADM_JWT_SECRET;
 
@@ -68,7 +76,7 @@ routerAdm.post("/payload/:type", (req, res) => {
   const { type } = req.params;
 
   const secreteKey =
-    type === "adm" ? process.env.ADM_JWT_SECRET : process.env.REGULAR_JWT_SECRE;
+    type === "adm" ? process.env.ADM_JWT_SECRET : process.env.SEND_EMAIL;
   const { payload } = jwt.verify(token, secreteKey!, { complete: true });
   res.status(200).json(payload);
 });

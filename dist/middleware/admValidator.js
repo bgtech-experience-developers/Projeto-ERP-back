@@ -6,9 +6,9 @@ export class AdmValidator {
             try {
                 const body = request.body;
                 body.cnpj = body.cnpj.replace(/\D/gi, "");
-                body.password = body.password.replace(/\D/gi, "");
                 const { error, value } = await JoiValidation.schemaLogin(body);
                 if (error) {
+                    console.log(error);
                     throw new AllError(error.message);
                 }
                 if (adm) {
@@ -40,5 +40,20 @@ export class AdmValidator {
                 next(error);
             }
         };
+    }
+    static passwordValidator(request, response, next) {
+        try {
+            const newPassword = request.body.newPassword;
+            const regexPassword = /^(?=.*[A-Z])(?=.*[^a-zA-Z0-9]).*$/;
+            if (regexPassword.test(newPassword)) {
+                request.body = newPassword;
+                next();
+                return;
+            }
+            throw new AllError("formato de senha não aceitável, coloque pelo menos 1 letra maiscula e um caracter especial");
+        }
+        catch (error) {
+            next(error);
+        }
     }
 }

@@ -58,7 +58,7 @@ export class SupplierPjRespository {
   ) {
     try {
       return await this.connection
-        .$queryRaw`SELECT p.email,p.phone,p.corporate_reason,p.answerable FROM supplier_pj p WHERE p.email LIKE ${email.contanis} or p.phone LIKE ${phone.contanis} or p.corporate_reason LIKE ${corporate_reason.contanis} or p.answerable LIKE ${answerable.contanis}`;
+        .$queryRaw`SELECT p.email,p.phone,p.corporate_reason,p.answerable,p.id FROM supplier_pj p WHERE p.email LIKE ${email.contanis} or p.phone LIKE ${phone.contanis} or p.corporate_reason LIKE ${corporate_reason.contanis} or p.answerable LIKE ${answerable.contanis}`;
     } catch (error) {
       throw error;
     }
@@ -72,7 +72,7 @@ export class SupplierPjRespository {
   ) {
     try {
       return await this.connection
-        .$queryRaw`SELECT p.email,p.phone,p.corporate_reason,p.answerable FROM supplier_pj p WHERE (p.email LIKE ${
+        .$queryRaw`SELECT p.email,p.phone,p.corporate_reason,p.answerable,p.id FROM supplier_pj p WHERE (p.email LIKE ${
         email.contanis
       } or p.phone LIKE ${phone.contanis} or p.corporate_reason LIKE ${
         corporate_reason.contanis
