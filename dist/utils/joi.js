@@ -1,5 +1,7 @@
 import joi from "joi";
 import { AllError } from "../error/AllError.js";
+// import { Address } from "node:cluster";
+// import { integral, bodyCreateClient, BodySupplierPf, Supplier_pf, Address } from "../interfaces/global.js";
 export class JoiValidation {
     static async schemaCreateClient({ contabil, comercial, socio, endereco_empresa, endereco_entrega, cliente, financeiro, }) {
         const schemaCreateClient = joi.object({
@@ -11,11 +13,10 @@ export class JoiValidation {
             state_registration: joi
                 .string()
                 .trim()
-                .min(9)
-                .max(9)
+                .max(50)
+                .optional()
                 .messages({
-                "string.max": "o campo inscrição estadual deve conter no maximo 9 digitos",
-                "string.min": "o compo inscrição estadual deve conter no minimo 9 digitos",
+                "string.max": "o campo inscrição estadual deve conter no maximo 50 digitos",
             })
                 .allow(""),
             type_contribuition: joi.string().trim().allow(""),
@@ -73,7 +74,14 @@ export class JoiValidation {
                     "string.max": "o campo deve conter no maximo 14 digitos",
                     "string.min": "o campo cnpj deve conter pelo menos 14 digitos",
                 }),
-                password: joi.string().trim(),
+                password: joi
+                    .string()
+                    .trim()
+                    .regex(/^(?=.*[A-Z])(?=.*[^a-zA-Z0-9]).*$/)
+                    .messages({
+                    "string.pattern.base": "formato de senha não aceitável, coloque pelo menos 1 letra maiscula e um caracter especial",
+                }),
+                email: joi.string().email(),
             });
             return schemalogin.validate(body);
         }
@@ -82,7 +90,7 @@ export class JoiValidation {
             throw error;
         }
     }
-    static async schemaCreateSupplierPf({ supplier, address }) {
+    static async schemaCreateSupplierPf({ supplier, address, }) {
         const schemaSupplier = joi.object({
             supplier_name: joi.string().trim().required(),
             supplier_code: joi.string().trim().allow(""),
@@ -92,13 +100,13 @@ export class JoiValidation {
             rg: joi.string().trim().allow(""),
             cpf: joi.string().trim().required().min(11).max(11).messages({
                 "string.max": "O campo cpf deve conter no máximo 11 digitos",
-                "string.min": "O campo cpf deve conter no mínimo 11 digitos"
+                "string.min": "O campo cpf deve conter no mínimo 11 digitos",
             }),
             birth_date: joi.string().trim().allow(""),
-            status: joi.optional()
+            status: joi.optional(),
         });
         // const schemaProduct = joi.object<Product_Supplier_pf>({
-        //   // name: joi.string().trim().allow(""),    
+        //   // name: joi.string().trim().allow(""),
         //   price: joi.string().trim().allow(""),
         //   delivery_time: joi.string().trim().allow(""),
         //   purchase_tax: joi.string().trim().allow(""),
@@ -117,7 +125,7 @@ export class JoiValidation {
         const { value: newAddress, error: errorAddress } = schemaAddress.validate(address);
         if (errorSupplier || errorAddress) {
             const error = errorSupplier?.message || errorAddress?.message;
-            throw new AllError((error ? error : ""));
+            throw new AllError(error ? error : "");
         }
         return {
             supplier: newSupplier,

@@ -140,7 +140,7 @@ export class SuppplierPjService {
             phone: { contanis: "" },
         };
         fields.forEach((field, index) => {
-            filter[field] = { contanis: value };
+            filter[field] = { contanis: `%${value}%` };
         });
         return filter;
     }

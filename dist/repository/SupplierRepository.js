@@ -1,12 +1,16 @@
 import { InstanciaPrisma } from "../db/PrismaClient.js";
+// import { Supplier_pf, BodySupplierPf, filterSupplierPf } from "../interfaces/global.js";
 export default class SupplierRepository {
     static connectionDb = InstanciaPrisma.GetConnection();
+<<<<<<< HEAD
     // Estudar Promisse.All()
     // : Promise<AllSupplier_pf[] | null> 
+=======
+>>>>>>> feat/getAll-products
     static async getAll(skip) {
         try {
             return this.connectionDb.supplier_pf.findMany({
-                take: 10,
+                take: 20,
                 skip,
             });
         }
@@ -20,7 +24,11 @@ export default class SupplierRepository {
                 where: {
                     status: status
                 },
+<<<<<<< HEAD
                 take: 10,
+=======
+                take: 20,
+>>>>>>> feat/getAll-products
                 skip
             });
         }
@@ -270,7 +278,11 @@ export default class SupplierRepository {
                     cpf: true
                 },
                 skip: page,
+<<<<<<< HEAD
                 take: 10
+=======
+                take: 20
+>>>>>>> feat/getAll-products
             });
         }
         catch (error) {
@@ -296,7 +308,11 @@ export default class SupplierRepository {
                     cpf: true
                 },
                 skip: page,
+<<<<<<< HEAD
                 take: 10
+=======
+                take: 20
+>>>>>>> feat/getAll-products
             });
         }
         catch (error) {

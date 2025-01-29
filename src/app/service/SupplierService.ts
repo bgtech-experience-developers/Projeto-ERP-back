@@ -6,6 +6,7 @@ import { Sharp } from "../utils/sharp.js";
 import { deleteApiPhp } from "../middleware/ApiPhp.js";
 import { ALL } from "node:dns";
 import { boolean } from "joi";
+// import { BodySupplierPf, filterSupplierPf } from "../interfaces/global.js";
 
 export class SupplierService {
     // : Promise<AllSupplier_pf[] | null>
@@ -52,7 +53,7 @@ export class SupplierService {
             if(Number(id)) {
 
                 const resultQuery = await SupplierRepository.getById(Number(id))
-                // console.log(resultQuery);
+                console.log(resultQuery[0]);
                 if(!resultQuery[0]) {
                     throw  new AllError("Usuário não encontrado no sistem!", 404)
                 }
@@ -122,6 +123,8 @@ export class SupplierService {
                 }
     
                 const path = await SupplierRepository.getImage(Number(id));
+                console.log(path);
+                
                 const newPath = path?.replace("https://bgtech.com.br/erp/assets/", "")
                 console.log(newPath);
                 if(newPath) {

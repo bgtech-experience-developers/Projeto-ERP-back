@@ -4,6 +4,7 @@ import { AllError } from "../error/AllError.js";
 export interface login {
   cnpj: string;
   password: string;
+  email: string;
 }
 
 export class AdmValidator {
@@ -14,15 +15,13 @@ export class AdmValidator {
       try {
         const body: login = request.body;
         body.cnpj = body.cnpj.replace(/\D/gi, "");
-        body.password = body.password.replace(/\D/gi, "");
-
         const { error, value } = await JoiValidation.schemaLogin(body);
         if (error) {
+          console.log(error);
           throw new AllError(error.message);
         }
         if (adm) {
           const query$String = request.query.permission as string;
-
           if (!query$String) {
             throw new AllError(
               "é necessário pelo menos uma permissão para criar um administrador"
@@ -55,5 +54,25 @@ export class AdmValidator {
         next(error);
       }
     };
+  }
+  static passwordValidator(
+    request: Request,
+    response: Response,
+    next: NextFunction
+  ) {
+    try {
+      const newPassword = request.body.newPassword;
+      const regexPassword = /^(?=.*[A-Z])(?=.*[^a-zA-Z0-9]).*$/;
+      if (regexPassword.test(newPassword)) {
+        request.body = newPassword;
+        next();
+        return;
+      }
+      throw new AllError(
+        "formato de senha não aceitável, coloque pelo menos 1 letra maiscula e um caracter especial"
+      );
+    } catch (error) {
+      next(error);
+    }
   }
 }

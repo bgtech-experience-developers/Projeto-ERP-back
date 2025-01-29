@@ -26,12 +26,77 @@ export class AdmRepository {
             throw error;
         }
     }
+    static async storageTemporaryToken(token, idUser, code) {
+        try {
+            return await this.connectionDb.$transaction(async (tsx) => {
+                await tsx.tempory_token.create({
+                    data: { adm_id: idUser, token, code },
+                });
+                return "email enviado com sucesso e token armazenado com sucesso";
+            });
+        }
+        catch (error) {
+            throw error;
+        }
+    }
+    static async getUniqueByEmail(email) {
+        try {
+            return await this.connectionDb.emails.findFirst({
+                where: { email },
+                select: { adm_id: true },
+            });
+        }
+        catch (error) {
+            throw error;
+        }
+    }
+    static clearTemporaryToken(id) {
+        try {
+            this.connectionDb.$transaction(async (tsx) => {
+                await tsx.tempory_token.deleteMany({ where: { adm_id: id } });
+            });
+        }
+        catch (error) {
+            throw error;
+        }
+    }
+    static async resetPassword(IdUser, newPassword) {
+        try {
+            const message = this.connectionDb.$transaction(async (tsx) => {
+                await tsx.tempory_token.deleteMany({ where: { adm_id: IdUser } });
+                await tsx.adm.update({
+                    where: { id: IdUser },
+                    data: { password: newPassword },
+                });
+                return "restauração de senha com êxito";
+            });
+            return message;
+        }
+        catch (error) {
+            throw error;
+        }
+    }
+    static async getTokenTemporary(code, idUser) {
+        try {
+            const tokenUser = await this.connectionDb.$transaction(async (tsx) => {
+                return tsx.$queryRaw `SELECT t.token FROM erp.tempory_token t WHERE t.adm_id LIKE ${idUser} AND t.code LIKE ${code}`;
+            });
+            console.log(tokenUser);
+            return tokenUser;
+        }
+        catch (error) {
+            throw error;
+        }
+    }
     static async create(body, permissions) {
         try {
+            console.log(body);
             const result = await this.connectionDb.$transaction(async (tsx) => {
-                //ideia da
                 const adm = await tsx.adm.create({
-                    data: { ...body },
+                    data: { cnpj: body.cnpj, password: body.password },
+                });
+                await tsx.emails.create({
+                    data: { adm_id: adm.id, email: body.email },
                 });
                 const role = await tsx.roleadm.createMany({
                     data: permissions.map((id) => {

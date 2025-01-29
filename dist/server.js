@@ -14,7 +14,7 @@ const host = "0.0.0.0";
 const port = 3000;
 app.use("/files", express.static("uploads")); // diretório acessível para requisições vindo do cliente, tendo acesso à arquivos hospedado internamente dentro dessa pasta!
 app.use(cors({
-    origin: ["http://erp-homologation.bgtech.com.br", "http://localhost:5173"],
+    origin: ["https://erp-homologation.bgtech.com.br", "http://localhost:5173"],
     credentials: true,
 }));
 app.use('/products', Product);
@@ -24,6 +24,6 @@ app.use("/clientes", clientRouter);
 app.use("/adm", routerAdm);
 app.use("/fornecedor/fisico", supplierPf);
 app.use("/fornecedor/juridico", supplierPjRouter);
-app.listen(port, host, () => {
+app.listen(3500, host, () => {
     console.log("meu servidor está rodando na porta " + port);
 });

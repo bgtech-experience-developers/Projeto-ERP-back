@@ -3,7 +3,6 @@ import dotnev from "dotenv";
 import { clientRouter } from "./router/Client.js";
 import cors from "cors";
 import { routerAdm } from "./router/adm.js";
-
 import { number } from "joi";
 import cookieParse from "cookie-parser";
 import Supplier_pf from "./router/SupplierPf.js";
@@ -20,7 +19,7 @@ const port = 3000
 app.use("/files", express.static("uploads")); // diretório acessível para requisições vindo do cliente, tendo acesso à arquivos hospedado internamente dentro dessa pasta!
 app.use(
   cors({
-    origin: ["http://erp-homologation.bgtech.com.br", "http://localhost:5173"],
+    origin: ["https://erp-homologation.bgtech.com.br", "http://localhost:5173"],
     credentials: true,
   })
 );

@@ -1,6 +1,7 @@
 import { UploadFile } from "../utils/multer.js";
 import { AllError } from "../error/AllError.js";
 import { JoiValidation } from "../utils/joi.js";
+// import { BodySupplierPf } from "../interfaces/global.js";
 export class SupplierPfMiddleware {
     static uploadFileSingle = UploadFile.uploadSingle().single("photo");
     static async handleFile(request, response, next) {
