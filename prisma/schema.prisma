@@ -64,7 +64,7 @@ model imagem {
   accounting_contact_image accounting_contact_image[]
   supplier_pf              supplier_pf_image[]        @relation("campo")
   supplier_pj              supplier_pj[]
-  product                  product[]
+  product                  product[] 
 
   created_at DateTime @default(now())
   update_at  DateTime @default(now())
@@ -120,7 +120,7 @@ model supplier_pf {
   status              Boolean               @default(true)
   address_supplier_pf supplier_pf_address[]
   supplier_imagem     supplier_pf_image[]   @relation("supplier_id_image")
-  product             product[]
+  product             supplier_product[]
   created_at          DateTime              @default(now())
   update_at           DateTime              @default(now())
 }
@@ -155,7 +155,7 @@ model supplier_pj {
   id_imagem              Int
   imagem                 imagem                @relation(fields: [id_imagem], references: [id], onDelete: Cascade, onUpdate: Cascade)
   supplier_pj_address    supplier_pj_address[]
-  product                product[]
+  product                supplier_product[]
   corporate_reason       String
   email                  String?
   phone                  String?
@@ -333,24 +333,35 @@ model roleadm {
 }
 
 model product {
-  id                Int       @id @default(autoincrement())
+  id                Int         @id @default(autoincrement())
   id_image          Int
   name              String
   supplier_name     String
-  id_supplier_pf    Int?
-  id_supplier_pj    Int?
   serie_number      Int
-  barcode           Int       @unique
+  barcode           Int         @unique
   amount            Int  
   cost_value        String
   weight            String
   width             String
   height            String
   length            String
-  description       String?    @db.Text()
-  created_at        DateTime  @default(now())
-  update_at         DateTime  @default(now())
-  image             imagem    @relation(fields: [id_image], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  supplier_pf       supplier_pf?  @relation(fields: [id_supplier_pf], references: [id], onUpdate: Cascade,onDelete: Cascade)
-  supplier_pj       supplier_pj?  @relation(fields: [id_supplier_pj], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  description       String?      @db.Text()
+  created_at        DateTime     @default(now())
+  update_at         DateTime     @default(now())
+  supplier_product  supplier_product[]
+  image             imagem       @relation(fields: [id_image], references: [id], onDelete: Cascade, onUpdate: Cascade)
 }
+
+model supplier_product {
+  id                Int         @id @default(autoincrement())
+  id_product        Int
+  id_supplier_pf    Int?
+  id_supplier_pj    Int?
+  supplier_pj       supplier_pj? @relation(fields: [id_supplier_pj], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  supplier_pf       supplier_pf? @relation(fields: [id_supplier_pf], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  product           product      @relation(fields: [id_product], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  created_at        DateTime    @default(now())
+  update_at         DateTime    @default(now())
+
+  
+  }
