@@ -321,6 +321,7 @@ export class ClientService {
         });
 
         const pathImages = await ClientRepository.getImage(Number(param));
+        console.log(pathImages);
 
         const props: [keyof keys, keyof keys, keyof keys, keyof keys] = [
           "accounting_contact",
@@ -345,6 +346,7 @@ export class ClientService {
         paths.push(
           pathImages?.owner_partner[0].sector.owner_partner_image[0].image.path
         );
+
         paths.push(
           pathImages?.commercial_contact[0].sector.commercial_image[0].image
             .path
@@ -356,7 +358,6 @@ export class ClientService {
         paths.push(
           pathImages?.financinal_contact[0].sector.financial_image[0].image.path
         );
-
         const pathsAll = paths.filter((path) => path != null || undefined);
         const newPath = pathsAll.map((path) => {
           const paths = path?.replace("https://bgtech.com.br/erp/assets/", "");

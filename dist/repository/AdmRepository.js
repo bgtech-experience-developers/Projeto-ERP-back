@@ -79,7 +79,7 @@ export class AdmRepository {
     static async getTokenTemporary(code, idUser) {
         try {
             const tokenUser = await this.connectionDb.$transaction(async (tsx) => {
-                return tsx.$queryRaw `SELECT t.token FROM erp.tempory_token t WHERE t.adm_id LIKE ${idUser} AND t.code LIKE ${code}`;
+                return tsx.$queryRaw `SELECT t.token FROM ${process.env.db_name}.tempory_token t WHERE t.adm_id LIKE ${idUser} AND t.code LIKE ${code}`;
             });
             console.log(tokenUser);
             return tokenUser;
