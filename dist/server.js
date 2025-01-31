@@ -17,13 +17,13 @@ app.use(cors({
     origin: ["https://erp-homologation.bgtech.com.br", "http://localhost:5173"],
     credentials: true,
 }));
-app.use('/products', product);
+app.use("/products", product);
 app.use(cookieParse());
 app.use(express.json()); // parte para a deserializaç~~ao das informações
 app.use("/clientes", clientRouter);
 app.use("/adm", routerAdm);
 app.use("/fornecedor/fisico", supplierPf);
 app.use("/fornecedor/juridico", supplierPjRouter);
-app.listen(port, host, () => {
+app.listen(8000, host, () => {
     console.log("meu servidor está rodando na porta " + port);
 });

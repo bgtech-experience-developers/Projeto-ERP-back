@@ -1,4 +1,4 @@
-import ProductService from '../service/ProductService.js';
+import ProductService from "../service/ProductService.js";
 export class ProductController {
     // static async createProduct(req: Request, res: Response) {
     //   try {
@@ -6,10 +6,20 @@ export class ProductController {
     //     const product = await ProductService.createProduct(data);
     //     return res.status(201).json(product);
     //   } catch (error: any) {
-    //     // return 
+    //     // return
     //     res.status(500).json({ message: error.message || 'Error creating product' });
     //   }
     // }
+    static async removeProduct(request, response, next) {
+        try {
+            const id = Number(request.params.id);
+            const message = await ProductService.removeByIdProduct(id);
+            response.status(201).json(message);
+        }
+        catch (error) {
+            next(error);
+        }
+    }
     static async getAll(request, response, next) {
         try {
             const productAll = await ProductService.getAll(request.query.take, request.query.skip);

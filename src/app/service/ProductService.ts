@@ -1,9 +1,27 @@
+import { AllError } from "../error/AllError.js";
 import ProductRepository from "../repository/ProductRepository.js";
+import { ApiPhp, deleteUpload } from "../middleware/ApiPhp.js";
 
 export default class ProductService {
+  private static async removeUpload(path: string) {
+    try {
+      path = path.replace("https://bgtech.com.br/erp/assets/", "");
+      const data = await deleteUpload([path]);
+      console.log(data);
+    } catch (error) {
+      throw error;
+    }
+  }
   static async removeByIdProduct(id: number) {
     try {
       const productUnique = await ProductRepository.getUniqueProduct(id);
+      if (!productUnique) {
+        throw new AllError("produto não cadastrado no sistema");
+      }
+      if (productUnique.path) {
+        this.removeUpload(productUnique.path);
+      }
+      return ProductRepository.removerByIdProduct(id);
     } catch (error) {
       throw error;
     }

@@ -1,5 +1,11 @@
 import { PrismaClient } from "@prisma/client";
 import { InstanciaPrisma } from "../db/PrismaClient.js";
+import { extname } from "path";
+import { extend } from "joi";
+interface GetuniqueProduct extends Product {
+  path: string;
+}
+type productUnique = GetuniqueProduct[] | undefined[];
 
 const prima = new PrismaClient();
 
@@ -7,12 +13,24 @@ export default class ProductRepository {
   protected static connectionDb: PrismaClient = InstanciaPrisma.GetConnection();
 
   // Definir o tipo de dado dos argumentos das funções.
+  static async removerByIdProduct(id: number) {
+    try {
+      const removeProduct = await this.connectionDb.$transaction(async (tx) => {
+        await tx.product.delete({ where: { id } });
+        return "produto removido com sucesso";
+      });
+      return removeProduct;
+    } catch (error) {
+      throw error;
+    }
+  }
   static async getUniqueProduct(id: number) {
     try {
-      const productUnique = this.connectionDb
-        .$queryRaw`SELECT p.* i.path FROM product p LEFT JOIN imagem AS i ON p.id_imagem = i.id WHERE p.id = ${id}`;
+      const [productUnique]: productUnique = await this.connectionDb
+        .$queryRaw`SELECT p.*,i.path FROM product p LEFT JOIN imagem AS i ON p.id_image = i.id WHERE p.id = ${id}`;
       console.log(productUnique);
-      return "produto buscado com sucesso";
+
+      return productUnique;
     } catch (error) {
       throw error;
     }

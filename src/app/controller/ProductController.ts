@@ -20,7 +20,7 @@ export class ProductController {
   ) {
     try {
       const id = Number(request.params.id);
-      const message = ProductService.removeByIdProduct(id);
+      const message = await ProductService.removeByIdProduct(id);
       response.status(201).json(message);
     } catch (error) {
       next(error);

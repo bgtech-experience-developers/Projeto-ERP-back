@@ -73,7 +73,6 @@ const connectionDb = InstanciaPrisma.GetConnection();
 // //     process.exit(1)
 // // })
 
-
 // async function product_seed() {
 //   const products = [];
 //   for (let index = 1; index <= 100; index++) {
@@ -89,7 +88,6 @@ const connectionDb = InstanciaPrisma.GetConnection();
 //     const height = faker.number.float({ min: 2, max: 4 });
 //     const length = faker.number.float({ min: 2, max: 4 });
 //     const description = faker.string.alpha(100);
-
 
 //     const product = {
 //       name,
@@ -315,15 +313,15 @@ async function pj() {
     console.error(error);
   }
 }
-// pj()
-//   .then(async () => {
-//     await connectionDb.$disconnect();
-//   })
-//   .catch(async (e) => {
-//     console.error(e);
-//     await connectionDb.$disconnect();
-//     process.exit(1);
-//   });
+pj()
+  .then(async () => {
+    await connectionDb.$disconnect();
+  })
+  .catch(async (e) => {
+    console.error(e);
+    await connectionDb.$disconnect();
+    process.exit(1);
+  });
 // client()
 
 //   .then(async () => {
