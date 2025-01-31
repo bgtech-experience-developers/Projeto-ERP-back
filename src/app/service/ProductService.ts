@@ -40,4 +40,7 @@ export default class ProductService {
       throw error;
     }
   }
+
+  // get by id
+
 }
