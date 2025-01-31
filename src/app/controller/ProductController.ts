@@ -57,6 +57,15 @@ export class ProductController {
     }
   }
 
-  
+  static async getById(request: Request, response: Response, next: NextFunction) {
+    try {
+        const { id } = request.params;
+        const product = await ProductService.getById(id);
+        response.status(200).json(product);
+        return;
+    } catch(error) {
+        next(error);
+    }
+  }
 
 }
