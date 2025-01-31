@@ -1,4 +1,5 @@
 import ProductRepository from "../repository/ProductRepository.js";
+import { AllError } from "../error/AllError.js";
 
 export default class ProductService {
   static async removeByIdProduct(id: number) {
@@ -41,6 +42,27 @@ export default class ProductService {
     }
   }
 
-  // get by id
+  static async getById(id: string | number) {
+    try {
+        const productId = Number(id);
+        
+        if (!productId || isNaN(productId)) {
+            throw new AllError('ID do produto inválido', 400);
+        }
+
+        const product = await ProductRepository.getById(productId);
+        
+        if (!product) {
+            throw new AllError('Produto não encontrado', 404);
+        }
+
+        return product;
+    } catch(error) {
+        if (error instanceof AllError) {
+            throw error;
+        }
+        throw new AllError(`Erro ao buscar produto: ${error}`, 500);
+    }
+  }
 
 }
