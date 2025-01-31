@@ -300,7 +300,7 @@ console.log(index);
 async function pj() {
   try {
     const record = [];
-    for (let i = 0; i < 50; i++) {
+    for (let i = 0; i < 100; i++) {
       const { id } = await connectionDb.imagem.create({
         data: { path: faker.image.url() },
         select: { id: true },
