@@ -43,7 +43,7 @@ export class SupplierPjRespository {
   static async findSupplierById(id: number) {
     try {
       const [registerSupplier] = (await this.connection
-        .$queryRaw`SELECT s.*, a.*,i.*,p.id_address FROM supplier_pj s LEFT JOIN ${process.env.db_name}.imagem AS i ON s.id_imagem = i.id LEFT JOIN ${process.env.db_name}.supplier_pj_address AS p ON p.id_supplier = s.id LEFT JOIN ${process.env.db_name}.address AS a ON p.id_address = a.id WHERE s.id = ${id}`) as findSupplierById[];
+        .$queryRaw`SELECT s.*, a.*,i.*,p.id_address FROM supplier_pj s LEFT JOIN imagem AS i ON s.id_imagem = i.id LEFT JOIN supplier_pj_address AS p ON p.id_supplier = s.id LEFT JOIN address AS a ON p.id_address = a.id WHERE s.id = ${id}`) as findSupplierById[];
 
       return registerSupplier;
     } catch (error) {
