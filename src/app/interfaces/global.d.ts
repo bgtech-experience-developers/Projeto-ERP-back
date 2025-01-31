@@ -227,6 +227,8 @@ interface Product {
 
 type ProductGetAll = Pick<Product, 'barcode' | 'name' | 'supplier_name' | 'cost_value'>
 
+type ProductGetById = Pick<Product, 'id'>
+
 // interface supplierGetById extends Supplier_pf {
 
 //   address_supplier_pf: addressGetById

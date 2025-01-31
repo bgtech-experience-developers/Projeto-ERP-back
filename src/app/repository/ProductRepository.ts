@@ -52,6 +52,17 @@ export default class ProductRepository {
       throw error;
     }
   }
+
+  static async getById(id: number): Promise<Product | null> {
+    try {
+        return this.connectionDb.product.findUnique({
+            where: {
+                id
+            }
+        });
+    } catch(error) {
+        throw error;
+    }
 }
 
-// get by id
+}
