@@ -1,115 +1,21 @@
-import { log } from "console";
+import { error, log } from "console";
 import { InstanciaPrisma } from "./db/PrismaClient.js";
 import { fa, faker, fakerPL } from "@faker-js/faker"; // Biblioteca para gerar dados aleatórios
 import { read } from "fs";
+import { number } from "joi";
 
 const connectionDb = InstanciaPrisma.GetConnection();
 
-// // async function main() {
-// //     const data = new Date()
-// //     data.getDate()
-// //     console.log(data);
+// async function main() {
+//   const records = [];
 
-// //     const supplier_pf_01 = await connectionDb.$transaction([
-// //         connectionDb.supplier_pf.create({
-// //             data: {
-// //                 supplier_name: 'Fabio Construções',
-// //                 supplier_code: '1987',
-// //                 cpf: "62117987388",
-// //                 email: "fabiocontruções@email.com",
-// //                 rg: "123456789",
-// //                 birth_date: data,
-// //                 phone: "85912345678",
-// //                 supplier_imagem: {
-// //                     create: {
-// //                         supplier_pf_image: {
-// //                             create: {
-// //                                 path: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRMRDgoyxZa15Jg0bZ1OhJzcXQ0EUHZEvCakw&s"
-// //                             }
-// //                         }
-// //                     }
-// //                 },
-// //                 product_supplier_pf: {
-// //                     create: {
-// //                         product: {
-// //                             create: {
-// //                                 name: "Trator",
-// //                                 internal_code: "321",
-// //                                 stock: 1
-// //                             }
-// //                         },
-// //                         price: "1000.00",
-// //                         delivery_time: "2 dias",
-// //                         purchase_tax: "10%"
+//   for (let i = 1; i <= 100; i++) {
+//     const birthDate = faker.date.past({ years: 50 }); // Gera uma data de nascimento aleatória
 
-// //                     }
-// //                 },
-// //                 address_supplier_pf: {
-// //                     create: {
-// //                         address: {
-// //                             create: {
-// //                                 cep: "01001000",
-// //                                 street: "Praça da Sé",
-// //                                 number: "100",
-// //                                 complement: "Apto 21",
-// //                                 city: "São Paulo",
-// //                                 neighborhood: "Sé",
-// //                             }
-// //                         }
-// //                     }
-// //                 }
-// //             }
-// //         })
-// //     ])
-// // }
-
-// // main()
-// // .then(async () => {
-// //     await connectionDb.$disconnect()
-// // })
-// // .catch(async (e) =>{
-// //     console.error(e)
-// //     await connectionDb.$disconnect()
-// //     process.exit(1)
-// // })
-
-
-// async function product_seed() {
-//   const products = [];
-//   for (let index = 1; index <= 100; index++) {
-//     const name = faker.commerce.productName();
-//     const status = faker.datatype.boolean();
-//     const supplier = faker.company.name();
-//     const serie_number = faker.number.int(10);
-//     const barcode = faker.number.int(20);
-//     const amount = faker.number.int({ min: 1, max: 4 });
-//     const cost_value = faker.number.float({ min: 2, max: 8 });
-//     const weight = faker.number.float({ min: 2, max: 4 });
-//     const width = faker.number.float({ min: 2, max: 4 });
-//     const height = faker.number.float({ min: 2, max: 4 });
-//     const length = faker.number.float({ min: 2, max: 4 });
-//     const description = faker.string.alpha(100);
-
-
-//     const product = {
-//       name,
-//       status,
-//       supplier,
-//       serie_number,
-//       barcode,
-//       amount,
-//       cost_value,
-//       weight,
-//       width,
-//       height,
-//       length,
-//       description
-//     };
-
-//     products.push(
-//       connectionDb.product.create({
+//     records.push(
+//       connectionDb.supplier_pf.create({
 //         data: {
-//           supplier: faker.company.name(),
+//           supplier_name: faker.company.name(),
 //           supplier_code: faker.string.numeric(4), // Substitui faker.random.numeric
 //           cpf: faker.string.numeric(11), // Substitui faker.random.numeric
 //           email: faker.internet.email(),
@@ -145,9 +51,129 @@ const connectionDb = InstanciaPrisma.GetConnection();
 //     );
 //   }
 
-//   await connectionDb.$transaction(products);
+//   await connectionDb.$transaction(records);
 //   console.log("100 registros criados com sucesso!");
 // }
+
+// main()
+// .then(async () => {
+//     await connectionDb.$disconnect()
+// })
+// .catch(async (e) =>{
+//     console.error(e)
+//     await connectionDb.$disconnect()
+//     process.exit(1)
+// })
+
+
+async function product_seed() {
+  const products = [];
+  for (let index = 1; index <= 100; index++) {
+    const name = faker.commerce.productName();
+    const status = faker.datatype.boolean();
+    const supplier_name = faker.company.name();
+    const serie_number = faker.number.int(10);
+    const barcodenumber = Number(faker.finance.accountNumber(5))
+    const barcode = barcodenumber;
+    
+    const amount = faker.number.int({ min: 1, max: 4 });
+    const cost_value = faker.number.float({ min: 2, max: 8 });
+    const weight = faker.number.float({ min: 2, max: 4 });
+    const width = faker.number.float({ min: 2, max: 4 });
+    const height = faker.number.float({ min: 2, max: 4 });
+    const length = faker.number.float({ min: 2, max: 4 });
+    const description = faker.string.alpha(100);
+
+
+    const product = {
+      name,
+      supplier_name,
+      serie_number,
+      barcode,
+      amount,
+      cost_value,
+      weight,
+      width,
+      height,
+      length,
+      description
+    };
+    const supplierPjExists = await connectionDb.supplier_pj.findUnique({
+      where: { id: index },
+    });
+    
+    if (!supplierPjExists) {
+      console.log(`Fornecedor PJ com ID ${index} não encontrado! Pulando...`);
+      continue;
+    }
+    if(index % 2 == 0) {
+      products.push(
+   
+        connectionDb.product.create({
+          data: {
+            name,
+            supplier_name,
+            serie_number,
+            barcode,
+            amount,
+            cost_value: product.cost_value.toString(),
+            weight: product.weight.toString(),
+            width: product.width.toString(),
+            height: product.height.toString(),
+            length: product.length.toString(),
+            description: product.description.toString(),
+            image: {
+              create: {
+                path: faker.image.urlPicsumPhotos()
+              },
+            },
+            supplier_pf_product: {
+              create: {
+                id_supplier_pf: index
+              }
+            }
+          },
+        })
+      );
+    }
+    else {
+      products.push(
+   
+        connectionDb.product.create({
+          data: {
+            name,
+            supplier_name,
+            serie_number,
+            barcode,
+            amount,
+            cost_value: product.cost_value.toString(),
+            weight: product.weight.toString(),
+            width: product.width.toString(),
+            height: product.height.toString(),
+            length: product.length.toString(),
+            description: product.description.toString(),
+            image: {
+              create: {
+                path: faker.image.urlPicsumPhotos()
+              },
+            },
+            supplier_pj_product: {
+              create: {
+                id_supplier_pj: index
+              }
+            }
+          },
+        })
+      );
+    }
+console.log(index);
+
+
+  }
+
+  await connectionDb.$transaction(products);
+  console.log("100 registros criados com sucesso!");
+}
 
 // // async function client() {
 // //   const record = [];
@@ -521,3 +547,13 @@ async function pj() {
 // });
 
 // export default main;
+ product_seed()
+ .then(() => {
+  console.log('Seeds de products executada com sucess');
+  connectionDb.$disconnect()
+  
+ })
+ .catch((err) => {
+  console.log("Erro ao executar Seeds de product! \n" + err);
+  
+ })
