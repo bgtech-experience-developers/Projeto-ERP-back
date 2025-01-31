@@ -205,28 +205,6 @@ interface filterSupplierPf {
   phone: filterContanis;
 }
 
-interface Product {
-  id: number;
-  id_image: number;
-  name: string;
-  supplier_name: string;
-  id_supplier_pf?: number ;
-  id_supplier_pj?: number;
-  serie_number: number;
-  barcode: number;
-  amount: number;
-  cost_value: string;
-  weight: string;
-  width: string;
-  height: string;
-  length: string;
-  description?: string;
-  created_at?: Date;
-  update_at?: Date;
-}
-
-type ProductGetAll = Pick<Product, 'barcode' | 'name' | 'supplier_name' | 'cost_value'>
-
 // interface supplierGetById extends Supplier_pf {
 
 //   address_supplier_pf: addressGetById
