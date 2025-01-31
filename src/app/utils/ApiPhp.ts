@@ -1,6 +1,7 @@
 import { AllError } from "../error/AllError.js";
 import { ApiPhp } from "../middleware/ApiPhp.js";
 import { Sharp } from "./sharp.js";
+
 export const ApiPhpUtils = async (imagems: (string | null)[], typeFolder: "img_profile" | "img_product", files: Express.Multer.File[]) => {
   try {
     const filesPath = imagems.filter((path) => {

@@ -290,6 +290,48 @@ CREATE TABLE `roleadm` (
     PRIMARY KEY (`adm_id`, `role_id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
+-- CreateTable
+CREATE TABLE `product` (
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `id_image` INTEGER NOT NULL,
+    `name` VARCHAR(191) NOT NULL,
+    `supplier_name` VARCHAR(191) NOT NULL,
+    `serie_number` INTEGER NOT NULL,
+    `barcode` INTEGER NOT NULL,
+    `amount` INTEGER NOT NULL,
+    `cost_value` VARCHAR(191) NOT NULL,
+    `weight` VARCHAR(191) NOT NULL,
+    `width` VARCHAR(191) NOT NULL,
+    `height` VARCHAR(191) NOT NULL,
+    `length` VARCHAR(191) NOT NULL,
+    `description` TEXT NULL,
+    `created_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+    `update_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+
+    UNIQUE INDEX `product_barcode_key`(`barcode`),
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
+CREATE TABLE `supplier_pf_product` (
+    `id_product` INTEGER NOT NULL,
+    `id_supplier_pf` INTEGER NOT NULL,
+    `created_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+    `update_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+
+    PRIMARY KEY (`id_product`, `id_supplier_pf`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
+CREATE TABLE `supplier_pj_product` (
+    `id_product` INTEGER NOT NULL,
+    `id_supplier_pj` INTEGER NOT NULL,
+    `created_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+    `update_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+
+    PRIMARY KEY (`id_product`, `id_supplier_pj`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
 -- AddForeignKey
 ALTER TABLE `emails` ADD CONSTRAINT `emails_adm_id_fkey` FOREIGN KEY (`adm_id`) REFERENCES `adm`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
@@ -389,3 +431,17 @@ ALTER TABLE `roleadm` ADD CONSTRAINT `roleadm_adm_id_fkey` FOREIGN KEY (`adm_id`
 -- AddForeignKey
 ALTER TABLE `roleadm` ADD CONSTRAINT `roleadm_role_id_fkey` FOREIGN KEY (`role_id`) REFERENCES `role`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
+-- AddForeignKey
+ALTER TABLE `product` ADD CONSTRAINT `product_id_image_fkey` FOREIGN KEY (`id_image`) REFERENCES `imagem`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `supplier_pf_product` ADD CONSTRAINT `supplier_pf_product_id_product_fkey` FOREIGN KEY (`id_product`) REFERENCES `product`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `supplier_pf_product` ADD CONSTRAINT `supplier_pf_product_id_supplier_pf_fkey` FOREIGN KEY (`id_supplier_pf`) REFERENCES `supplier_pf`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `supplier_pj_product` ADD CONSTRAINT `supplier_pj_product_id_product_fkey` FOREIGN KEY (`id_product`) REFERENCES `product`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `supplier_pj_product` ADD CONSTRAINT `supplier_pj_product_id_supplier_pj_fkey` FOREIGN KEY (`id_supplier_pj`) REFERENCES `supplier_pj`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
