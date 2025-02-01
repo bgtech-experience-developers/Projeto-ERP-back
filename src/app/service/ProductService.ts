@@ -1,4 +1,5 @@
 import ProductRepository from '../repository/ProductRepository.js';
+import supplierPf from '../router/SupplierPf.js';
 
 export default class ProductService {
   static async createProduct(data: any) {
@@ -32,6 +33,16 @@ export default class ProductService {
   static async countAll(): Promise<number> {
     try {
       return await ProductRepository.countAll();
+    } catch(error) {
+        throw error;
+    }
+  }
+
+  static async getSuppliersProducts(name: string) {
+    try {
+      const filter = await ProductRepository.getSuppliersProducts(name);
+      
+      return filter
     } catch(error) {
         throw error;
     }

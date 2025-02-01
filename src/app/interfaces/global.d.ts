@@ -1,3 +1,4 @@
+
 interface ClientC {
   id: number;
   corporate_reason: string;
@@ -245,3 +246,12 @@ type ProductGetAll = Pick<Product, 'barcode' | 'name' | 'supplier_name' | 'cost_
 //   update_at?: Date ;
 //   supplier_pf_image:[ {path: string}]
 // }
+
+
+interface filterSuppliersProducts {
+  supplier_name: string | null,
+  cpf: string | null,
+  fantasy_name: string | null;
+  cnpj: string | null;
+  type: string;
+}

@@ -42,5 +42,22 @@ export default class ProductRepository {
             throw error;
         }
     }
+
+    static async getSuppliersProducts(name: string): Promise<filterSuppliersProducts[]> {
+        try {
+            // return await this.connectionDb.$queryRaw`SELECT supplier_name AS supplier_pf_name FROM supplier_pf WHERE supplier_name LIKE ${'%'+name+'%'} 
+            // UNION ALL
+            // SELECT fantasy_name AS supplier_pj_fantasy FROM supplier_pj WHERE fantasy_name LIKE ${'%'+name+'%'}`
+
+            return await this.connectionDb.$queryRaw`SELECT supplier_name AS supplier_name, cpf, NULL AS fantasy_name, NULL as cnpj, 'PF' AS type FROM supplier_pf WHERE supplier_name LIKE ${'%'+name+'%'}
+            UNION ALL
+            SELECT NULL AS supplier_name, NULL as cpf, fantasy_name AS fantasy_name,cnpj, 'PJ' AS type FROM supplier_pj WHERE fantasy_name LIKE ${'%'+name+'%'}`;
+        }
+
+        catch(error) {
+            throw error;
+        }
+
+    }
 }
 

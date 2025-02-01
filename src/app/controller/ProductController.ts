@@ -34,4 +34,14 @@ export  class ProductController {
         next(error);
     }
   }
+
+  static async getSuppliersProducts(request: Request<any, any, any, {name: string}>, response: Response, next: NextFunction) {
+    try {
+      const filter = await ProductService.getSuppliersProducts(request.query.name);
+      response.status(200).json(filter);
+      return;
+    } catch(error) {
+      next(error);
+    }
+  }
 }
