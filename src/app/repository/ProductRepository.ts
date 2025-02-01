@@ -53,7 +53,7 @@ export default class ProductRepository {
     }
   }
 
-  static async getById(id: number): Promise<ProductGetById> {
+  static async getById(id: number): Promise<ProductGetById | null> {
     try {
         return this.connectionDb.product.findUnique({
             where: {
