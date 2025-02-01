@@ -58,9 +58,6 @@ export default class ProductService {
 
         return product;
     } catch(error) {
-        if (error instanceof AllError) {
-            throw error;
-        }
         throw new AllError(`Erro ao buscar produto: ${error}`, 500);
     }
   }
